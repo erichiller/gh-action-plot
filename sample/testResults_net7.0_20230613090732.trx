@@ -1,0 +1,491 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a476d703-5e97-4139-869b-3587667247a9" name="@fv-az193-891 2023-06-13 09:04:33" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2023-06-13T09:04:33.4655803+00:00" queuing="2023-06-13T09:04:33.4655804+00:00" start="2023-06-13T09:04:30.3536458+00:00" finish="2023-06-13T09:07:32.8829837+00:00" />
+  <TestSettings name="default" id="5c6b771c-44d9-4b5f-8a72-9169e7246f70">
+    <Deployment runDeploymentRoot="_fv-az193-891_2023-06-13_09_04_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4ff98ba2-af1c-41d8-b861-2558bb51952b" testId="598087a2-e8b0-d596-730d-a100a2173022" testName="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_DuringWaitToReadAsync_Test" computerName="fv-az193-891" duration="00:00:00.0086463" startTime="2023-06-13T09:04:33.8020925+00:00" endTime="2023-06-13T09:04:33.8020926+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ff98ba2-af1c-41d8-b861-2558bb51952b" />
+    <UnitTestResult executionId="3f04b314-bc71-41f4-a50a-f60032d9396b" testId="da84c939-7b6f-7554-9acd-34296f9978e8" testName="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 3)" computerName="fv-az193-891" duration="00:00:00.3751172" startTime="2023-06-13T09:04:33.5168845+00:00" endTime="2023-06-13T09:04:33.5168847+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f04b314-bc71-41f4-a50a-f60032d9396b" />
+    <UnitTestResult executionId="693fba6b-0c60-48e9-aba9-8fac9428b567" testId="1fe5b3fa-dffc-ff97-fad1-cfb09e7b1cf6" testName="mkmrk.Channels.Tests.HostingTests.SimpleReaderRequest" computerName="fv-az193-891" duration="00:00:00.0150644" startTime="2023-06-13T09:04:33.6348677+00:00" endTime="2023-06-13T09:04:33.6348679+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="693fba6b-0c60-48e9-aba9-8fac9428b567">
+      <Output>
+        <StdOut>09:04:33.623 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 52607871] [Readers: (0): ]
+09:04:33.624 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; GetNewReaderConfiguration WriterHash is 6064464
+09:04:33.624 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelReader          &gt;&gt; Registered with Writer: BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 52607871] [Readers: (1): 6064464]
+09:04:33.625 +00:00 [INF] 16 mkmrk.Channels.Tests.HostingTests              &gt;&gt; !!!!!!!!!!!!!!!!!!!!!!!!!! 
+	Services Starting. Reader: BroadcastChannelReader&lt;ChannelMessageSubA&gt; [Hash: 37457466] [Writer Hash: 6064464] [Data Reader: 34428373] [Response Writer: 26747549]
+09:04:33.625 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting starting
+09:04:33.625 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubA and writer BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 52607871] [Readers: (1): 6064464]
+09:04:33.625 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 17232684] [Readers: (0): ]
+09:04:33.625 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubB and writer BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 17232684] [Readers: (0): ]
+09:04:33.625 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 48204561] [Readers: (0): ]
+09:04:33.625 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubC and writer BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 48204561] [Readers: (0): ]
+09:04:33.625 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.626 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.626 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.626 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application started. Press Ctrl+C to shut down.
+09:04:33.626 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Hosting environment: Production
+09:04:33.626 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Content root path: /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0
+09:04:33.626 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting started
+09:04:33.626 +00:00 [INF] 16 &gt;&gt; !!!!!!!!!!!!!!!!!!!!!!!!!! 
+	Services Started. Waiting to read from BroadcastChannelReader&lt;ChannelMessageSubA&gt; [Hash: 37457466] [Writer Hash: 6064464] [Data Reader: 34428373] [Response Writer: 26747549]
+09:04:33.626 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.626 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Wrote message #499, returning
+09:04:33.626 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Completing channel
+09:04:33.626 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Beginning to write messages to 0 reader
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Wrote message #499, returning
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Completing channel
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Beginning to write messages to 0 reader
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Wrote message #499, returning
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Completing channel
+09:04:33.627 +00:00 [INF] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; !!!!!!!!!!!!!!!!!!!!!!!!!! 
+	Data read from BroadcastChannelReader&lt;ChannelMessageSubA&gt; [Hash: 37457466] [Writer Hash: 6064464] [Data Reader: 34428373] [Response Writer: 26747549]
+09:04:33.627 +00:00 [DBG] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; Read 100 messages
+09:04:33.628 +00:00 [DBG] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; Read 200 messages
+09:04:33.628 +00:00 [DBG] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; Read 300 messages
+09:04:33.628 +00:00 [DBG] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; Read 400 messages
+09:04:33.629 +00:00 [DBG] 17 mkmrk.Channels.Tests.HostingTests              &gt;&gt; Read 500 messages
+09:04:33.629 +00:00 [DBG] 17 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopping
+09:04:33.629 +00:00 [INF] 17 Microsoft.Hosting.Lifetime                     &gt;&gt; Application is shutting down...
+09:04:33.629 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubC"] &gt;&gt; Stopping
+09:04:33.629 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubB"] &gt;&gt; Stopping
+09:04:33.629 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubA"] &gt;&gt; Stopping
+09:04:33.629 +00:00 [DBG] 17 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopped
+09:04:33.629 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.629 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.629 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelReader          &gt;&gt; Dispose(true) BroadcastChannelReader&lt;ChannelMessageSubA&gt;
+09:04:33.629 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="55cbdd8e-f647-4553-aeb5-f3673602d233" testId="79f876b1-dc09-0d1a-b5a9-67e345d50634" testName="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_WhenMuxIsCompleted" computerName="fv-az193-891" duration="00:00:00.0067110" startTime="2023-06-13T09:04:33.8089125+00:00" endTime="2023-06-13T09:04:33.8089126+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55cbdd8e-f647-4553-aeb5-f3673602d233" />
+    <UnitTestResult executionId="47c61df0-5dfc-4b08-918e-96961ade98ac" testId="03cb7676-6336-052e-6723-b306f998dd46" testName="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionShouldRemoveFromBroadcastChannel" computerName="fv-az193-891" duration="00:00:00.0163787" startTime="2023-06-13T09:04:33.2825734+00:00" endTime="2023-06-13T09:04:33.2825736+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="47c61df0-5dfc-4b08-918e-96961ade98ac" />
+    <UnitTestResult executionId="e798bef9-ba43-4408-a487-ed8e822c8162" testId="dcdb5795-dd72-499e-b986-af706372e044" testName="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 10000, messageCount: 1000, subscriberCount: 3)" computerName="fv-az193-891" duration="00:00:07.5140750" startTime="2023-06-13T09:07:31.9063353+00:00" endTime="2023-06-13T09:07:31.9063357+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e798bef9-ba43-4408-a487-ed8e822c8162">
+      <Output>
+        <StdOut>09:07:24.392 +00:00 [INF] 16 &gt;&gt; Running AddingAndRemovingReadersShouldNeverError for 10000 ms</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b4ab8702-fa35-4ceb-aa90-764dd50f677e" testId="dda14220-3eb7-2a5f-d483-2e260dd3939a" testName="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_WhenChannelIsOpen" computerName="fv-az193-891" duration="00:00:00.0187354" startTime="2023-06-13T09:04:33.6191180+00:00" endTime="2023-06-13T09:04:33.6191181+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b4ab8702-fa35-4ceb-aa90-764dd50f677e" />
+    <UnitTestResult executionId="f1f834df-df75-44ef-8e72-9ea553321972" testId="6401e6bb-c303-bd8f-4269-023179218367" testName="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 2)" computerName="fv-az193-891" duration="00:00:00.0231014" startTime="2023-06-13T09:04:33.8921619+00:00" endTime="2023-06-13T09:04:33.8921621+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1f834df-df75-44ef-8e72-9ea553321972" />
+    <UnitTestResult executionId="a62534d5-8608-47dc-ace1-b1cf4466a4b2" testId="d53dbbdc-f28c-2a28-6487-f09f6bd43ea2" testName="mkmrk.Channels.Tests.BroadcastChannelTests.PublisherShouldWriteWithoutReaders" computerName="fv-az193-891" duration="00:00:00.0757338" startTime="2023-06-13T09:04:33.1363925+00:00" endTime="2023-06-13T09:04:33.1364190+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a62534d5-8608-47dc-ace1-b1cf4466a4b2" />
+    <UnitTestResult executionId="a7a4df21-0e86-4f75-9e9e-41433f5328a8" testId="1f11870a-6d51-e4fb-d1d4-e91f6c70695d" testName="mkmrk.Channels.Tests.HostingTests.RequestChannelMux3Service" computerName="fv-az193-891" duration="00:00:00.5193500" startTime="2023-06-13T09:04:33.5739266+00:00" endTime="2023-06-13T09:04:33.5739267+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7a4df21-0e86-4f75-9e9e-41433f5328a8">
+      <Output>
+        <StdOut>09:04:33.222 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 62287651] [Readers: (0): ]
+09:04:33.230 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 10452251] [Readers: (0): ]
+09:04:33.231 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 66800904] [Readers: (0): ]
+09:04:33.234 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubA]
+09:04:33.234 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.235 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubB]
+09:04:33.235 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.235 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubC]
+09:04:33.235 +00:00 [VRB] 17 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.238 +00:00 [DBG] 17 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting starting
+09:04:33.241 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubA and writer BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 62287651] [Readers: (1): 35634409]
+09:04:33.241 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubB and writer BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 10452251] [Readers: (1): 51175039]
+09:04:33.241 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubC and writer BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 66800904] [Readers: (1): 44790388]
+09:04:33.242 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.248 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.248 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.249 +00:00 [INF] 17 Microsoft.Hosting.Lifetime                     &gt;&gt; Application started. Press Ctrl+C to shut down.
+09:04:33.249 +00:00 [INF] 17 Microsoft.Hosting.Lifetime                     &gt;&gt; Hosting environment: Production
+09:04:33.249 +00:00 [INF] 17 Microsoft.Hosting.Lifetime                     &gt;&gt; Content root path: /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0
+09:04:33.249 +00:00 [DBG] 17 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting started
+09:04:33.516 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.519 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Wrote message #499, returning
+09:04:33.519 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Completing channel
+09:04:33.521 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.522 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Wrote message #499, returning
+09:04:33.522 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Completing channel
+09:04:33.522 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.523 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Wrote message #499, returning
+09:04:33.523 +00:00 [DBG] 17 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Completing channel
+09:04:33.568 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopping
+09:04:33.568 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application is shutting down...
+09:04:33.570 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubC"] &gt;&gt; Stopping
+09:04:33.571 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubB"] &gt;&gt; Stopping
+09:04:33.571 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubA"] &gt;&gt; Stopping
+09:04:33.572 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopped
+09:04:33.572 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.572 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.572 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="229f86aa-c3a8-456d-91ca-17f53a085f98" testId="f58bd225-93b9-473e-8ff2-d8bb792dad2c" testName="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test" computerName="fv-az193-891" duration="00:00:00.0807652" startTime="2023-06-13T09:04:33.7435443+00:00" endTime="2023-06-13T09:04:33.7435444+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="229f86aa-c3a8-456d-91ca-17f53a085f98">
+      <Output>
+        <ErrorInfo>
+          <Message>Did not expect receivedCountA to be 0.</Message>
+          <StackTrace>   at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Numeric.NumericAssertions`2.NotBe(T unexpected, String because, Object[] becauseArgs)
+   at mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test() in /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/ChannelMuxTests.cs:line 726
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="60ee01f7-e762-4204-aea2-6ad08ba1172a" testId="0698b629-c0b6-4cb8-5890-deadc1f4db8f" testName="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelFirst" computerName="fv-az193-891" duration="00:00:00.0099667" startTime="2023-06-13T09:04:33.4441860+00:00" endTime="2023-06-13T09:04:33.4441861+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60ee01f7-e762-4204-aea2-6ad08ba1172a" />
+    <UnitTestResult executionId="20d69d4f-92d7-4f08-bb9b-5d79c656821a" testId="c14e213e-e046-c6e8-620f-cf4d58a59c6f" testName="mkmrk.Channels.Tests.HostingTests.RequestBroadcastChannelReaderSource" computerName="fv-az193-891" duration="00:00:00.0118134" startTime="2023-06-13T09:04:33.6143106+00:00" endTime="2023-06-13T09:04:33.6143108+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20d69d4f-92d7-4f08-bb9b-5d79c656821a">
+      <Output>
+        <StdOut>09:04:33.609 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 59384988] [Readers: (0): ]
+09:04:33.609 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 2284283] [Readers: (0): ]
+09:04:33.609 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubA]
+09:04:33.609 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.609 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubB]
+09:04:33.610 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.610 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting starting
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubA and writer BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 59384988] [Readers: (1): 16626660]
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubB and writer BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 2284283] [Readers: (1): 6388912]
+09:04:33.610 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 38181770] [Readers: (0): ]
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubC and writer BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 38181770] [Readers: (0): ]
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.610 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application started. Press Ctrl+C to shut down.
+09:04:33.610 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Hosting environment: Production
+09:04:33.610 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Content root path: /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0
+09:04:33.610 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting started
+09:04:33.610 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.611 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Wrote message #499, returning
+09:04:33.611 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Completing channel
+09:04:33.611 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.611 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Wrote message #499, returning
+09:04:33.611 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Completing channel
+09:04:33.612 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Beginning to write messages to 0 reader
+09:04:33.612 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Wrote message #499, returning
+09:04:33.612 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Completing channel
+09:04:33.613 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopping
+09:04:33.613 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application is shutting down...
+09:04:33.613 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubC"] &gt;&gt; Stopping
+09:04:33.613 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubB"] &gt;&gt; Stopping
+09:04:33.614 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubA"] &gt;&gt; Stopping
+09:04:33.614 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopped
+09:04:33.614 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.614 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.614 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cf9ad950-014a-46d3-858c-764d15c621aa" testId="38fe339d-afe0-38b1-03cd-a53fc57e554d" testName="mkmrk.Channels.Tests.ChannelMuxTests.ChannelMuxBasicTest(withCancellableCancellationToken: True)" computerName="fv-az193-891" duration="00:00:00.0008616" startTime="2023-06-13T09:04:33.6359473+00:00" endTime="2023-06-13T09:04:33.6359474+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf9ad950-014a-46d3-858c-764d15c621aa" />
+    <UnitTestResult executionId="98d16b65-889f-4947-b031-faa988c6c5aa" testId="f523185b-9d12-0d65-1822-68bba12f086b" testName="mkmrk.Channels.Tests.ChannelMuxTests.DisposalOfMuxShouldRemoveFromBroadcastChannel" computerName="fv-az193-891" duration="00:00:00.0087849" startTime="2023-06-13T09:04:33.6002642+00:00" endTime="2023-06-13T09:04:33.6002643+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98d16b65-889f-4947-b031-faa988c6c5aa" />
+    <UnitTestResult executionId="2a7891ef-d2d8-4494-8f9f-f43de902500f" testId="a2869c21-62b4-fbc1-ba22-157625665681" testName="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionBeingReturnedShouldEndCompletionTask" computerName="fv-az193-891" duration="00:00:00.0013290" startTime="2023-06-13T09:04:33.5913808+00:00" endTime="2023-06-13T09:04:33.5913809+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a7891ef-d2d8-4494-8f9f-f43de902500f" />
+    <UnitTestResult executionId="27b9a178-d30f-4e09-a2cd-17c7c773f442" testId="6cd6339b-7226-3664-ec5a-29285049f094" testName="mkmrk.Channels.Tests.DependencyInjectionTests.MuxOfSameType_ShouldHaveSame_BroadcastChannelWriter" computerName="fv-az193-891" duration="00:00:00.0150298" startTime="2023-06-13T09:04:33.4719756+00:00" endTime="2023-06-13T09:04:33.4719757+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="27b9a178-d30f-4e09-a2cd-17c7c773f442" />
+    <UnitTestResult executionId="10e82080-3093-4347-afcd-3b826102e54e" testId="ec594217-1b69-e44b-5152-b01ef653fe3e" testName="mkmrk.Channels.Tests.ChannelMuxTests.ChannelMuxBasicTest(withCancellableCancellationToken: False)" computerName="fv-az193-891" duration="00:00:00.0083727" startTime="2023-06-13T09:04:33.6275899+00:00" endTime="2023-06-13T09:04:33.6275900+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10e82080-3093-4347-afcd-3b826102e54e" />
+    <UnitTestResult executionId="ede0f469-b9da-4894-911a-c2e53309f58e" testId="14dc6b7c-a808-a1ba-34fe-5466d6d9de27" testName="mkmrk.Channels.Tests.ChannelMuxTests.ChannelComplete_WithException_ShouldThrow_UponAwait(withCancellableCancellationToken: False)" computerName="fv-az193-891" duration="00:00:00.0261460" startTime="2023-06-13T09:04:33.7657319+00:00" endTime="2023-06-13T09:04:33.7657322+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ede0f469-b9da-4894-911a-c2e53309f58e" />
+    <UnitTestResult executionId="d7ce9db0-087b-4873-97b0-3853f0158ec5" testId="987f4371-69e1-1f21-80c2-fc08c20037c3" testName="mkmrk.Channels.Tests.DependencyInjectionTests.ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter" computerName="fv-az193-891" duration="00:00:00.0376143" startTime="2023-06-13T09:04:33.4150328+00:00" endTime="2023-06-13T09:04:33.4150330+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7ce9db0-087b-4873-97b0-3853f0158ec5" />
+    <UnitTestResult executionId="9888d876-6938-4c49-89af-f0fb28ffcd2c" testId="ec3b2042-2414-8596-2145-28970266a876" testName="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileWaitingForChannelReadShouldThrowOperationCancelled" computerName="fv-az193-891" duration="00:00:00.2559686" startTime="2023-06-13T09:04:33.8143601+00:00" endTime="2023-06-13T09:04:33.8143602+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9888d876-6938-4c49-89af-f0fb28ffcd2c" />
+    <UnitTestResult executionId="cc8775d9-19ff-4d25-891f-b61778592284" testId="3ff00f4b-5fb5-a37f-a5e1-017e6eeafd67" testName="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_Test" computerName="fv-az193-891" duration="00:00:00.0058811" startTime="2023-06-13T09:04:33.5899664+00:00" endTime="2023-06-13T09:04:33.5899666+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc8775d9-19ff-4d25-891f-b61778592284" />
+    <UnitTestResult executionId="10a12798-e07c-436a-9681-a12be2b11203" testId="6cb0f3fd-4b40-231f-3097-aaaad8e3a945" testName="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_DuringWaitToReadAsync_NewAfterException_Test" computerName="fv-az193-891" duration="00:00:00.2822988" startTime="2023-06-13T09:04:33.5754848+00:00" endTime="2023-06-13T09:04:33.5754850+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10a12798-e07c-436a-9681-a12be2b11203" />
+    <UnitTestResult executionId="0c72a987-470e-4623-9dcc-665dda332977" testId="cee48157-fabf-7dce-d5ab-a4c834e99304" testName="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 1)" computerName="fv-az193-891" duration="00:00:00.0180969" startTime="2023-06-13T09:04:33.5381838+00:00" endTime="2023-06-13T09:04:33.5381839+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c72a987-470e-4623-9dcc-665dda332977" />
+    <UnitTestResult executionId="da7dc4a8-3328-4dba-95e6-32d44175f9fb" testId="7427ce97-c994-709c-4587-b03ad99f20c5" testName="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileEnumeratingSimpleShouldThrow" computerName="fv-az193-891" duration="00:00:00.2578341" startTime="2023-06-13T09:07:32.4191843+00:00" endTime="2023-06-13T09:07:32.4191849+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da7dc4a8-3328-4dba-95e6-32d44175f9fb" />
+    <UnitTestResult executionId="c080eb0b-b3d0-4cae-86f9-61298ff851d9" testId="963e2754-b60a-9155-817d-5a6115a68026" testName="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 3)" computerName="fv-az193-891" duration="00:00:00.0386116" startTime="2023-06-13T09:04:33.8689133+00:00" endTime="2023-06-13T09:04:33.8689135+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c080eb0b-b3d0-4cae-86f9-61298ff851d9" />
+    <UnitTestResult executionId="3903613b-1225-4df8-8a74-8e27b409637b" testId="5c33261b-d1f7-6262-2cc0-1a2f76c50e2e" testName="mkmrk.Channels.Tests.HostingTests.RequestChannelMux2Service" computerName="fv-az193-891" duration="00:00:00.0180496" startTime="2023-06-13T09:04:33.6021167+00:00" endTime="2023-06-13T09:04:33.6021168+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3903613b-1225-4df8-8a74-8e27b409637b">
+      <Output>
+        <StdOut>09:04:33.595 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 5019745] [Readers: (0): ]
+09:04:33.595 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 10818129] [Readers: (0): ]
+09:04:33.596 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubA]
+09:04:33.596 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.596 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader: mkmrk.Channels.ChannelMux+ChannelMuxInput`1[mkmrk.Channels.Tests.ChannelMessageSubB]
+09:04:33.596 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Created Reader, Reader count is now 1
+09:04:33.596 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting starting
+09:04:33.596 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubA and writer BroadcastChannelWriter&lt;ChannelMessageSubA&gt; [Hash: 5019745] [Readers: (1): 54944250]
+09:04:33.597 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubB and writer BroadcastChannelWriter&lt;ChannelMessageSubB&gt; [Hash: 10818129] [Readers: (1): 33056876]
+09:04:33.597 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Constructed: BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 66331987] [Readers: (0): ]
+09:04:33.597 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; Constructed BroadcastPublisher with data type ChannelMessageSubC and writer BroadcastChannelWriter&lt;ChannelMessageSubC&gt; [Hash: 66331987] [Readers: (0): ]
+09:04:33.597 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.598 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.598 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher        &gt;&gt; StartAsync
+09:04:33.598 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application started. Press Ctrl+C to shut down.
+09:04:33.598 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Hosting environment: Production
+09:04:33.598 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Content root path: /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0
+09:04:33.598 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting started
+09:04:33.598 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Wrote message #499, returning
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubA"] &gt;&gt; Completing channel
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Beginning to write messages to 1 reader
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Wrote message #499, returning
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubB"] &gt;&gt; Completing channel
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Beginning to write messages to 0 reader
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Wrote message #499, returning
+09:04:33.599 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["ExecuteAsync/ChannelMessageSubC"] &gt;&gt; Completing channel
+09:04:33.601 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopping
+09:04:33.601 +00:00 [INF] 16 Microsoft.Hosting.Lifetime                     &gt;&gt; Application is shutting down...
+09:04:33.601 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubC"] &gt;&gt; Stopping
+09:04:33.601 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubB"] &gt;&gt; Stopping
+09:04:33.601 +00:00 [DBG] 16 mkmrk.Channels.Tests.BroadcastPublisher       ["StopAsync/ChannelMessageSubA"] &gt;&gt; Stopping
+09:04:33.601 +00:00 [DBG] 16 Microsoft.Extensions.Hosting.Internal.Host     &gt;&gt; Hosting stopped
+09:04:33.601 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.601 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)
+09:04:33.601 +00:00 [VRB] 16 mkmrk.Channels.BroadcastChannelWriter          &gt;&gt; Dispose(true)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="26ba4e11-8334-4dc0-acc6-1ee568dbc59f" testId="03c776b8-2080-1304-243a-73544d141b3e" testName="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileEnumeratingShouldNotThrow" computerName="fv-az193-891" duration="00:00:00.2543232" startTime="2023-06-13T09:07:32.1610548+00:00" endTime="2023-06-13T09:07:32.1610551+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26ba4e11-8334-4dc0-acc6-1ee568dbc59f" />
+    <UnitTestResult executionId="2c9c7571-273c-42ac-a7b1-077b17c3816f" testId="06d45e35-8391-929a-9212-d191ee2dba07" testName="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 1000, messageCount: 100, subscriberCount: 3)" computerName="fv-az193-891" duration="00:00:00.6512219" startTime="2023-06-13T09:04:34.5436078+00:00" endTime="2023-06-13T09:04:34.5436080+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c9c7571-273c-42ac-a7b1-077b17c3816f">
+      <Output>
+        <StdOut>09:04:33.893 +00:00 [INF] 16 &gt;&gt; Running AddingAndRemovingReadersShouldNeverError for 1000 ms</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e0ea45bd-3e23-4e39-9e2d-8fb8da129780" testId="9534ec3b-9e44-0c91-7ed8-1df5a1f92f61" testName="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 2)" computerName="fv-az193-891" duration="00:00:00.0229574" startTime="2023-06-13T09:04:33.5586983+00:00" endTime="2023-06-13T09:04:33.5586984+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e0ea45bd-3e23-4e39-9e2d-8fb8da129780" />
+    <UnitTestResult executionId="517dc81b-bfcc-4788-a681-76b6c8572101" testId="79123d00-e3b8-1b98-cd39-8d1ae24bb3dd" testName="mkmrk.Channels.Tests.ChannelMuxTests.MuxShouldWaitForBothChannelsToComplete(withCancellableCancellationToken: True)" computerName="fv-az193-891" duration="00:00:00.0070087" startTime="2023-06-13T09:04:33.6516798+00:00" endTime="2023-06-13T09:04:33.6516799+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="517dc81b-bfcc-4788-a681-76b6c8572101" />
+    <UnitTestResult executionId="a431ed80-a560-4194-93bd-743640f8e184" testId="80080e7b-fcde-1eb1-d01e-aac462a0dfff" testName="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter" computerName="fv-az193-891" duration="00:00:00.0110372" startTime="2023-06-13T09:04:33.3770664+00:00" endTime="2023-06-13T09:04:33.3770665+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a431ed80-a560-4194-93bd-743640f8e184" />
+    <UnitTestResult executionId="02f3eff0-105b-4dbd-add3-14fa21e76ac5" testId="3d2bfa7a-6539-f394-db8f-93e284cb0ec2" testName="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelLast" computerName="fv-az193-891" duration="00:00:00.0137648" startTime="2023-06-13T09:04:33.4568293+00:00" endTime="2023-06-13T09:04:33.4568295+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02f3eff0-105b-4dbd-add3-14fa21e76ac5" />
+    <UnitTestResult executionId="1cf43bab-0625-4bb1-81f3-56a281581f70" testId="1793b42e-a078-14f5-d0e6-501a190da4d7" testName="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 1)" computerName="fv-az193-891" duration="00:00:00.0156406" startTime="2023-06-13T09:04:33.8301280+00:00" endTime="2023-06-13T09:04:33.8301281+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1cf43bab-0625-4bb1-81f3-56a281581f70" />
+    <UnitTestResult executionId="db9951f6-a023-436a-a7a8-92f585eab250" testId="ed1fb050-e832-bd9d-a0c5-02d5ee3916c8" testName="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_ShouldNotClearExceptionIfChannelBeingReplacedDidntReportException" computerName="fv-az193-891" duration="00:00:00.0068933" startTime="2023-06-13T09:04:33.7888676+00:00" endTime="2023-06-13T09:04:33.7888677+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db9951f6-a023-436a-a7a8-92f585eab250" />
+    <UnitTestResult executionId="5a0a2ba5-8981-4168-be0c-bbc83cd985c0" testId="95a5c7fe-6c19-641a-f92e-8b7fc00f0fd2" testName="mkmrk.Channels.Tests.DependencyInjectionTests.ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter_WhenRequestedLast" computerName="fv-az193-891" duration="00:00:00.0307540" startTime="2023-06-13T09:04:33.3656399+00:00" endTime="2023-06-13T09:04:33.3656401+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a0a2ba5-8981-4168-be0c-bbc83cd985c0" />
+    <UnitTestResult executionId="a18ad16c-4c7c-4766-9f74-73a06c102ba4" testId="7581c5f3-7888-ef53-2088-d273cd0007cf" testName="mkmrk.Channels.Tests.ChannelMuxTests.AlternateChannelWriterMethods" computerName="fv-az193-891" duration="00:00:00.0040104" startTime="2023-06-13T09:04:33.7925222+00:00" endTime="2023-06-13T09:04:33.7925223+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a18ad16c-4c7c-4766-9f74-73a06c102ba4" />
+    <UnitTestResult executionId="8bdf822e-f6b2-4740-934f-cba2b40254c7" testId="c778c8e6-21e3-dbd4-3735-e241a7e408dd" testName="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionBeingIgnoredShouldStillCloseChannel" computerName="fv-az193-891" duration="00:00:00.0069394" startTime="2023-06-13T09:04:33.5848690+00:00" endTime="2023-06-13T09:04:33.5848691+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8bdf822e-f6b2-4740-934f-cba2b40254c7" />
+    <UnitTestResult executionId="3055b645-fe16-401e-829a-72cdd88ce022" testId="03dff5cb-86ce-719d-58b5-098e57343f90" testName="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 300000, messageCount: 10000, subscriberCount: 3)" computerName="fv-az193-891" duration="00:02:49.8479128" startTime="2023-06-13T09:07:24.3921163+00:00" endTime="2023-06-13T09:07:24.3921166+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3055b645-fe16-401e-829a-72cdd88ce022">
+      <Output>
+        <StdOut>09:04:34.544 +00:00 [INF] 16 &gt;&gt; Running AddingAndRemovingReadersShouldNeverError for 300000 ms</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="aca0ddc2-abe9-4235-955e-8e0e45fde5e2" testId="8a73f9bc-6395-b19e-3f7b-ba1d8b1d1cbd" testName="mkmrk.Channels.Tests.ChannelMuxTests.ChannelComplete_WithException_ShouldThrow_UponAwait(withCancellableCancellationToken: True)" computerName="fv-az193-891" duration="00:00:00.0160095" startTime="2023-06-13T09:04:33.7845499+00:00" endTime="2023-06-13T09:04:33.7845501+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aca0ddc2-abe9-4235-955e-8e0e45fde5e2" />
+    <UnitTestResult executionId="e5db9879-4b01-48d0-8666-211dc2a02f5b" testId="da9982a0-3a75-049d-a1c1-24d4ceba1f0e" testName="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannel" computerName="fv-az193-891" duration="00:00:00.0089791" startTime="2023-06-13T09:04:33.4243594+00:00" endTime="2023-06-13T09:04:33.4243596+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5db9879-4b01-48d0-8666-211dc2a02f5b" />
+    <UnitTestResult executionId="b73ed614-23d6-4a36-9133-735bf259a744" testId="2baf437d-321f-4554-ffc7-56286f24d4e4" testName="mkmrk.Channels.Tests.ChannelMuxTests.MuxShouldWaitForBothChannelsToComplete(withCancellableCancellationToken: False)" computerName="fv-az193-891" duration="00:00:00.0083252" startTime="2023-06-13T09:04:33.6445774+00:00" endTime="2023-06-13T09:04:33.6445775+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b73ed614-23d6-4a36-9133-735bf259a744" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelLast" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="3d2bfa7a-6539-f394-db8f-93e284cb0ec2">
+      <Execution id="02f3eff0-105b-4dbd-add3-14fa21e76ac5" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelLast" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannel" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="da9982a0-3a75-049d-a1c1-24d4ceba1f0e">
+      <Execution id="e5db9879-4b01-48d0-8666-211dc2a02f5b" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="Requests_ShouldReceiveSame_BroadcastChannel" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelFirst" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="0698b629-c0b6-4cb8-5890-deadc1f4db8f">
+      <Execution id="60ee01f7-e762-4204-aea2-6ad08ba1172a" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="Requests_ShouldReceiveSame_BroadcastChannelWriter_WhenUsingBroadcastChannelFirst" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.HostingTests.RequestBroadcastChannelReaderSource" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="c14e213e-e046-c6e8-620f-cf4d58a59c6f">
+      <Execution id="20d69d4f-92d7-4f08-bb9b-5d79c656821a" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.HostingTests" name="RequestBroadcastChannelReaderSource" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.DisposalOfMuxShouldRemoveFromBroadcastChannel" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="f523185b-9d12-0d65-1822-68bba12f086b">
+      <Execution id="98d16b65-889f-4947-b031-faa988c6c5aa" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="DisposalOfMuxShouldRemoveFromBroadcastChannel" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_WhenMuxIsCompleted" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="79f876b1-dc09-0d1a-b5a9-67e345d50634">
+      <Execution id="55cbdd8e-f647-4553-aeb5-f3673602d233" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ReplaceChannel_WhenMuxIsCompleted" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.MuxOfSameType_ShouldHaveSame_BroadcastChannelWriter" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="6cd6339b-7226-3664-ec5a-29285049f094">
+      <Execution id="27b9a178-d30f-4e09-a2cd-17c7c773f442" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="MuxOfSameType_ShouldHaveSame_BroadcastChannelWriter" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.MuxShouldWaitForBothChannelsToComplete(withCancellableCancellationToken: False)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="2baf437d-321f-4554-ffc7-56286f24d4e4">
+      <Execution id="b73ed614-23d6-4a36-9133-735bf259a744" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="MuxShouldWaitForBothChannelsToComplete" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionBeingIgnoredShouldStillCloseChannel" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="c778c8e6-21e3-dbd4-3735-e241a7e408dd">
+      <Execution id="8bdf822e-f6b2-4740-934f-cba2b40254c7" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ExceptionBeingIgnoredShouldStillCloseChannel" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_Test" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="3ff00f4b-5fb5-a37f-a5e1-017e6eeafd67">
+      <Execution id="cc8775d9-19ff-4d25-891f-b61778592284" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="CancellationToken_PreWaitToReadAsync_Test" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_DuringWaitToReadAsync_Test" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="598087a2-e8b0-d596-730d-a100a2173022">
+      <Execution id="4ff98ba2-af1c-41d8-b861-2558bb51952b" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="CancellationToken_DuringWaitToReadAsync_Test" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 10000, messageCount: 1000, subscriberCount: 3)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="dcdb5795-dd72-499e-b986-af706372e044">
+      <Execution id="e798bef9-ba43-4408-a487-ed8e822c8162" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="AddingAndRemovingReadersShouldNeverError" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 3)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="da84c939-7b6f-7554-9acd-34296f9978e8">
+      <Execution id="3f04b314-bc71-41f4-a50a-f60032d9396b" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="SubscribersShouldReceiveAllMessagesInOrder" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionShouldRemoveFromBroadcastChannel" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="03cb7676-6336-052e-6723-b306f998dd46">
+      <Execution id="47c61df0-5dfc-4b08-918e-96961ade98ac" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ExceptionShouldRemoveFromBroadcastChannel" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 1)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="1793b42e-a078-14f5-d0e6-501a190da4d7">
+      <Execution id="1cf43bab-0625-4bb1-81f3-56a281581f70" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="WriteEnumerableDataTest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 2)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="6401e6bb-c303-bd8f-4269-023179218367">
+      <Execution id="f1f834df-df75-44ef-8e72-9ea553321972" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="WriteEnumerableDataTest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.WriteEnumerableDataTest(subscriberCount: 3)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="963e2754-b60a-9155-817d-5a6115a68026">
+      <Execution id="c080eb0b-b3d0-4cae-86f9-61298ff851d9" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="WriteEnumerableDataTest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ChannelMuxBasicTest(withCancellableCancellationToken: False)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="ec594217-1b69-e44b-5152-b01ef653fe3e">
+      <Execution id="10e82080-3093-4347-afcd-3b826102e54e" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ChannelMuxBasicTest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ChannelComplete_WithException_ShouldThrow_UponAwait(withCancellableCancellationToken: False)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="14dc6b7c-a808-a1ba-34fe-5466d6d9de27">
+      <Execution id="ede0f469-b9da-4894-911a-c2e53309f58e" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ChannelComplete_WithException_ShouldThrow_UponAwait" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter_WhenRequestedLast" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="95a5c7fe-6c19-641a-f92e-8b7fc00f0fd2">
+      <Execution id="5a0a2ba5-8981-4168-be0c-bbc83cd985c0" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter_WhenRequestedLast" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.Requests_ShouldReceiveSame_BroadcastChannelWriter" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="80080e7b-fcde-1eb1-d01e-aac462a0dfff">
+      <Execution id="a431ed80-a560-4194-93bd-743640f8e184" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="Requests_ShouldReceiveSame_BroadcastChannelWriter" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="f58bd225-93b9-473e-8ff2-d8bb792dad2c">
+      <Execution id="229f86aa-c3a8-456d-91ca-17f53a085f98" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="CancellationToken_PreWaitToReadAsync_NewAfterException_Test" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileEnumeratingSimpleShouldThrow" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="7427ce97-c994-709c-4587-b03ad99f20c5">
+      <Execution id="da7dc4a8-3328-4dba-95e6-32d44175f9fb" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="CancellationWhileEnumeratingSimpleShouldThrow" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 300000, messageCount: 10000, subscriberCount: 3)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="03dff5cb-86ce-719d-58b5-098e57343f90">
+      <Execution id="3055b645-fe16-401e-829a-72cdd88ce022" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="AddingAndRemovingReadersShouldNeverError" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.AddingAndRemovingReadersShouldNeverError(maxTestMs: 1000, messageCount: 100, subscriberCount: 3)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="06d45e35-8391-929a-9212-d191ee2dba07">
+      <Execution id="2c9c7571-273c-42ac-a7b1-077b17c3816f" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="AddingAndRemovingReadersShouldNeverError" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.DependencyInjectionTests.ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="987f4371-69e1-1f21-80c2-fc08c20037c3">
+      <Execution id="d7ce9db0-087b-4873-97b0-3853f0158ec5" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.DependencyInjectionTests" name="ReadersOfSameType_ShouldHaveSame_BroadcastChannelWriter" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ChannelMuxBasicTest(withCancellableCancellationToken: True)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="38fe339d-afe0-38b1-03cd-a53fc57e554d">
+      <Execution id="cf9ad950-014a-46d3-858c-764d15c621aa" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ChannelMuxBasicTest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.HostingTests.SimpleReaderRequest" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="1fe5b3fa-dffc-ff97-fad1-cfb09e7b1cf6">
+      <Execution id="693fba6b-0c60-48e9-aba9-8fac9428b567" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.HostingTests" name="SimpleReaderRequest" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileEnumeratingShouldNotThrow" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="03c776b8-2080-1304-243a-73544d141b3e">
+      <Execution id="26ba4e11-8334-4dc0-acc6-1ee568dbc59f" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="CancellationWhileEnumeratingShouldNotThrow" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.AlternateChannelWriterMethods" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="7581c5f3-7888-ef53-2088-d273cd0007cf">
+      <Execution id="a18ad16c-4c7c-4766-9f74-73a06c102ba4" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="AlternateChannelWriterMethods" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_ShouldNotClearExceptionIfChannelBeingReplacedDidntReportException" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="ed1fb050-e832-bd9d-a0c5-02d5ee3916c8">
+      <Execution id="db9951f6-a023-436a-a7a8-92f585eab250" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ReplaceChannel_ShouldNotClearExceptionIfChannelBeingReplacedDidntReportException" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 2)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="9534ec3b-9e44-0c91-7ed8-1df5a1f92f61">
+      <Execution id="e0ea45bd-3e23-4e39-9e2d-8fb8da129780" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="SubscribersShouldReceiveAllMessagesInOrder" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ChannelComplete_WithException_ShouldThrow_UponAwait(withCancellableCancellationToken: True)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="8a73f9bc-6395-b19e-3f7b-ba1d8b1d1cbd">
+      <Execution id="aca0ddc2-abe9-4235-955e-8e0e45fde5e2" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ChannelComplete_WithException_ShouldThrow_UponAwait" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.SubscribersShouldReceiveAllMessagesInOrder(subscriberCount: 1)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="cee48157-fabf-7dce-d5ab-a4c834e99304">
+      <Execution id="0c72a987-470e-4623-9dcc-665dda332977" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="SubscribersShouldReceiveAllMessagesInOrder" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ExceptionBeingReturnedShouldEndCompletionTask" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="a2869c21-62b4-fbc1-ba22-157625665681">
+      <Execution id="2a7891ef-d2d8-4494-8f9f-f43de902500f" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ExceptionBeingReturnedShouldEndCompletionTask" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.MuxShouldWaitForBothChannelsToComplete(withCancellableCancellationToken: True)" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="79123d00-e3b8-1b98-cd39-8d1ae24bb3dd">
+      <Execution id="517dc81b-bfcc-4788-a681-76b6c8572101" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="MuxShouldWaitForBothChannelsToComplete" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.HostingTests.RequestChannelMux2Service" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="5c33261b-d1f7-6262-2cc0-1a2f76c50e2e">
+      <Execution id="3903613b-1225-4df8-8a74-8e27b409637b" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.HostingTests" name="RequestChannelMux2Service" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_DuringWaitToReadAsync_NewAfterException_Test" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="6cb0f3fd-4b40-231f-3097-aaaad8e3a945">
+      <Execution id="10a12798-e07c-436a-9681-a12be2b11203" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="CancellationToken_DuringWaitToReadAsync_NewAfterException_Test" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.CancellationWhileWaitingForChannelReadShouldThrowOperationCancelled" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="ec3b2042-2414-8596-2145-28970266a876">
+      <Execution id="9888d876-6938-4c49-89af-f0fb28ffcd2c" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="CancellationWhileWaitingForChannelReadShouldThrowOperationCancelled" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.HostingTests.RequestChannelMux3Service" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="1f11870a-6d51-e4fb-d1d4-e91f6c70695d">
+      <Execution id="a7a4df21-0e86-4f75-9e9e-41433f5328a8" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.HostingTests" name="RequestChannelMux3Service" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.ChannelMuxTests.ReplaceChannel_WhenChannelIsOpen" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="dda14220-3eb7-2a5f-d483-2e260dd3939a">
+      <Execution id="b4ab8702-fa35-4ceb-aa90-764dd50f677e" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.ChannelMuxTests" name="ReplaceChannel_WhenChannelIsOpen" />
+    </UnitTest>
+    <UnitTest name="mkmrk.Channels.Tests.BroadcastChannelTests.PublisherShouldWriteWithoutReaders" storage="/home/runner/work/mkmrk.channels/mkmrk.channels/test/mkmrk.channels.tests/bin/debug/net7.0/mkmrk.channels.tests.dll" id="d53dbbdc-f28c-2a28-6487-f09f6bd43ea2">
+      <Execution id="a62534d5-8608-47dc-ace1-b1cf4466a4b2" />
+      <TestMethod codeBase="/home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/bin/Debug/net7.0/mkmrk.Channels.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="mkmrk.Channels.Tests.BroadcastChannelTests" name="PublisherShouldWriteWithoutReaders" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="598087a2-e8b0-d596-730d-a100a2173022" executionId="4ff98ba2-af1c-41d8-b861-2558bb51952b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da84c939-7b6f-7554-9acd-34296f9978e8" executionId="3f04b314-bc71-41f4-a50a-f60032d9396b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1fe5b3fa-dffc-ff97-fad1-cfb09e7b1cf6" executionId="693fba6b-0c60-48e9-aba9-8fac9428b567" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79f876b1-dc09-0d1a-b5a9-67e345d50634" executionId="55cbdd8e-f647-4553-aeb5-f3673602d233" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03cb7676-6336-052e-6723-b306f998dd46" executionId="47c61df0-5dfc-4b08-918e-96961ade98ac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dcdb5795-dd72-499e-b986-af706372e044" executionId="e798bef9-ba43-4408-a487-ed8e822c8162" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dda14220-3eb7-2a5f-d483-2e260dd3939a" executionId="b4ab8702-fa35-4ceb-aa90-764dd50f677e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6401e6bb-c303-bd8f-4269-023179218367" executionId="f1f834df-df75-44ef-8e72-9ea553321972" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d53dbbdc-f28c-2a28-6487-f09f6bd43ea2" executionId="a62534d5-8608-47dc-ace1-b1cf4466a4b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1f11870a-6d51-e4fb-d1d4-e91f6c70695d" executionId="a7a4df21-0e86-4f75-9e9e-41433f5328a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f58bd225-93b9-473e-8ff2-d8bb792dad2c" executionId="229f86aa-c3a8-456d-91ca-17f53a085f98" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0698b629-c0b6-4cb8-5890-deadc1f4db8f" executionId="60ee01f7-e762-4204-aea2-6ad08ba1172a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c14e213e-e046-c6e8-620f-cf4d58a59c6f" executionId="20d69d4f-92d7-4f08-bb9b-5d79c656821a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38fe339d-afe0-38b1-03cd-a53fc57e554d" executionId="cf9ad950-014a-46d3-858c-764d15c621aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f523185b-9d12-0d65-1822-68bba12f086b" executionId="98d16b65-889f-4947-b031-faa988c6c5aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2869c21-62b4-fbc1-ba22-157625665681" executionId="2a7891ef-d2d8-4494-8f9f-f43de902500f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cd6339b-7226-3664-ec5a-29285049f094" executionId="27b9a178-d30f-4e09-a2cd-17c7c773f442" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec594217-1b69-e44b-5152-b01ef653fe3e" executionId="10e82080-3093-4347-afcd-3b826102e54e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="14dc6b7c-a808-a1ba-34fe-5466d6d9de27" executionId="ede0f469-b9da-4894-911a-c2e53309f58e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="987f4371-69e1-1f21-80c2-fc08c20037c3" executionId="d7ce9db0-087b-4873-97b0-3853f0158ec5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec3b2042-2414-8596-2145-28970266a876" executionId="9888d876-6938-4c49-89af-f0fb28ffcd2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ff00f4b-5fb5-a37f-a5e1-017e6eeafd67" executionId="cc8775d9-19ff-4d25-891f-b61778592284" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cb0f3fd-4b40-231f-3097-aaaad8e3a945" executionId="10a12798-e07c-436a-9681-a12be2b11203" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cee48157-fabf-7dce-d5ab-a4c834e99304" executionId="0c72a987-470e-4623-9dcc-665dda332977" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7427ce97-c994-709c-4587-b03ad99f20c5" executionId="da7dc4a8-3328-4dba-95e6-32d44175f9fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="963e2754-b60a-9155-817d-5a6115a68026" executionId="c080eb0b-b3d0-4cae-86f9-61298ff851d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5c33261b-d1f7-6262-2cc0-1a2f76c50e2e" executionId="3903613b-1225-4df8-8a74-8e27b409637b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03c776b8-2080-1304-243a-73544d141b3e" executionId="26ba4e11-8334-4dc0-acc6-1ee568dbc59f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06d45e35-8391-929a-9212-d191ee2dba07" executionId="2c9c7571-273c-42ac-a7b1-077b17c3816f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9534ec3b-9e44-0c91-7ed8-1df5a1f92f61" executionId="e0ea45bd-3e23-4e39-9e2d-8fb8da129780" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79123d00-e3b8-1b98-cd39-8d1ae24bb3dd" executionId="517dc81b-bfcc-4788-a681-76b6c8572101" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80080e7b-fcde-1eb1-d01e-aac462a0dfff" executionId="a431ed80-a560-4194-93bd-743640f8e184" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d2bfa7a-6539-f394-db8f-93e284cb0ec2" executionId="02f3eff0-105b-4dbd-add3-14fa21e76ac5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1793b42e-a078-14f5-d0e6-501a190da4d7" executionId="1cf43bab-0625-4bb1-81f3-56a281581f70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed1fb050-e832-bd9d-a0c5-02d5ee3916c8" executionId="db9951f6-a023-436a-a7a8-92f585eab250" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95a5c7fe-6c19-641a-f92e-8b7fc00f0fd2" executionId="5a0a2ba5-8981-4168-be0c-bbc83cd985c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7581c5f3-7888-ef53-2088-d273cd0007cf" executionId="a18ad16c-4c7c-4766-9f74-73a06c102ba4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c778c8e6-21e3-dbd4-3735-e241a7e408dd" executionId="8bdf822e-f6b2-4740-934f-cba2b40254c7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03dff5cb-86ce-719d-58b5-098e57343f90" executionId="3055b645-fe16-401e-829a-72cdd88ce022" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a73f9bc-6395-b19e-3f7b-ba1d8b1d1cbd" executionId="aca0ddc2-abe9-4235-955e-8e0e45fde5e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da9982a0-3a75-049d-a1c1-24d4ceba1f0e" executionId="e5db9879-4b01-48d0-8666-211dc2a02f5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2baf437d-321f-4554-ffc7-56286f24d4e4" executionId="b73ed614-23d6-4a36-9133-735bf259a744" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="42" executed="42" passed="41" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.01] xUnit.net VSTest Adapter v2.4.5+1caef2f33e (64-bit .NET 7.0.5)
+[xUnit.net 00:00:01.71]   Discovering: mkmrk.Channels.Tests
+[xUnit.net 00:00:01.78]   Discovered:  mkmrk.Channels.Tests
+[xUnit.net 00:00:01.78]   Starting:    mkmrk.Channels.Tests
+[xUnit.net 00:00:02.54]       Did not expect receivedCountA to be 0.
+[xUnit.net 00:00:02.54]       Stack Trace:
+[xUnit.net 00:00:02.54]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:02.54]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:02.54]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:02.54]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:02.55]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:02.55]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:02.55]            at FluentAssertions.Numeric.NumericAssertions`2.NotBe(T unexpected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:02.55]         /home/runner/work/mkmrk.Channels/mkmrk.Channels/test/mkmrk.Channels.Tests/ChannelMuxTests.cs(726,0): at mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test()
+[xUnit.net 00:00:02.55]         --- End of stack trace from previous location ---
+[xUnit.net 00:03:01.23]   Finished:    mkmrk.Channels.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="fv-az193-891" outcome="Error" timestamp="2023-06-13T09:04:33.7388569+00:00">
+        <Text>[xUnit.net 00:00:02.54]     mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

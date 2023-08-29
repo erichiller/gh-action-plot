@@ -1,0 +1,56 @@
+
+name: 'Build Docker image'
+
+on:
+  workflow_dispatch:
+
+env:
+  TZ: America/Chicago
+
+jobs:
+  docker_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      #
+      # Pre-build to catch any initial errors
+      - name: Build
+        run: |
+         dotnet publish \
+           --configuration Release \
+           -r linux-x64 \
+           -o built
+           
+      #
+      #
+      - name: docker login
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+      #
+      - name: docker build
+        run: |
+          docker build \
+            -t gh-action-plot \
+            --label "org.opencontainers.image.source=https://github.com/erichiller/gh-action-plot/" \
+            --label "org.opencontainers.image.description=Program image" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            .
+      - name: list images
+        run: docker images
+      - name: Tag image
+        run: |
+          docker tag gh-action-plot ghcr.io/erichiller/gh-action-plot:latest
+      #
+      - name: Push docker image
+        run: |
+          docker push ghcr.io/erichiller/gh-action-plot:latest

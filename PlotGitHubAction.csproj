@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>PlotGitHubAction</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!--
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+    <IsTrimmable>true</IsTrimmable>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    -->
+  </PropertyGroup>
+    <PropertyGroup>
+        <Version>$([System.DateTimeOffset]::Now.ToString("yyyy.MM.dd.HHmm"))</Version>
+        <InformationalVersion>$([System.DateTimeOffset]::Now.ToString("yyyy.MM.dd.HHmm zz"))</InformationalVersion>
+    </PropertyGroup>
+  
+    <Target Name="SetVersion" BeforeTargets="InitializeSourceControlInformation">
+
+        <Message Importance="high" Text="Project File Name    = $(MSBuildProjectFile)" />
+        <Message Importance="high" Text="Project Extension    = $(MSBuildProjectExtension)" />
+        <Message Importance="high" Text="Version              = $(Version)" />
+        <Message Importance="high" Text="InformationalVersion = $(InformationalVersion)" />
+    </Target>
+
+  <ItemGroup>
+    <PackageReference Include="ScottPlot" Version="5.0.8-beta" />
+    
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.4-preview.89" />
+    
+    <!--
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.4-preview.89" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.4-preview.89" />
+    -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".github\workflows\build_and_test.yaml" />
+    <Content Include=".github\workflows\delete-workflow-runs.yaml" />
+    <Content Include=".github\workflows\docker-image.yaml" />
+    <Content Include=".github\workflows\test-full-workflow.yml" />
+  </ItemGroup>
+
+</Project>

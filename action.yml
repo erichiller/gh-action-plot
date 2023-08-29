@@ -1,0 +1,42 @@
+name: 'Generate Chart'
+author: Eric D Hiller
+description: 'Create a Plot from JSON data input'
+branding:
+  icon: 'bar-chart-2'
+  color: 'green'
+inputs:
+  plot_definitions_dir:
+    description: 'Directory of JSON Plot definition files'
+    required: false
+  coverage_history_dir:
+    description: 'Directory of Coverage History XML files created by danielpalme/ReportGenerator-GitHub-Action'
+    required: false
+  source_scan_dir:
+    description: 'Directory which contains source.'
+    required: false
+  test_results_dir:
+    description: 'Directory where TRX test output files are located. Recursively scanned.'
+    required: false
+  output_dir:
+    description: 'Directory to place generated content.'
+    required: true
+  
+#outputs:
+#  random-number:
+#    description: "Random number"
+#    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/erichiller/gh-action-plot:latest'
+  #args:
+    #- ${{ inputs.coverage_history_dir }}
+    #- ${{ inputs.plot_definition_dir }}
+    #- ${{ inputs.data_path }}
+  #using: "composite"
+  #steps:
+    #- name: restore
+    #  run: dotnet restore
+    #  shell: pwsh
+    #- name: run
+    #  run: dotnet run -- ${{ inputs.input-data-path }}
+    #  shell: pwsh

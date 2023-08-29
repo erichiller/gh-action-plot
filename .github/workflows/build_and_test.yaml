@@ -1,0 +1,139 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 'Build & Test'
+
+on:
+  #push:
+  #  branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  TZ: America/Chicago
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      #
+      - name: Restore dependencies
+        run: dotnet restore
+      #
+      - name: Build
+        #run: dotnet build
+        run: |
+          dotnet publish \
+            --configuration Release \
+            --runtime linux-x64 \
+            --no-self-contained \
+            -o built
+          ls -lah built
+      #
+      # SETUP TEST DATA
+      #
+      - name: 'Copy csproj to test-data'
+        run: |
+          mkdir -p ./test-src/gh-action-plot
+          cp *.cs* ./test-src/gh-action-plot
+          
+
+      - name: 'Build to generate build warnings log file: gh-action-plot'
+        working-directory: ./test-src/gh-action-plot
+        if: ${{ ! always() }}
+        run: |
+          dotnet restore
+          dotnet build \
+            --no-restore \
+            --configuration Release \
+            -consoleloggerparameters:"Summary;Verbosity=normal" \
+            -m \
+            -t:"clean,build" \
+            -fl1 "/flp1:logFile=gh-action-plot-build.log;warningsonly" \
+            -p:"WarnLevel=5"
+      #
+      - uses: actions/checkout@v3
+        with:
+          repository: 'erichiller/mkmrk.Channels'
+          path: 'test-src/mkmrk-channels'
+      #
+      - name: 'Build to generate build warnings log file: mkmrk.Channels'
+        if: ${{ ! always() }}
+        working-directory: ./test-src/mkmrk-channels
+        run: |
+          dotnet restore
+          dotnet build \
+            --no-restore \
+            --configuration Release \
+            -consoleloggerparameters:"Summary;Verbosity=normal" \
+            -m \
+            -t:"clean,build" \
+            -fl1 "/flp1:logFile=mkmrk-channels-build.log;warningsonly" \
+            -p:"WarnLevel=5"
+      #
+      - name: 'Move sample -build.log'
+        run: |
+          cp ./sample/mkmrk-channels-build.log ./test-src/mkmrk-channels/src/mkmrk.Channels/
+          mv ./sample/mkmrk-channels-build.log ./test-src/mkmrk-channels/src/mkmrk.Channels/copy-of-mkmrk-channels-build.log
+      - name: Get mkmrk-channels Coverage History
+        working-directory: ./test-src/mkmrk-channels/
+        run: |
+          pwd
+          mkdir -p ./docs/coverage/history/
+          mkdir -p ./test-dir/output
+          ls -la
+          wget http://www.hiller.pro/mkmrk.Channels/coverage/history/coverage-history.zip
+          unzip coverage-history.zip -d ./docs/coverage/history/
+          ls -la ./docs/coverage/history/
+      #
+      - name: Create test plot json
+        #if: ${{ ! always() }}
+        shell: pwsh
+        run: |
+          Write-Output (Get-Date -Date "2020-01-01T00:00:00" ).ToOADate()
+          New-Item -Type Directory -Path './test-dir'
+          Set-Content -Path "./test-dir/test_json_file_plot_config_1.json" -Value '{ "Title": "Test plot from File", "OutputFileName": "test_json_file_plot.png", "PlotType": "Scatter", "Width": 800, "Height": 600, "Data": [ { "Title": "Series A", "X": [ 11, 52, 19 ], "Y": [ 57, 54, 31 ] } ]}'
+          #
+      - name: 'Move src directory'
+        run: |
+          # try having a different directory than what will be in the build log
+          mv ./test-src/mkmrk-channels ./test-src/mkmrk-channels-diff-pos
+      - name: 'Run local build of gh-action-plot'
+        env:
+          #INPUT_SOURCE_SCAN_DIR: './'
+          INPUT_SOURCE_SCAN_DIR: './test-src/'
+          INPUT_PLOT_DEFINITIONS_DIR: './test-dir'
+          INPUT_OUTPUT_DIR: './test-dir/output'
+          INPUT_TEST_RESULTS_DIR: './'
+          INPUT_COVERAGE_HISTORY_DIR: './mkmrk-channels/docs/coverage/history/'
+        run: |
+          built/PlotGitHubAction
+      #
+      #- name: Build
+      #  run: dotnet run --no-restore -- './'
+      #
+      - name: List Output
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Path ./ | Select-Object -Property Name,CreationTime,Size
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: plot-results
+          retention-days: 1
+          path: |
+            ./test-dir/
+            ./**/*-build.log
+            ./test-src/mkmrk-channels/.git
+            .git/**
+            #*.png
+        #if: ${{ failure() }}
+
+      

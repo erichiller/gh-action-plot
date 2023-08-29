@@ -1,0 +1,75 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 'Test full workflow'
+
+on:
+  #push:
+  #  branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  TZ: America/Chicago
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: 'erichiller/mkmrk.Channels'
+          path: 'mkmrk-channels'
+      - name: Get mkmrk-channels Coverage History
+        #continue-on-error: true
+        working-directory: ./mkmrk-channels/
+        run: |
+          pwd
+          mkdir -p ./docs/coverage/history/
+          mkdir -p ./test-dir/output
+          ls -la
+          wget http://www.hiller.pro/mkmrk.Channels/coverage/history/coverage-history.zip
+          unzip coverage-history.zip -d ./docs/coverage/history/
+          ls -la ./docs/coverage/history/
+      #
+      #- name: Setup .NET
+      #  uses: actions/setup-dotnet@v3
+      #  with:
+      #    dotnet-version: 7.0.x
+      #- name: Restore dependencies
+      #  run: dotnet restore
+      #
+      - name: Create test plot json
+        shell: pwsh
+        run: |
+          Write-Output (Get-Date -Date "2020-01-01T00:00:00" ).ToOADate()
+          New-Item -Type Directory -Path './test-dir'
+          Set-Content -Path "./test-dir/test_json_file_plot_config_1.json" -Value '{ "Title": "Test plot from File", "OutputFileName": "test_json_file_plot.png", "PlotType": "Scatter", "Width": 800, "Height": 600, "Data": [ { "Title": "Series A", "X": [ 11, 52, 19 ], "Y": [ 57, 54, 31 ] } ]}'
+      - name: 'Run gh-action-plot'
+        uses: erichiller/gh-action-plot@v0.0.11-alpha
+        with:
+          source_scan_dir: './mkmrk-channels/src'
+          plot_definitions_dir: './test-dir'
+          output_dir: './test-dir/output'
+          test_results_dir: './mkmrk-channels/src'
+          coverage_history_dir: './mkmrk-channels/docs/coverage/history/'
+      #
+      #- name: Build
+      #  run: dotnet run --no-restore -- './'
+      #
+      - name: List Output
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Path ./ | Select-Object -Property Name,CreationTime,Size
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: plot-results
+          retention-days: 1
+          path: |
+            ./test-dir/
+            #*.png
+        #if: ${{ failure() }}
+      
