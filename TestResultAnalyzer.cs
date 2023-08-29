@@ -129,6 +129,12 @@ public record ErrorInfo {
     public required string StackTrace { get; set; }
 }
 
+/*
+ * TODO: Create GitHub Action check(s) to attach results to Action Run
+ * see: GitHub REST API https://docs.github.com/en/free-pro-team@latest/rest/checks
+ * get last check (eg. tests failed Delta)
+ * example: https://github.com/LASER-Yi/workflow-status/tree/main
+ */
 public class TestResultAnalyzer {
     private readonly string               _outputDir;
     private readonly string               _directoryRoot;
