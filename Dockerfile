@@ -4,8 +4,8 @@ WORKDIR /action
 ENV TZ="America/Chicago"
 
 # Copy everything
-COPY *.cs .
-COPY PlotGitHubAction.csproj .
+COPY src/PlotGitHubAction/*.cs .
+COPY src/PlotGitHubAction/PlotGitHubAction.csproj .
 
 # Restore as distinct layers
 RUN dotnet restore

@@ -218,23 +218,24 @@ public class TestResultAnalyzer {
                 + String.Empty.PadRight( 60, '-' )
             );
             foreach ( var failure in _failedTests ) {
-                var (linkText, url) = getFormattedErrorSourceLink( failure );
+                var (methodName, linkText, url) = getFormattedErrorSourceLink( failure );
                 var testResultOutputRelPath = Path.GetRelativePath(
                     Path.GetDirectoryName( MarkdownSummaryFilePath )!,
                     getTestResultOutputFilePath( failure )
                 );
-                Sb.Append( sourceUrls.Add(
-                               id: linkText,
-                               url: url,
-                               isCode: false
+                Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
+                Sb.Append( ( $"`{methodName}` in "
+                           + sourceUrls.Add(
+                                 id: linkText,
+                                 url: url,
+                                 isCode: false
+                             )
                            ).PadRight( firstColumnWidth ) );
                 Sb.AppendLine(
                     colDiv
                     + $"[Output]({testResultOutputRelPath})".PadRight( 15 )
                     + colDiv
-                    + ( failure.Output is { ErrorInfo.Message: { } errMsg }
-                        ? $"<pre>{errMsg}</pre>"
-                        : String.Empty )
+                    + singleLineMdCode( failure.Output?.ErrorInfo.Message )
                 );
             }
 
@@ -269,6 +270,24 @@ public class TestResultAnalyzer {
 
         writeToFile( _failedTests );
     }
+    
+    private string singleLineMdCode( string? rawCode ) =>
+        rawCode is {}
+        ? ( "<pre>"
+          + Regex.Replace(
+                rawCode,
+                @"\n *",
+                s => {
+                    string[] spacesArr = new string[s.Length - 1];
+                    Array.Fill<string>( spacesArr, "&nbsp;");
+                    string spaces = String.Join(String.Empty, spacesArr);
+                    return $"<br />{spaces}";
+                },
+                RegexOptions.Multiline
+            ).TrimEnd()
+          + "</pre>" )
+      : String.Empty;
+    
 
     private void writeToFile( List<UnitTestResult> failures ) {
         Log.Debug( $"==================\n== writeToFile (# failures: {failures.Count}) \n==============" );
@@ -304,19 +323,20 @@ public class TestResultAnalyzer {
     private string? getErrorSourceLink( UnitTestResult failure ) {
         if ( failure.GetErrorHighestLocalSource() is { } errorPosition ) {
             var resolvedPath = getUnitTestPath( errorPosition.FilePath );
-            Log.Debug( $"[{nameof(getFormattedErrorSourceLink)}] resolvedPath: {resolvedPath}" );
+            Log.Debug( $"[{nameof(getErrorSourceLink)}] resolvedPath='{resolvedPath}', errorPosition.Line='{errorPosition.Line}'" );
             if ( this._config.GetGitHubSourceLink( resolvedPath, errorPosition.Line ) is { } url ) {
+                Log.Debug( $"[{nameof(getErrorSourceLink)}] url={url}, errorPosition={errorPosition}" );
                 return url;
             }
-            Log.Warn( $"[{nameof(getFormattedErrorSourceLink)}] Unable to get SourceLink via {nameof(ActionConfig.GetGitHubSourceLink)} for {errorPosition}" );
+            Log.Warn( $"[{nameof(getErrorSourceLink)}] Unable to get SourceLink via {nameof(ActionConfig.GetGitHubSourceLink)} for {errorPosition}" );
         }
         return null;
     }
 
-    private (string text, string url) getFormattedErrorSourceLink( UnitTestResult failure ) {
+    private (string methodName, string linkText, string url) getFormattedErrorSourceLink( UnitTestResult failure ) {
         if ( failure.GetErrorHighestLocalSource() is { } errorPosition
              && getErrorSourceLink( failure ) is { } url ) {
-            return ( $"`{errorPosition.MethodName}` in `{errorPosition.FilePath}` line {errorPosition.Line}", url );
+            return ( errorPosition.MethodName, $"`{errorPosition.FilePath}` line {errorPosition.Line}", url );
         }
         Log.Warn( $"[{nameof(getFormattedErrorSourceLink)}] Unable to extract regex via {nameof(UnitTestResult.GetErrorHighestLocalSource)} for {this}" );
         throw new Exception();

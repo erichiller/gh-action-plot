@@ -24,12 +24,15 @@ public record ActionConfig(
     string? PlotDefinitionsDir,
     string? TestResultsDir
 ) {
-    public string PlotOutputDir             => System.IO.Path.Combine( OutputDir, "charts" );
-    public string ToDoOutputDir             => OutputDir;
-    public string TestFailureOutputDir      => System.IO.Path.Combine( OutputDir, "test_failures" );
-    public string BuildLogHistoryOutputDir  => MetaDataOutputDir;
-    public string LineCountHistoryOutputDir => MetaDataOutputDir;
-    public string MetaDataOutputDir         => System.IO.Path.Combine( OutputDir, "metadata" );
+    public string  PlotOutputDir             => System.IO.Path.Combine( OutputDir, "charts" );
+    public string  ToDoOutputDir             => OutputDir;
+    public string  TestFailureOutputDir      => System.IO.Path.Combine( OutputDir, "test_failures" );
+    public string  BuildLogHistoryOutputDir  => MetaDataOutputDir;
+    public string  LineCountHistoryOutputDir => MetaDataOutputDir;
+    public string  MetaDataOutputDir         => System.IO.Path.Combine( OutputDir, "metadata" );
+    public string? CoverageSummaryDir        => CoverageHistoryDir is {}
+                                                 ? System.IO.Directory.GetParent( CoverageHistoryDir ).Parent.FullName
+                                                 : null;
     // format: erichiller/gh-action-plot
     public string Repository { get; init; } = System.Environment.GetEnvironmentVariable( "GITHUB_REPOSITORY" ) ?? String.Empty;
     public string CommitHash { get; init; } = System.Environment.GetEnvironmentVariable( "GITHUB_SHA" )        ?? String.Empty;
@@ -84,9 +87,27 @@ public record ActionConfig(
             System.IO.Directory.CreateDirectory( directoryPath );
         }
     }
-
-    // example: https://github.com/erichiller/gh-action-plot/blob/1588c4d1617e89e56335c9d5c533c8baa4fc918d/TodoScanner.cs#L161-L170
-    public string? GetGitHubSourceLink( string filePath, int? lineStart = null, int? lineEnd = null ) {
+    
+    public string? GetGitHubSourceLink(
+        string filePath, 
+        int? lineStart = null,
+        bool linkToBranch = false 
+    ) {
+        string url = getUrlWithPath (
+             filePath: filePath,
+             linkToBranch: linkToBranch
+        );
+        string append = lineStart is {} line
+                   ? $"#L{line}"
+                   : String.Empty ;
+        Log.Debug( $"[{nameof(GetGitHubSourceLink)}] filePath='{filePath}', lineStart='{lineStart}', linkToBranch='{linkToBranch}', url='{url}', append='{append}', returning='{url + append}'" );
+        return url + append;
+    }
+    
+    private string getUrlWithPath(
+        string filePath,
+        bool linkToBranch
+    ){
         string originalFilePath = filePath;
         filePath = Path.GetFullPath( filePath );
         var repo = this.getRepoForFile( filePath );
@@ -94,13 +115,44 @@ public record ActionConfig(
             Log.Warn( $"Unable to find git repo for {filePath} (originally: {originalFilePath})" );
             return null;
         }
-        return repo.GitHubCommitUrl.TrimEnd( '/' )
-               + filePath[ repo.RootDir.FullName.Length.. ]
-               + ( lineStart is { } start ? $"#L{start}" : String.Empty )
-               + ( ( lineStart, lineEnd ) is ({ }, { }) && lineStart != lineEnd ? "-" : String.Empty )
-               + ( lineEnd is { } end                   && lineStart != end ? $"#L{end}" : String.Empty )
-            ;
+        string baseUrl = linkToBranch
+                             ? repo.GitHubBranchUrl
+                             : repo.GitHubCommitUrl ;
+                             
+        Log.Debug( $"[{nameof(getUrlWithPath)}] filePath='{filePath}', originalFilePath='{originalFilePath}', baseUrl='{baseUrl}', repo={repo}" );
+        return baseUrl.TrimEnd( '/' )
+             + filePath[ repo.RootDir.FullName.Length.. ];
     }
+
+    /// <param name="linkToBranch">
+    /// Whether the link should use the commit hash (<c>false</c>) or the branch name (<c>true</c>).
+    /// </param>
+    // example: https://github.com/erichiller/gh-action-plot/blob/1588c4d1617e89e56335c9d5c533c8baa4fc918d/TodoScanner.cs#L161-L170
+    // example: https://github.com/beto-rodriguez/LiveCharts2/blob/36ff845586da0bb85e75f5efafc8e3aa1a142820/src/skiasharp/LiveChartsCore.SkiaSharp/Drawing/Geometries/ColoredRectangleGeometry.cs#L14C3-L45C36
+    public string? GetGitHubSourceLink(
+        string filePath, 
+        CharPosition? start = null, 
+        CharPosition? end   = null,
+        bool linkToBranch   = false 
+    ) => getUrlWithPath (
+             filePath: filePath,
+             linkToBranch: linkToBranch
+        )
+       + ( start is {} || end is {}
+             ? "#"
+               + ( start is CharPosition { Line: {} line, Column: {} col }
+                     ? $"L{line}C{col}"
+                     : String.Empty
+                 )
+               + ( ( start, end ) is ({}, {}) && start?.Line != end?.Line
+                     ? "-"
+                     : String.Empty 
+                 )
+               + ( end is CharPosition { Line: {} endLine, Column: {} endCol } && start?.Line != endLine 
+                     ? $"L{endLine}C{endCol}"
+                     : String.Empty
+                 ) 
+             : String.Empty ) ;
 
     public string GetFormattedSourcePosition( string filePath, CharPosition? start = null, CharPosition? end = null ) {
         return Path.GetFileName( filePath )
@@ -110,12 +162,12 @@ public record ActionConfig(
             ;
     }
 
-    public string GetFormattedGitHubSourceLink( string filePath, CharPosition? start = null, CharPosition? end = null ) {
+    public string GetFormattedGitHubSourceLink( string filePath, CharPosition? start = null, CharPosition? end = null, bool linkToBranch = false ) {
         // 
         return "["
                + GetFormattedSourcePosition( filePath, start, end )
                + "]("
-               + GetGitHubSourceLink( filePath, start?.Line, end?.Line )
+               + GetGitHubSourceLink( filePath, start, end, linkToBranch )
                + ")"
             ;
     }
@@ -215,11 +267,14 @@ public record GitRepoInfo(
     string Name,
     string GitHubCommitUrl,
     string RootDirPath,
-    string CommitSha
+    string CommitSha,
+    string Branch,
+    string GitHubBranchUrl
 ) {
     [ JsonIgnore ]
     public DirectoryInfo RootDir => new DirectoryInfo( RootDirPath );
-
+    
+    // , bool useBranch = false 
     public static GitRepoInfo CreateFromGitDir( DirectoryInfo gitRoot ) {
         if ( gitRoot.Name == @".git" ) {
             gitRoot = gitRoot.Parent!;
@@ -230,17 +285,30 @@ public record GitRepoInfo(
         );
         string repoName  = match.Groups[ "Name" ].Value.Trim();
         string commitSha = match.Groups[ "CommitSha" ].Value;
-        string gitHubUrlBase =
+        match = Regex.Match(
+            System.IO.File.ReadAllText( System.IO.Path.Combine( gitRoot.FullName, ".git", "HEAD" ) ),
+            @"^ref: refs/heads/(?<Branch>.*)$"
+        );
+        string branch  = match.Groups[ "Branch" ].Value.Trim();
+        string gitHubCommitUrlBase =
             @"https://github.com/"
             + repoName
             + "/blob/"
             + commitSha
             + "/";
+        string gitHubBranchUrlBase =
+            @"https://github.com/"
+            + repoName
+            + "/tree/"
+            + branch
+            + "/";
         return new GitRepoInfo(
             Name: repoName,
-            GitHubCommitUrl: gitHubUrlBase,
+            GitHubCommitUrl: gitHubCommitUrlBase,
             RootDirPath: gitRoot.FullName,
-            CommitSha: commitSha
+            CommitSha: commitSha,
+            Branch: branch,
+            GitHubBranchUrl: gitHubBranchUrlBase
         );
     }
 }
@@ -264,6 +332,11 @@ readonly record struct SourceText(
     public string FormattedFileLocation( ) =>
         System.IO.Path.GetFileName( FilePath )
         + " " + Start.Line + ":" + Start.Column;
+        
+    public string SortableLocationString =>
+        System.IO.Path.GetFileName( FilePath )
+        + "_" + Start.Line.ToString().PadLeft( 6, '0')
+        + ":" + Start.Column.ToString().PadLeft( 6, '0');
 
     public string MarkdownSafeText( ) =>
         Text.Replace( "\n", "<br />" );
@@ -272,8 +345,12 @@ readonly record struct SourceText(
 /*
  *
  */
+ 
+public interface INamedObject {
+    public string Name { get; }
+}
 
-public class CsProjInfo : IEquatable<CsProjInfo> {
+public class CsProjInfo : INamedObject, IEquatable<CsProjInfo> {
     [ SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" ) ]
     public GitRepoInfo GitRepo { get; init; }
 
@@ -297,6 +374,7 @@ public class CsProjInfo : IEquatable<CsProjInfo> {
     }
 
     public string ProjectName   { get; }
+    public string Name => ProjectName;
     public string DirectoryPath { get; }
     [ SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" ) ]
     public string RepoRelativePath { get; }
@@ -355,7 +433,8 @@ public class UrlMdShortUtils {
         if ( _generateIds ) {
             //
             if ( !_idStrToGenerated.TryGetValue( id, out string? generatedId ) ) {
-                generatedId = $"{_generatedIdPrefix}{_idSeq++}";
+                // generatedId = $"{_generatedIdPrefix}{_idSeq++}";
+                generatedId = toBase36( getDeterministicHashCode( url ) );
                 _urlMap.TryAdd( generatedId, url );
                 _usedUrls.TryAdd( generatedId, url );
                 _idStrToGenerated.TryAdd( id, generatedId );
@@ -380,23 +459,72 @@ public class UrlMdShortUtils {
         return $"{mdModifier}{id}{mdModifier}";
     }
 
-    public string AddSourceLink( string filePath, CharPosition? start = null, CharPosition? end = null ) {
+    public string AddSourceLink( string filePath, CharPosition? start = null, CharPosition? end = null, bool linkToBranch = false ) {
         if ( this._config is not { } config ) {
             throw new NullReferenceException( nameof(_config) );
         }
         string linkTitle = config.GetFormattedSourcePosition( filePath, start, end );
-        if ( config.GetGitHubSourceLink( filePath, start?.Line, end?.Line ) is not { } url ) {
-            if ( !( filePath.Contains( "Microsoft.NET.Sdk" ) || filePath.Contains( "Microsoft.NET.Sdk" ) ) ) {
+        if ( config.GetGitHubSourceLink( filePath, start, end, linkToBranch ) is not { } url ) {
+            
+            if ( ! filePath.Contains( "Microsoft.NET.Sdk" ) ) {
                 Log.Warn( $"Unable to create source link for {linkTitle}" );
             }
             return linkTitle;
+        }
+        // KILL
+        try {
+            Log.Debug( $"[{filePath}] [{start}] [{end}]: {new Uri( url ).AbsoluteUri}" );
+        } catch ( System.UriFormatException e ) {
+            Log.Error( $"Uri format failed for [{filePath}] [{start}] [{end}]: '{url}'" );
+            throw;
         }
         return this.Add( linkTitle, url );
     }
 
     public void AddReferencedUrls( StringBuilder sb ) {
-        foreach ( var (id, url) in _usedUrls ) {
-            sb.AppendLine( $"[{id}]: {url}" );
+        foreach ( var (id, url) in _usedUrls.OrderByDescending( kv => kv.Key ) ) {
+            try {
+                sb.AppendLine( $"[{id}]: {new Uri( url ).AbsoluteUri}" );
+            } catch ( System.UriFormatException e ) {
+                Log.Error( $"Uri format failed for id '{id}': '{url}'" );
+                throw;
+            }
+        }
+    }
+    
+    
+    private static string toBase36( uint h ){
+        uint b = 36;
+        string s = String.Empty;
+        const string chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+        while ( h > 0 ){
+            s += chars[ (int)(h % b)];
+            h = h / b;
+        }
+        return s.PadLeft(7, '0');
+    }
+    
+    
+    /// <summary>
+    /// Create a predictable Hash code for input <paramref name="str"/>.
+    /// This is a Hash code that remains the same across Hardware, OS, and program runs.
+    /// </summary>
+    /// <returns><see cref="uint"/> based Hash code</returns>
+    private static uint getDeterministicHashCode( string str ) {
+        unchecked {
+            uint hash1 = ( 5381 << 16 ) + 5381;
+            uint hash2 = hash1;
+
+            for ( uint i = 0 ; i < str.Length ; i += 2 ) {
+                hash1 = ( ( hash1 << 5 ) + hash1 ) ^ str[ (int)i ];
+                if ( i == str.Length - 1 ) {
+                    break;
+                }
+
+                hash2 = ( ( hash2 << 5 ) + hash2 ) ^ str[ (int)i + 1 ];
+            }
+
+            return hash1 + ( hash2 * 1566083941 );
         }
     }
 }

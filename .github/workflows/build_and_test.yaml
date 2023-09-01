@@ -26,22 +26,23 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       #
-      - name: Build
+      - name: 'Build / Publish'
         #run: dotnet build
+        working-directory:  ./src/PlotGitHubAction
         run: |
           dotnet publish \
             --configuration Release \
             --runtime linux-x64 \
             --no-self-contained \
-            -o built
-          ls -lah built
+            -o ../../built
+          ls -lah ../../built
       #
       # SETUP TEST DATA
       #
       - name: 'Copy csproj to test-data'
         run: |
           mkdir -p ./test-src/gh-action-plot
-          cp *.cs* ./test-src/gh-action-plot
+          cp ./src/PlotGitHubAction/*.cs* ./test-src/gh-action-plot
           
 
       - name: 'Build to generate build warnings log file: gh-action-plot'

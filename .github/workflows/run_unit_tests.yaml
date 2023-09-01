@@ -1,0 +1,63 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: 'Run Unit Tests'
+
+on:
+  #push:
+  #  branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  TZ: America/Chicago
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      #
+      - name: Restore dependencies
+        run: dotnet restore 
+      #
+      - name: 'Run Unit tests'
+        working-directory: ./test/PlotGitHubAction.Tests/
+        run: |
+          dotnet test --no-restore \
+                      --logger "console"
+# \
+#                      --filter "TodoCsharpRegexTests"
+#                      --filter "TodoShellRegexTests"
+#                      --filter "TodoXmlRegexTests"
+#                      --filter "TodoPowerShellRegexTests"
+#                      --filter "TodoSqlRegexTests"
+#                      --logger "console;verbosity=detailed"
+#                      --logger:"trx;LogFileName=DataSource.GeneratorTests.trx" \
+      #
+      - name: List Output
+        shell: pwsh
+        if: ${{ always() }}
+        run: |
+          Get-ChildItem -Recurse -Path ./ | Select-Object -Property Name,CreationTime,Size
+
+#      - name: Upload results
+#        uses: actions/upload-artifact@v3
+#        if: ${{ always() }}
+#        with:
+#          name: test-results
+#          retention-days: 1
+#          path: |
+#            ./test-dir/
+#            ./**/*-build.log
+#            ./test-src/mkmrk-channels/.git
+#            .git/**
+#            #*.png
+#        #if: ${{ failure() }}
+
+      

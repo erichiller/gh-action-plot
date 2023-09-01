@@ -112,7 +112,9 @@
     <UnitTestResult executionId="229f86aa-c3a8-456d-91ca-17f53a085f98" testId="f58bd225-93b9-473e-8ff2-d8bb792dad2c" testName="mkmrk.Channels.Tests.ChannelMuxTests.CancellationToken_PreWaitToReadAsync_NewAfterException_Test" computerName="fv-az193-891" duration="00:00:00.0807652" startTime="2023-06-13T09:04:33.7435443+00:00" endTime="2023-06-13T09:04:33.7435444+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="229f86aa-c3a8-456d-91ca-17f53a085f98">
       <Output>
         <ErrorInfo>
-          <Message>Did not expect receivedCountA to be 0.</Message>
+          <Message>Did not expect receivedCountA to be 0.
+added this to test multi-line message for markdown-safe output
+          </Message>
           <StackTrace>   at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
    at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
    at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)

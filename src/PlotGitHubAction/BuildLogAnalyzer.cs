@@ -22,6 +22,13 @@ record WarnLogEntry(
         get => _idMarkdown ?? Id;
         init => _idMarkdown = value;
     }
+    
+    public string SortableLocationString =>
+        System.IO.Path.GetFileName( File )
+        + "_" + (Position?.Line.ToString() ?? String.Empty ).PadLeft( 6, '0')
+        + ":" + (Position?.Column.ToString() ?? String.Empty ).PadLeft( 6, '0')
+        + "-" + ( Id ?? String.Empty )
+        ;
 }
 
 public class BuildLogAnalyzer {
@@ -33,7 +40,6 @@ public class BuildLogAnalyzer {
     public const     string             BUILD_WARNINGS_TOTAL_CHART_FILE_NAME        = "build_warnings_total";
     private          string             _filePattern => _config.BuildLogFilePattern;
 
-    // private readonly Dictionary<CsProjInfo, List<BuildLogWarning>> _projWarnings   = new ();
     private readonly Dictionary<CsProjInfo, HashSet<WarnLogEntry>> _projWarningsHs = new ();
 
     public BuildLogAnalyzer( ActionConfig config ) {
@@ -142,13 +148,14 @@ public class BuildLogAnalyzer {
             }
         }
 
-        foreach ( var (proj, warnLogEntries) in _projWarningsHs ) {
+        foreach ( var (proj, warnLogEntries) in _projWarningsHs.OrderBy( kv => kv.Key.ProjectName )  ) {
             warnings.AppendLine( $"**{proj.ProjectName}**".PadRight( 50 ) + " |||" );
-            foreach ( var entry in warnLogEntries.OrderBy( t => Path.GetFileName( Path.GetFileName( t.File ) ) ) ) {
+            foreach ( var entry in warnLogEntries.OrderBy( t => t.SortableLocationString ) ) {
                 warnings.AppendLine(
                     sourceUrls.AddSourceLink(
                         filePath: entry.File,
-                        start: entry.Position ).PadRight( 50 )
+                        start: entry.Position, 
+                        linkToBranch: true ).PadRight( 50 )
                     + $" | {entry.IdMarkdown,-9} | {entry.Level,-10} | {entry.Message}" );
             }
         }
@@ -157,7 +164,7 @@ public class BuildLogAnalyzer {
         summary.AppendLine();
         summary.AppendLine( "Project".PadRight( 25 )         + colDiv + "Warnings" );
         summary.AppendLine( String.Empty.PadRight( 25, '-' ) + colDiv + String.Empty.PadRight( 20, '-' ) );
-        foreach ( var (projectName, warningCount) in buildLogStats.OrderByDescending( kv => kv.Key ) ) {
+        foreach ( var (projectName, warningCount) in buildLogStats.OrderBy( kv => kv.Key ) ) {
             summary.AppendLine( projectName.PadRight( 25 ) + colDiv + warningCount );
         }
         summary.AppendLine( "**TOTAL**".PadRight( 25 ) + colDiv + $"**{_projWarningsHs.SelectMany( p => p.Value ).Count()}**" );
@@ -165,7 +172,6 @@ public class BuildLogAnalyzer {
 
         // per Analyzer ID table
         Dictionary<string, int> analyzerIdStats = _projWarningsHs
-                                                  //
                                                   .SelectMany( kv => kv.Value )
                                                   .Where( v => v.Id is { } )
                                                   .GroupBy( t => t.Id! )
