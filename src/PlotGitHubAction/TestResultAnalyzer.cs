@@ -123,7 +123,7 @@ public record Output {
     public ErrorInfo? ErrorInfo { get; set; }
 }
 
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+[ SuppressMessage( "ReSharper", "ClassNeverInstantiated.Global" ) ]
 public record ErrorInfo {
     public required string Message    { get; set; }
     public required string StackTrace { get; set; }
@@ -224,8 +224,8 @@ public class TestResultAnalyzer {
                     getTestResultOutputFilePath( failure )
                 );
                 Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
-                Sb.Append( ( $"`{methodName}` in "
-                           + sourceUrls.Add(
+                Sb.Append( ( $"`{markdownEscape(methodName)}` in "
+                             + sourceUrls.Add(
                                  id: linkText,
                                  url: url,
                                  isCode: false
@@ -249,6 +249,10 @@ public class TestResultAnalyzer {
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
     }
 
+    private string markdownEscape( string inputString ) {
+        return inputString.Replace( @"|", @"\|" );
+    }
+
     private void extractTrx( string filePath ) {
         XDocument     xd = XDocument.Load( filePath );
         XmlSerializer sx = new XmlSerializer( typeof(UnitTestResult) );
@@ -270,24 +274,24 @@ public class TestResultAnalyzer {
 
         writeToFile( _failedTests );
     }
-    
+
     private string singleLineMdCode( string? rawCode ) =>
-        rawCode is {}
-        ? ( "<pre>"
-          + Regex.Replace(
-                rawCode,
-                @"\n *",
-                s => {
-                    string[] spacesArr = new string[s.Length - 1];
-                    Array.Fill<string>( spacesArr, "&nbsp;");
-                    string spaces = String.Join(String.Empty, spacesArr);
-                    return $"<br />{spaces}";
-                },
-                RegexOptions.Multiline
-            ).TrimEnd()
-          + "</pre>" )
-      : String.Empty;
-    
+        rawCode is { }
+            ? ( "<pre>"
+                + Regex.Replace(
+                    rawCode,
+                    @"\n *",
+                    s => {
+                        string[] spacesArr = new string[ s.Length - 1 ];
+                        Array.Fill<string>( spacesArr, "&nbsp;" );
+                        string spaces = String.Join( String.Empty, spacesArr );
+                        return $"<br />{spaces}";
+                    },
+                    RegexOptions.Multiline
+                ).TrimEnd()
+                + "</pre>" )
+            : String.Empty;
+
 
     private void writeToFile( List<UnitTestResult> failures ) {
         Log.Debug( $"==================\n== writeToFile (# failures: {failures.Count}) \n==============" );
