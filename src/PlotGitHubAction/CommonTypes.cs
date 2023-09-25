@@ -24,15 +24,15 @@ public record ActionConfig(
     string? PlotDefinitionsDir,
     string? TestResultsDir
 ) {
-    public string  PlotOutputDir             => System.IO.Path.Combine( OutputDir, "charts" );
-    public string  ToDoOutputDir             => OutputDir;
-    public string  TestFailureOutputDir      => System.IO.Path.Combine( OutputDir, "test_failures" );
-    public string  BuildLogHistoryOutputDir  => MetaDataOutputDir;
-    public string  LineCountHistoryOutputDir => MetaDataOutputDir;
-    public string  MetaDataOutputDir         => System.IO.Path.Combine( OutputDir, "metadata" );
-    public string? CoverageSummaryDir        => CoverageHistoryDir is {}
-                                                 ? System.IO.Directory.GetParent( CoverageHistoryDir ).Parent.FullName
-                                                 : null;
+    public string PlotOutputDir             => System.IO.Path.Combine( OutputDir, "charts" );
+    public string ToDoOutputDir             => OutputDir;
+    public string TestFailureOutputDir      => System.IO.Path.Combine( OutputDir, "test_failures" );
+    public string BuildLogHistoryOutputDir  => MetaDataOutputDir;
+    public string LineCountHistoryOutputDir => MetaDataOutputDir;
+    public string MetaDataOutputDir         => System.IO.Path.Combine( OutputDir, "metadata" );
+    public string? CoverageSummaryDir => CoverageHistoryDir is { }
+        ? System.IO.Directory.GetParent( CoverageHistoryDir )?.Parent?.FullName
+        : null;
     // format: erichiller/gh-action-plot
     public string Repository { get; init; } = System.Environment.GetEnvironmentVariable( "GITHUB_REPOSITORY" ) ?? String.Empty;
     public string CommitHash { get; init; } = System.Environment.GetEnvironmentVariable( "GITHUB_SHA" )        ?? String.Empty;
@@ -87,27 +87,67 @@ public record ActionConfig(
             System.IO.Directory.CreateDirectory( directoryPath );
         }
     }
-    
+
     public string? GetGitHubSourceLink(
-        string filePath, 
-        int? lineStart = null,
-        bool linkToBranch = false 
+        string filePath,
+        int?   lineStart    = null,
+        bool   linkToBranch = false
     ) {
-        string url = getUrlWithPath (
-             filePath: filePath,
-             linkToBranch: linkToBranch
-        );
-        string append = lineStart is {} line
-                   ? $"#L{line}"
-                   : String.Empty ;
+        if ( getUrlWithPath(
+                filePath: filePath,
+                linkToBranch: linkToBranch
+            ) is not { } url ) {
+            return null;
+        }
+        string append = lineStart is { } line
+            ? $"#L{line}"
+            : String.Empty;
         Log.Debug( $"[{nameof(GetGitHubSourceLink)}] filePath='{filePath}', lineStart='{lineStart}', linkToBranch='{linkToBranch}', url='{url}', append='{append}', returning='{url + append}'" );
         return url + append;
     }
-    
-    private string getUrlWithPath(
+
+    /// <param name="filePath"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="linkToBranch">
+    /// Whether the link should use the commit hash (<c>false</c>) or the branch name (<c>true</c>).
+    /// </param>
+    // example: https://github.com/erichiller/gh-action-plot/blob/1588c4d1617e89e56335c9d5c533c8baa4fc918d/TodoScanner.cs#L161-L170
+    // example: https://github.com/beto-rodriguez/LiveCharts2/blob/36ff845586da0bb85e75f5efafc8e3aa1a142820/src/skiasharp/LiveChartsCore.SkiaSharp/Drawing/Geometries/ColoredRectangleGeometry.cs#L14C3-L45C36
+    public string? GetGitHubSourceLink(
+        string        filePath,
+        CharPosition? start        = null,
+        CharPosition? end          = null,
+        bool          linkToBranch = false
+    ) {
+        if ( getUrlWithPath(
+                filePath: filePath,
+                linkToBranch: linkToBranch
+            ) is not { } url ) {
+            return null;
+        }
+        return url
+               + ( start is { } || end is { }
+                   ? "#"
+                     + ( start is { Line: { } line, Column: { } col }
+                         ? $"L{line}C{col}"
+                         : String.Empty
+                     )
+                     + ( ( start, end ) is ({ }, { }) && start?.Line != end?.Line
+                         ? "-"
+                         : String.Empty
+                     )
+                     + ( end is { Line: { } endLine, Column: { } endCol } && start?.Line != endLine
+                         ? $"L{endLine}C{endCol}"
+                         : String.Empty
+                     )
+                   : String.Empty );
+    }
+
+    private string? getUrlWithPath(
         string filePath,
-        bool linkToBranch
-    ){
+        bool   linkToBranch
+    ) {
         string originalFilePath = filePath;
         filePath = Path.GetFullPath( filePath );
         var repo = this.getRepoForFile( filePath );
@@ -116,43 +156,13 @@ public record ActionConfig(
             return null;
         }
         string baseUrl = linkToBranch
-                             ? repo.GitHubBranchUrl
-                             : repo.GitHubCommitUrl ;
-                             
+            ? repo.GitHubBranchUrl
+            : repo.GitHubCommitUrl;
+
         Log.Debug( $"[{nameof(getUrlWithPath)}] filePath='{filePath}', originalFilePath='{originalFilePath}', baseUrl='{baseUrl}', repo={repo}" );
         return baseUrl.TrimEnd( '/' )
-             + filePath[ repo.RootDir.FullName.Length.. ];
+               + filePath[ repo.RootDir.FullName.Length.. ];
     }
-
-    /// <param name="linkToBranch">
-    /// Whether the link should use the commit hash (<c>false</c>) or the branch name (<c>true</c>).
-    /// </param>
-    // example: https://github.com/erichiller/gh-action-plot/blob/1588c4d1617e89e56335c9d5c533c8baa4fc918d/TodoScanner.cs#L161-L170
-    // example: https://github.com/beto-rodriguez/LiveCharts2/blob/36ff845586da0bb85e75f5efafc8e3aa1a142820/src/skiasharp/LiveChartsCore.SkiaSharp/Drawing/Geometries/ColoredRectangleGeometry.cs#L14C3-L45C36
-    public string? GetGitHubSourceLink(
-        string filePath, 
-        CharPosition? start = null, 
-        CharPosition? end   = null,
-        bool linkToBranch   = false 
-    ) => getUrlWithPath (
-             filePath: filePath,
-             linkToBranch: linkToBranch
-        )
-       + ( start is {} || end is {}
-             ? "#"
-               + ( start is CharPosition { Line: {} line, Column: {} col }
-                     ? $"L{line}C{col}"
-                     : String.Empty
-                 )
-               + ( ( start, end ) is ({}, {}) && start?.Line != end?.Line
-                     ? "-"
-                     : String.Empty 
-                 )
-               + ( end is CharPosition { Line: {} endLine, Column: {} endCol } && start?.Line != endLine 
-                     ? $"L{endLine}C{endCol}"
-                     : String.Empty
-                 ) 
-             : String.Empty ) ;
 
     public string GetFormattedSourcePosition( string filePath, CharPosition? start = null, CharPosition? end = null ) {
         return Path.GetFileName( filePath )
@@ -251,10 +261,10 @@ public record ActionConfig(
 
     private GitRepoInfo? getRepoForFile( string filePath ) {
         filePath = Path.GetFullPath( filePath );
-        var repo = _gitRepoRoots.Where( rd => filePath.StartsWith( rd.RootDir.FullName.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar  ) ).MaxBy( d => d.RootDir.FullName.Length );
-        if ( repo is not { } && this.SourceScanDir is { } && !filePath.StartsWith( this.SourceScanDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar  ) ) {
+        var repo = _gitRepoRoots.Where( rd => filePath.StartsWith( rd.RootDir.FullName.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar ) ).MaxBy( d => d.RootDir.FullName.Length );
+        if ( repo is not { } && this.SourceScanDir is { } && !filePath.StartsWith( this.SourceScanDir.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar ) ) {
             this._gitRepoRoots.AddRange( scanRepoRoots( filePath ) );
-            repo = _gitRepoRoots.Where( rd => filePath.StartsWith( rd.RootDir.FullName.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar  ) ).MaxBy( d => d.RootDir.FullName.Length );
+            repo = _gitRepoRoots.Where( rd => filePath.StartsWith( rd.RootDir.FullName.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar ) ).MaxBy( d => d.RootDir.FullName.Length );
         }
         return repo;
     }
@@ -273,7 +283,7 @@ public record GitRepoInfo(
 ) {
     [ JsonIgnore ]
     public DirectoryInfo RootDir => new DirectoryInfo( RootDirPath );
-    
+
     // , bool useBranch = false 
     public static GitRepoInfo CreateFromGitDir( DirectoryInfo gitRoot ) {
         if ( gitRoot.Name == @".git" ) {
@@ -289,7 +299,7 @@ public record GitRepoInfo(
             System.IO.File.ReadAllText( System.IO.Path.Combine( gitRoot.FullName, ".git", "HEAD" ) ),
             @"^ref: refs/heads/(?<Branch>.*)$"
         );
-        string branch  = match.Groups[ "Branch" ].Value.Trim();
+        string branch = match.Groups[ "Branch" ].Value.Trim();
         string gitHubCommitUrlBase =
             @"https://github.com/"
             + repoName
@@ -332,11 +342,11 @@ readonly record struct SourceText(
     public string FormattedFileLocation( ) =>
         System.IO.Path.GetFileName( FilePath )
         + " " + Start.Line + ":" + Start.Column;
-        
+
     public string SortableLocationString =>
         System.IO.Path.GetFileName( FilePath )
-        + "_" + Start.Line.ToString().PadLeft( 6, '0')
-        + ":" + Start.Column.ToString().PadLeft( 6, '0');
+        + "_" + Start.Line.ToString().PadLeft( 6, '0' )
+        + ":" + Start.Column.ToString().PadLeft( 6, '0' );
 
     public string MarkdownSafeText( ) =>
         Text.Replace( "\n", "<br />" );
@@ -345,7 +355,7 @@ readonly record struct SourceText(
 /*
  *
  */
- 
+
 public interface INamedObject {
     public string Name { get; }
 }
@@ -374,7 +384,7 @@ public class CsProjInfo : INamedObject, IEquatable<CsProjInfo> {
     }
 
     public string ProjectName   { get; }
-    public string Name => ProjectName;
+    public string Name          => ProjectName;
     public string DirectoryPath { get; }
     [ SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" ) ]
     public string RepoRelativePath { get; }
@@ -382,7 +392,7 @@ public class CsProjInfo : INamedObject, IEquatable<CsProjInfo> {
     public string FilePath                  { get; }
 
     public bool ContainsFile( string filePath ) =>
-        filePath.StartsWith( this.DirectoryPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar );
+        filePath.StartsWith( this.DirectoryPath.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar );
 
     public bool Equals( CsProjInfo? other ) {
         return other?.FilePath == this.FilePath;
@@ -418,13 +428,10 @@ public class UrlMdShortUtils {
 
     private readonly Dictionary<string, string> _idStrToGenerated = new (StringComparer.OrdinalIgnoreCase);
     private readonly bool                       _generateIds;
-    private readonly string?                    _generatedIdPrefix;
-    private          int                        _idSeq = 0;
     private readonly ActionConfig?              _config;
 
-    public UrlMdShortUtils( ActionConfig? config = null, bool generateIds = false, string? generatedIdPrefix = null ) {
+    public UrlMdShortUtils( ActionConfig? config = null, bool generateIds = false ) {
         _generateIds       = generateIds;
-        _generatedIdPrefix = generatedIdPrefix;
         _config            = config;
     }
 
@@ -465,8 +472,7 @@ public class UrlMdShortUtils {
         }
         string linkTitle = config.GetFormattedSourcePosition( filePath, start, end );
         if ( config.GetGitHubSourceLink( filePath, start, end, linkToBranch ) is not { } url ) {
-            
-            if ( ! filePath.Contains( "Microsoft.NET.Sdk" ) ) {
+            if ( !filePath.Contains( "Microsoft.NET.Sdk" ) ) {
                 Log.Warn( $"Unable to create source link for {linkTitle}" );
             }
             return linkTitle;
@@ -475,7 +481,7 @@ public class UrlMdShortUtils {
         try {
             Log.Debug( $"[{filePath}] [{start}] [{end}]: {new Uri( url ).AbsoluteUri}" );
         } catch ( System.UriFormatException e ) {
-            Log.Error( $"Uri format failed for [{filePath}] [{start}] [{end}]: '{url}'" );
+            Log.Error( $"Uri format failed for [{filePath}] [{start}] [{end}]: '{url}': {e.Message}" );
             throw;
         }
         return this.Add( linkTitle, url );
@@ -486,25 +492,25 @@ public class UrlMdShortUtils {
             try {
                 sb.AppendLine( $"[{id}]: {new Uri( url ).AbsoluteUri}" );
             } catch ( System.UriFormatException e ) {
-                Log.Error( $"Uri format failed for id '{id}': '{url}'" );
+                Log.Error( $"Uri format failed for id '{id}': '{url}': {e.Message}" );
                 throw;
             }
         }
     }
-    
-    
-    private static string toBase36( uint h ){
-        uint b = 36;
-        string s = String.Empty;
+
+
+    private static string toBase36( uint h ) {
+        uint         b     = 36;
+        string       s     = String.Empty;
         const string chars = "0123456789abcdefghijklmnopqrstuvwxyz";
-        while ( h > 0 ){
-            s += chars[ (int)(h % b)];
-            h = h / b;
+        while ( h > 0 ) {
+            s += chars[ ( int )( h % b ) ];
+            h =  h / b;
         }
-        return s.PadLeft(7, '0');
+        return s.PadLeft( 7, '0' );
     }
-    
-    
+
+
     /// <summary>
     /// Create a predictable Hash code for input <paramref name="str"/>.
     /// This is a Hash code that remains the same across Hardware, OS, and program runs.
@@ -516,12 +522,12 @@ public class UrlMdShortUtils {
             uint hash2 = hash1;
 
             for ( uint i = 0 ; i < str.Length ; i += 2 ) {
-                hash1 = ( ( hash1 << 5 ) + hash1 ) ^ str[ (int)i ];
+                hash1 = ( ( hash1 << 5 ) + hash1 ) ^ str[ ( int )i ];
                 if ( i == str.Length - 1 ) {
                     break;
                 }
 
-                hash2 = ( ( hash2 << 5 ) + hash2 ) ^ str[ (int)i + 1 ];
+                hash2 = ( ( hash2 << 5 ) + hash2 ) ^ str[ ( int )i + 1 ];
             }
 
             return hash1 + ( hash2 * 1566083941 );

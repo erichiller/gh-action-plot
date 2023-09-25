@@ -192,7 +192,7 @@ public class TestResultAnalyzer {
     }
 
     private void writeMarkdownSummary( ) {
-        UrlMdShortUtils sourceUrls = new (_config, true, "tr");
+        UrlMdShortUtils sourceUrls = new (config: _config, generateIds: true);
         Sb.AppendLine( "# Test Failures\n" );
 
         Sb.AppendLine();
@@ -235,7 +235,7 @@ public class TestResultAnalyzer {
                     colDiv
                     + $"[Output]({testResultOutputRelPath})".PadRight( 15 )
                     + colDiv
-                    + singleLineMdCode( failure.Output?.ErrorInfo.Message )
+                    + singleLineMdCode( failure.Output.ErrorInfo?.Message )
                 );
             }
 

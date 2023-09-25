@@ -61,7 +61,6 @@ public class TodoScanner {
     public static MatchCollection GetMatches( string lineText, string fileExtension ) =>
         Regex.Matches(
             lineText,
-            // URGENT: MAY NEED SINGLE LINE!
             fileExtension.TrimStart( '.' ) switch {
                 @"cs" or @"json" or @"jsonc"                                   => /* language=regexp */ @"((?<MultiLineOpen>/\*+)[\s\*]*|//[ ]*)(?<Level>TODO|NOTE|BUG|KILL|URGENT|NET[0-9]{0,2}):? ?(?<Content>(?(MultiLineOpen)(.*?\n?)+|[^\n]*?))[ ]*(?(MultiLineOpen)(?<MultiLineClose>\*/)|($|(?=// ?(TODO|NOTE|BUG|KILL|URGENT|NET[0-9]{0,2}))))",
                 @"axaml" or @"xaml" or @"xml" or @"csproj" or @"props"         => /* language=regexp */ @"(?<MultiLineOpen><!--)[ \t]*(?<Level>TODO|NOTE|BUG|KILL|URGENT|NET[0-9]{0,2})(?: *: *(?<Content>(.+?\n?)*?))?\s*(?<MultiLineClose>-->)",
@@ -94,16 +93,7 @@ public class TodoScanner {
 
         int totalChars = 0;
         var lineEnds   = allText.Split( "\n" ).Select( ln => totalChars += ln.Length + 1 ).ToArray();
-        // Log.Verbose($"\n[{filePath}]\nlineEnds={String.Join(',',lineEnds)}");
         foreach ( Match match in GetMatches( allText, System.IO.Path.GetExtension( filePath ) is { Length: > 0 } extension ? extension : System.IO.Path.GetFileName( filePath ) ) ) {
-            // KILL: 
-            /*
-            Log.Verbose( $"Indexes; match={match.Index} (len={match.Value.Length})"
-                       + $"\n\t Level={match.Groups[ "Level" ].Index} (len={match.Groups[ "Level" ].Value.Length})"
-                       + $"\n\t Content={match.Groups[ "Content" ].Index} (len={match.Groups[ "Content" ].Value.Length})"
-                        );
-            */
-            
             var todo = new SourceText(
                 match.Groups[ "Content" ].Value.TrimEnd(),
                 match.Groups[ "Level" ].Value,
@@ -119,7 +109,6 @@ public class TodoScanner {
             categories.Add( match.Groups[ "Level" ].Value );
             todos.Add( todo );
             totalFound++;
-            //Log.Verbose( $"\n[To-Do Found # {totalFound}]\n{todo}" );
         }
         Log.Debug( $"{filePath} - Checked {lineEnds.Length} lines" +
                    $"  Found {totalFound - foundAtStart}" );

@@ -18,16 +18,14 @@ public static class RepoAnalysis {
             readme.Append( Regex.Replace( testResultAnalyzer.Sb.ToString(), "^#", "##" ) );
         }
 
-        if ( config.IsCoverageHistoryEnabled && config.CoverageHistoryDir is { } ) {
+        if ( config is { IsCoverageHistoryEnabled: true, CoverageHistoryDir: { }, CoverageSummaryDir: { } } ) {
             var coverageHistoryPlotter = new CoverageHistoryPlotter( config.CoverageHistoryDir );
             var coveragePlot           = coverageHistoryPlotter.ScanAndPlot();
             PlotGen.CreatePlot(
                 JsonSerializer.Serialize( coveragePlot, PlotGen.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
-            string summaryGitHubPath = Path.Combine(config.CoverageSummaryDir, "SummaryGithub.md");
-            string summaryMdPath = Path.Combine(config.CoverageSummaryDir, "Summary.md");
-            if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is {} coverageGitHubSummary
-              && File.Exists( coverageGitHubSummary ) ){
+            if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummary
+                 && File.Exists( coverageGitHubSummary ) ) {
                 links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummary )})" );
             }
             readme.AppendLine( "\n## Coverage\n\n" );
