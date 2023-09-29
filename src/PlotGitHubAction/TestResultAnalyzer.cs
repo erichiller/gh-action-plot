@@ -330,13 +330,15 @@ public class TestResultAnalyzer {
 
     private string? getErrorSourceLink( UnitTestResult failure ) {
         if ( failure.GetErrorHighestLocalSource() is { } errorPosition ) {
-            var resolvedPath = getUnitTestPath( errorPosition.FilePath );
-            Log.Debug( $"[{nameof(getErrorSourceLink)}] resolvedPath='{resolvedPath}', errorPosition.Line='{errorPosition.Line}'" );
-            if ( this._config.GetGitHubSourceLink( resolvedPath, errorPosition.Line ) is { } url ) {
-                Log.Debug( $"[{nameof(getErrorSourceLink)}] url={url}, errorPosition={errorPosition}" );
-                return url;
+            if ( getUnitTestPath( errorPosition.FilePath ) is { } resolvedPath ) {
+                Log.Debug( $"[{nameof(getErrorSourceLink)}] resolvedPath='{resolvedPath}', errorPosition.Line='{errorPosition.Line}'" );
+                if ( this._config.GetGitHubSourceLink( resolvedPath, errorPosition.Line ) is { } url ) {
+                    Log.Debug( $"[{nameof(getErrorSourceLink)}] url={url}, errorPosition={errorPosition}" );
+                    return url;
+                }
+                Log.Warn( $"[{nameof(getErrorSourceLink)}] Unable to get SourceLink via {nameof(ActionConfig.GetGitHubSourceLink)} for {errorPosition}" );
             }
-            Log.Warn( $"[{nameof(getErrorSourceLink)}] Unable to get SourceLink via {nameof(ActionConfig.GetGitHubSourceLink)} for {errorPosition}" );
+            Log.Warn( $"[{nameof(getErrorSourceLink)}] Unable to get UnitTestPath via {nameof(getUnitTestPath)} for {errorPosition.FilePath}" );
         }
         return null;
     }
@@ -350,7 +352,7 @@ public class TestResultAnalyzer {
         return ( methodName: failure.ShortTestName, null, null );
     }
 
-    private string getUnitTestPath( string unitTestPathFromTrx ) {
+    private string? getUnitTestPath( string unitTestPathFromTrx ) {
         var csProjects = _config.GetCsProjectsCopy();
         var csProj = csProjects.Where( p => unitTestPathFromTrx.Contains( p.RepoRelativeDirectoryPath ) )
                                .MaxBy( p => p.RepoRelativeDirectoryPath.Length );
@@ -366,6 +368,6 @@ public class TestResultAnalyzer {
             Log.Warn( $"[{nameof(getUnitTestPath)}] Found csProj: {csProj}, but was unable to determine the relative path." );
         }
         Log.Warn( $"[{nameof(getUnitTestPath)}] No {nameof(CsProjInfo)} matched {unitTestPathFromTrx}" );
-        throw new Exception();
+        return null;
     }
 }
