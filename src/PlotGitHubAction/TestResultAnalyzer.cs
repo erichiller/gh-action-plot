@@ -224,12 +224,14 @@ public class TestResultAnalyzer {
                     getTestResultOutputFilePath( failure )
                 );
                 Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
-                Sb.Append( ( $"`{markdownEscape(methodName)}` in "
-                             + sourceUrls.Add(
-                                 id: linkText,
-                                 url: url,
-                                 isCode: false
-                             )
+                Sb.Append( ( $"`{markdownEscape( methodName )}` in "
+                             + ( linkText is not null && url is not null
+                                 ? sourceUrls.Add(
+                                     id: linkText,
+                                     url: url,
+                                     isCode: false
+                                 )
+                                 : String.Empty )
                            ).PadRight( firstColumnWidth ) );
                 Sb.AppendLine(
                     colDiv
@@ -260,9 +262,11 @@ public class TestResultAnalyzer {
         var results = xd.Elements().First().Elements()
                         .Single( static el => el.Name.LocalName == "Results" )
                         .Elements().ToArray();
-        var failedResults = results.Where( el => el.Attributes()
-                                                   .Single( attr => attr.Name == "outcome" )
-                                                   .Value != "Passed"
+        string[] nonFailedResultOutcomes = { "Passed", "NotExecuted" /* = Skipped */ };
+        var failedResults = results.Where( el => !nonFailedResultOutcomes.Contains(
+                                               el.Attributes()
+                                                 .Single( attr => attr.Name == "outcome" )
+                                                 .Value )
         );
         foreach ( var result in results ) {
             _testResults.Add( ( sx.Deserialize( result.CreateReader() ) as UnitTestResult )! );
@@ -337,13 +341,13 @@ public class TestResultAnalyzer {
         return null;
     }
 
-    private (string methodName, string linkText, string url) getFormattedErrorSourceLink( UnitTestResult failure ) {
+    private (string methodName, string? linkText, string? url) getFormattedErrorSourceLink( UnitTestResult failure ) {
         if ( failure.GetErrorHighestLocalSource() is { } errorPosition
              && getErrorSourceLink( failure ) is { } url ) {
             return ( errorPosition.MethodName, $"`{errorPosition.FilePath}` line {errorPosition.Line}", url );
         }
         Log.Warn( $"[{nameof(getFormattedErrorSourceLink)}] Unable to extract regex via {nameof(UnitTestResult.GetErrorHighestLocalSource)} for {this}" );
-        throw new Exception();
+        return ( methodName: failure.ShortTestName, null, null );
     }
 
     private string getUnitTestPath( string unitTestPathFromTrx ) {
