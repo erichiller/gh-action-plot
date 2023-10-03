@@ -77,9 +77,9 @@ public static class PlotGen {
                              };
             var     sorted = xData.Zip( data.GetChartYData() ).OrderBy( t => t.First ).ToArray();
             Scatter series = plt.Add.Scatter( sorted.Select( t => t.First ).ToArray(), sorted.Select( t => t.Second ).ToArray() );
-            if ( data.LineStyle is { } lineStyle ) {
-                Log.Info( $"Setting LineStyle for {data.Title} to {lineStyle}" ); // TODO: decrease logging level
-                series.LineStyle = lineStyle;
+            if ( data.LinePattern is { } linePattern ) {
+                Log.Info( $"Setting LinePattern for {data.Title} to {linePattern}" ); // TODO: decrease logging level
+                series.LineStyle.LinePattern = linePattern;
             }
             if ( data.MarkerShape is { } markerShape ) {
                 Log.Info( $"Setting MarkerShape for {data.Title} to {markerShape}" ); // TODO: decrease logging level
