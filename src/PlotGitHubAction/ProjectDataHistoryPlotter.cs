@@ -50,18 +50,13 @@ public class JsonHistoryPlotter {
                                     X: g.Select( v => DateTime.Parse( v.time ) ).ToArray(),
                                     Y: g.Select( v => ( double )v.lineCount ).ToArray()
                                 ) {
-                                    LineStyle = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? new LineStyle() {
-                                            Width   = 1,
-                                            Pattern = LinePattern.Dot
-                                        }
-                                        : new LineStyle() {
-                                            Width   = 2,
-                                            Pattern = LinePattern.Solid
-                                        },
+                                    LinePattern = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
+                                        ? LinePattern.Dot
+                                        : LinePattern.Solid,
                                     MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? MarkerShape.OpenCircle
+                                        ? MarkerShape.OpenSquare
                                         : MarkerShape.FilledCircle
+                                        // ? MarkerShape.OpenCircle
                                 }
                    ).ToList();
         }
