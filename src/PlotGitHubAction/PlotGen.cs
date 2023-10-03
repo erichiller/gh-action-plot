@@ -81,9 +81,9 @@ public static class PlotGen {
                 Log.Info( $"Setting LineStyle for {data.Title} to {lineStyle}" ); // TODO: decrease logging level
                 series.LineStyle = lineStyle;
             }
-            if ( data.MarkerStyle is { } markerStyle ) {
-                Log.Info( $"Setting LineStyle for {data.Title} to {markerStyle}" ); // TODO: decrease logging level
-                series.MarkerStyle = markerStyle;
+            if ( data.MarkerShape is { } markerShape ) {
+                Log.Info( $"Setting MarkerShape for {data.Title} to {markerShape}" ); // TODO: decrease logging level
+                series.MarkerStyle.Shape = markerShape;
             }
             series.Label = data.Title;
             // diag

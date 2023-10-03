@@ -10,7 +10,7 @@ public interface IXYData {
     public double[]     GetChartXData( );
     public double[]     GetChartYData( );
     public LineStyle?   LineStyle   { get; }
-    public MarkerStyle? MarkerStyle { get; init; }
+    public MarkerShape? MarkerShape { get; init; }
 }
 
 public interface IXYPlotConfig {
@@ -83,5 +83,5 @@ public record XYData<TXData>(
 
     public double[]     GetChartYData( ) => Y;
     public LineStyle?   LineStyle        { get; init; }
-    public MarkerStyle? MarkerStyle      { get; init; }
+    public MarkerShape? MarkerShape      { get; init; }
 }

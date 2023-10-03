@@ -59,9 +59,9 @@ public class JsonHistoryPlotter {
                                             Width   = 2,
                                             Pattern = LinePattern.Solid
                                         },
-                                    MarkerStyle = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? new MarkerStyle() { Shape = MarkerShape.OpenCircle }
-                                        : new MarkerStyle() { Shape = MarkerShape.FilledCircle }
+                                    MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
+                                        ? MarkerShape.OpenCircle
+                                        : MarkerShape.FilledCircle
                                 }
                    ).ToList();
         }
