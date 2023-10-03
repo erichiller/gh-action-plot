@@ -6,10 +6,11 @@ using ScottPlot;
 namespace PlotGitHubAction;
 
 public interface IXYData {
-    public string     Title { get; }
-    public double[]   GetChartXData( );
-    public double[]   GetChartYData( );
-    public LineStyle? LineStyle { get; }
+    public string       Title { get; }
+    public double[]     GetChartXData( );
+    public double[]     GetChartYData( );
+    public LineStyle?   LineStyle   { get; }
+    public MarkerStyle? MarkerStyle { get; init; }
 }
 
 public interface IXYPlotConfig {
@@ -80,6 +81,7 @@ public record XYData<TXData>(
                                             _                       => throw new System.Exception( "Invalid type" )
                                         };
 
-    public double[]   GetChartYData( ) => Y;
-    public LineStyle? LineStyle        { get; init; }
+    public double[]     GetChartYData( ) => Y;
+    public LineStyle?   LineStyle        { get; init; }
+    public MarkerStyle? MarkerStyle      { get; init; }
 }

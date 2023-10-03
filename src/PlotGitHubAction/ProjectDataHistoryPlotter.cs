@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 
+using ScottPlot;
+
 namespace PlotGitHubAction;
 
 public class JsonHistoryPlotter {
@@ -47,7 +49,20 @@ public class JsonHistoryPlotter {
                                     Title: g.Key,
                                     X: g.Select( v => DateTime.Parse( v.time ) ).ToArray(),
                                     Y: g.Select( v => ( double )v.lineCount ).ToArray()
-                                )
+                                ) {
+                                    LineStyle = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
+                                        ? new LineStyle() {
+                                            Width   = 1,
+                                            Pattern = LinePattern.Dot
+                                        }
+                                        : new LineStyle() {
+                                            Width   = 2,
+                                            Pattern = LinePattern.Solid
+                                        },
+                                    MarkerStyle = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
+                                        ? new MarkerStyle() { Shape = MarkerShape.OpenCircle }
+                                        : new MarkerStyle() { Shape = MarkerShape.FilledCircle }
+                                }
                    ).ToList();
         }
         if ( plotDataSelection.HasFlag( PlotDataSelection.Total ) ) {
