@@ -79,7 +79,7 @@ public static class PlotGen {
             Scatter series = plt.Add.Scatter( sorted.Select( t => t.First ).ToArray(), sorted.Select( t => t.Second ).ToArray() );
             if ( data.LinePattern is { } linePattern ) {
                 Log.Info( $"Setting LinePattern for {data.Title} to {linePattern}" ); // TODO: decrease logging level
-                series.LineStyle.LinePattern = linePattern;
+                series.LineStyle.Pattern = linePattern;
             }
             if ( data.MarkerShape is { } markerShape ) {
                 Log.Info( $"Setting MarkerShape for {data.Title} to {markerShape}" ); // TODO: decrease logging level
