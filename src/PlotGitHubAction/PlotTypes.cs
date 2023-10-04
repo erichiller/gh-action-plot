@@ -9,7 +9,8 @@ public interface IXYData {
     public string       Title { get; }
     public double[]     GetChartXData( );
     public double[]     GetChartYData( );
-    public LinePattern? LinePattern   { get; }
+    public LinePattern? LinePattern { get; }
+    public Color? LineColor { get; }
     public MarkerShape? MarkerShape { get; init; }
 }
 
@@ -83,5 +84,6 @@ public record XYData<TXData>(
 
     public double[]     GetChartYData( ) => Y;
     public LinePattern? LinePattern      { get; init; }
+    public Color?       LineColor        { get; init; }
     public MarkerShape? MarkerShape      { get; init; }
 }

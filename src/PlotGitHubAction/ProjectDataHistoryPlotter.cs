@@ -34,6 +34,16 @@ public class JsonHistoryPlotter {
         Log.Debug( jsonOutput );
         System.IO.File.WriteAllText( _jsonHistoryPath, jsonOutput );
     }
+    
+    private static Color getColorForProjectName( string name ) {
+        if ( name.EndsWith( ".Tests" ) ) {
+            Log.Info( $"Setting name from {name} to '{name[..^6]}'" );
+            name = name[ ..^6 ];
+        }
+        var palette = new ScottPlot.Palettes.Tsitsulin();
+        return palette.GetColor( (int) Utils.GetDeterministicHashCode( name ) );
+    }
+
 
     public XYPlotConfig<DateTime> AddDataToPlottable( XYPlotConfig<DateTime> plottable, PlotDataSelection plotDataSelection = PlotDataSelection.Projects | PlotDataSelection.Total ) {
         Log.Info( "\n\n==== AddDataToPlottable ====\n" );
@@ -53,10 +63,10 @@ public class JsonHistoryPlotter {
                                     LinePattern = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
                                         ? LinePattern.Dot
                                         : LinePattern.Solid,
+                                    LineColor = getColorForProjectName(g.Key),
                                     MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? MarkerShape.OpenSquare
+                                        ? MarkerShape.FilledSquare
                                         : MarkerShape.FilledCircle
-                                        // ? MarkerShape.OpenCircle
                                 }
                    ).ToList();
         }

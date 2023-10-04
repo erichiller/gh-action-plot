@@ -441,7 +441,7 @@ public class UrlMdShortUtils {
             //
             if ( !_idStrToGenerated.TryGetValue( id, out string? generatedId ) ) {
                 // generatedId = $"{_generatedIdPrefix}{_idSeq++}";
-                generatedId = toBase36( getDeterministicHashCode( url ) );
+                generatedId = toBase36( Utils.GetDeterministicHashCode( url ) );
                 _urlMap.TryAdd( generatedId, url );
                 _usedUrls.TryAdd( generatedId, url );
                 _idStrToGenerated.TryAdd( id, generatedId );
@@ -509,30 +509,6 @@ public class UrlMdShortUtils {
         }
         return s.PadLeft( 7, '0' );
     }
-
-
-    /// <summary>
-    /// Create a predictable Hash code for input <paramref name="str"/>.
-    /// This is a Hash code that remains the same across Hardware, OS, and program runs.
-    /// </summary>
-    /// <returns><see cref="uint"/> based Hash code</returns>
-    private static uint getDeterministicHashCode( string str ) {
-        unchecked {
-            uint hash1 = ( 5381 << 16 ) + 5381;
-            uint hash2 = hash1;
-
-            for ( uint i = 0 ; i < str.Length ; i += 2 ) {
-                hash1 = ( ( hash1 << 5 ) + hash1 ) ^ str[ ( int )i ];
-                if ( i == str.Length - 1 ) {
-                    break;
-                }
-
-                hash2 = ( ( hash2 << 5 ) + hash2 ) ^ str[ ( int )i + 1 ];
-            }
-
-            return hash1 + ( hash2 * 1566083941 );
-        }
-    }
 }
 
 /*
@@ -569,5 +545,33 @@ public static class Log {
 
     public static void Error( object msg ) {
         System.Console.WriteLine( $"ERROR: {msg}" );
+    }
+}
+
+public static class Utils {
+    
+
+
+    /// <summary>
+    /// Create a predictable Hash code for input <paramref name="str"/>.
+    /// This is a Hash code that remains the same across Hardware, OS, and program runs.
+    /// </summary>
+    /// <returns><see cref="uint"/> based Hash code</returns>
+    public static uint GetDeterministicHashCode( string str ) {
+        unchecked {
+            uint hash1 = ( 5381 << 16 ) + 5381;
+            uint hash2 = hash1;
+
+            for ( uint i = 0 ; i < str.Length ; i += 2 ) {
+                hash1 = ( ( hash1 << 5 ) + hash1 ) ^ str[ ( int )i ];
+                if ( i == str.Length - 1 ) {
+                    break;
+                }
+
+                hash2 = ( ( hash2 << 5 ) + hash2 ) ^ str[ ( int )i + 1 ];
+            }
+
+            return hash1 + ( hash2 * 1566083941 );
+        }
     }
 }
