@@ -79,8 +79,8 @@ public class JsonHistoryPlotter {
                                         : LinePattern.Solid,
                                     LineColor = getColorForProjectName( g.Key ),
                                     MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? MarkerShape.FilledSquare
-                                        : MarkerShape.FilledCircle
+                                        ? MarkerShape.OpenCircle // MarkerShape.FilledCircle
+                                        : MarkerShape.FilledSquare
                                 }
                    ).ToList();
         }
