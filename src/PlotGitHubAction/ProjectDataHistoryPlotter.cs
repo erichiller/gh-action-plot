@@ -40,8 +40,15 @@ public class JsonHistoryPlotter {
             Log.Info( $"Setting name from {name} to '{name[..^6]}'" );
             name = name[ ..^6 ];
         }
-        var palette = new ScottPlot.Palettes.Tsitsulin();
-        return palette.GetColor( (int) Utils.GetDeterministicHashCode( name ) );
+        var  palette    = new ScottPlot.Palettes.Tsitsulin();
+        uint nameHash   = Utils.GetDeterministicHashCode( name );
+        int  colorIndex = Math.Abs( ( int )nameHash );
+        try {
+            return palette.GetColor(colorIndex);
+        } catch ( IndexOutOfRangeException ) {
+            Log.Error( $"Error, could not find color for index: '{colorIndex}' within Colors of Length {palette.Colors.Length} using hash '{nameHash}' of name '{name}'. (ColorIndex % ColorSize={colorIndex % palette.Colors.Length})" );
+            throw;
+        }
     }
 
 
