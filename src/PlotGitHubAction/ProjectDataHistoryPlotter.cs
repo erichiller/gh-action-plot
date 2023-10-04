@@ -34,17 +34,24 @@ public class JsonHistoryPlotter {
         Log.Debug( jsonOutput );
         System.IO.File.WriteAllText( _jsonHistoryPath, jsonOutput );
     }
-    
+
     private static Color getColorForProjectName( string name ) {
         if ( name.EndsWith( ".Tests" ) ) {
-            Log.Info( $"Setting name from {name} to '{name[..^6]}'" );
+            Log.Info( $"Setting name from {name} to '{name[ ..^6 ]}'" );
             name = name[ ..^6 ];
         }
         var  palette    = new ScottPlot.Palettes.Tsitsulin();
         uint nameHash   = Utils.GetDeterministicHashCode( name );
         int  colorIndex = Math.Abs( ( int )nameHash );
         try {
-            return palette.GetColor(colorIndex);
+            var color = palette.GetColor( colorIndex );
+            Log.Info( $"Color:         {color.Red},{color.Green},{color.Blue} ; {color.ToStringRGB()}\n" +
+                      $"ColorIndex:    '{colorIndex}'\n"                                                 +
+                      $"Colors Length: {palette.Colors.Length}\n"                                        +
+                      $"Name:          '{name}'\n"                                                       +
+                      $"Name Hash:     '{nameHash}'\n"                                                   +
+                      $"ColorIndex % ColorSize={colorIndex % palette.Colors.Length}" ); // TODO: decrease log level
+            return color;
         } catch ( IndexOutOfRangeException ) {
             Log.Error( $"Error, could not find color for index: '{colorIndex}' within Colors of Length {palette.Colors.Length} using hash '{nameHash}' of name '{name}'. (ColorIndex % ColorSize={colorIndex % palette.Colors.Length})" );
             throw;
@@ -70,7 +77,7 @@ public class JsonHistoryPlotter {
                                     LinePattern = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
                                         ? LinePattern.Dot
                                         : LinePattern.Solid,
-                                    LineColor = getColorForProjectName(g.Key),
+                                    LineColor = getColorForProjectName( g.Key ),
                                     MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
                                         ? MarkerShape.FilledSquare
                                         : MarkerShape.FilledCircle

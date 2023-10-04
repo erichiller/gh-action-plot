@@ -78,11 +78,11 @@ public static class PlotGen {
             var     sorted = xData.Zip( data.GetChartYData() ).OrderBy( t => t.First ).ToArray();
             Scatter series = plt.Add.Scatter( sorted.Select( t => t.First ).ToArray(), sorted.Select( t => t.Second ).ToArray() );
             if ( data.LinePattern is { } linePattern ) {
-                Log.Verbose( $"Setting LinePattern for {data.Title} to {linePattern}" );
+                Log.Info( $"Setting LinePattern for {data.Title} to {linePattern}" ); // TODO: decrease logging level
                 series.LineStyle.Pattern = linePattern;
             }
             if ( data.LineColor is { } lineColor ) {
-                Log.Info( $"Setting LineColor for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue})" ); // TODO: decrease logging level
+                Log.Info( $"Setting LineColor for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue} ; {lineColor.ToStringRGB()})" ); // TODO: decrease logging level
                 series.LineStyle.Color = lineColor;
             }
             if ( data.MarkerShape is { } markerShape ) {
