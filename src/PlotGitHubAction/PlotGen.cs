@@ -87,7 +87,7 @@ public static class PlotGen {
                 Log.Info( $"Setting MarkerShape for {data.Title} to {markerShape}" ); // TODO: decrease logging level
                 series.MarkerStyle = new MarkerStyle(
                   shape: markerShape,
-                  size: 10,
+                  size: 7,
                   color: series.LineStyle.Color );
             }
             series.Label = data.Title;
