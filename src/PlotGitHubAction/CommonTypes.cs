@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
@@ -550,8 +551,11 @@ public static class Log {
 
 public static class Utils {
     
-
-
+    public static readonly JsonSerializerOptions SERIALIZER_OPTIONS = new JsonSerializerOptions {
+        Converters    = { new JsonStringEnumConverter(), new ScottPlotColorConverter() },
+        WriteIndented = true
+    };
+    
     /// <summary>
     /// Create a predictable Hash code for input <paramref name="str"/>.
     /// This is a Hash code that remains the same across Hardware, OS, and program runs.

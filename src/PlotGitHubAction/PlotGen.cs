@@ -10,12 +10,10 @@ using ScottPlot.Plottables;
 namespace PlotGitHubAction;
 
 public static class PlotGen {
-    public static readonly JsonSerializerOptions SERIALIZER_OPTIONS = new JsonSerializerOptions {
-        Converters    = { new JsonStringEnumConverter() },
-        WriteIndented = true
-    };
 
-    public static string GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
+    private static readonly JsonSerializerOptions SERIALIZER_OPTIONS = Utils.SERIALIZER_OPTIONS;
+    
+    public static           string                GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
 
     public static void CreatePlot( string jsonString, string plotDefinitionsDir ) {
         Log.Info( $"==== {nameof(CreatePlot)} ====" );

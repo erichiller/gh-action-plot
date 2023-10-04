@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.Json;
 
 using ScottPlot;
 
@@ -86,4 +88,17 @@ public record XYData<TXData>(
     public LinePattern? LinePattern      { get; init; }
     public Color?       LineColor        { get; init; }
     public MarkerShape? MarkerShape      { get; init; }
+}
+
+
+
+
+public class ScottPlotColorConverter : System.Text.Json.Serialization.JsonConverter<ScottPlot.Color> {
+    public override ScottPlot.Color Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options ) {
+        return ScottPlot.Color.FromHex( reader.GetString() ?? throw new JsonException() );
+    }
+
+    public override void Write( Utf8JsonWriter writer, ScottPlot.Color value, JsonSerializerOptions options ) {
+        ( writer ?? throw new ArgumentNullException( nameof(writer) ) ).WriteStringValue( value.ToStringRGBA() );
+    }
 }

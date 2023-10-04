@@ -22,7 +22,7 @@ public static class RepoAnalysis {
             var coverageHistoryPlotter = new CoverageHistoryPlotter( config.CoverageHistoryDir );
             var coveragePlot           = coverageHistoryPlotter.ScanAndPlot();
             PlotGen.CreatePlot(
-                JsonSerializer.Serialize( coveragePlot, PlotGen.SERIALIZER_OPTIONS ),
+                JsonSerializer.Serialize( coveragePlot, Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
             if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummary
                  && File.Exists( coverageGitHubSummary ) ) {
@@ -36,7 +36,7 @@ public static class RepoAnalysis {
             var todoScanner = new TodoScanner( config );
             todoScanner.ScanForTodos();
             PlotGen.CreatePlot(
-                JsonSerializer.Serialize( todoScanner.GetPlottable(), PlotGen.SERIALIZER_OPTIONS ),
+                JsonSerializer.Serialize( todoScanner.GetPlottable(), Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
             links.AppendLine( $"- [TO-DOs]({relPath( todoScanner.MarkdownOutputPath )})" );
             readme.AppendLine( "\n## To-Do\n\n" );
@@ -48,7 +48,7 @@ public static class RepoAnalysis {
             lineCounter.Analyze();
             var lineCountPlottable = lineCounter.GetPlottable();
             PlotGen.CreatePlot(
-                JsonSerializer.Serialize( lineCountPlottable, PlotGen.SERIALIZER_OPTIONS ),
+                JsonSerializer.Serialize( lineCountPlottable, Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
             links.AppendLine( $"- [Line Counts]({relPath( lineCounter.MarkdownOutputPath )})" );
             readme.AppendLine( "\n## Line Counts\n\n" );
@@ -58,7 +58,7 @@ public static class RepoAnalysis {
             var buildLogAnalyzer = new BuildLogAnalyzer( config );
             buildLogAnalyzer.Analyze();
             PlotGen.CreatePlot(
-                JsonSerializer.Serialize( buildLogAnalyzer.GetPlottable(), PlotGen.SERIALIZER_OPTIONS ),
+                JsonSerializer.Serialize( buildLogAnalyzer.GetPlottable(), Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
             links.AppendLine( $"- [Build Warnings]({relPath( buildLogAnalyzer.MarkdownPath )})" );
             readme.AppendLine( "\n## Build Warnings\n\n" );
