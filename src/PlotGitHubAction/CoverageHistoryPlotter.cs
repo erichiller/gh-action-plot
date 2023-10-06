@@ -8,12 +8,12 @@ using System.Xml.Serialization;
 namespace PlotGitHubAction;
 
 public class CoverageHistoryPlotter {
-    readonly      string                                                   _filePattern = @"*_CoverageHistory.xml";
-    readonly      string                                                   _directoryRoot;
-    readonly      Dictionary<DateTime, Dictionary<string, List<Coverage>>> _dtAssemblyClasses           = new ();
-    public const  string                                                   TOTAL_CHART_OUTPUT_PATH      = "Coverage";
-    private const string                                                   _assembly_chart_output_path  = "CoveragePerAssembly";
-    private const string                                                   _coverable_chart_output_path = "Coverable";
+    readonly     string                                                   _filePattern = @"*_CoverageHistory.xml";
+    readonly     string                                                   _directoryRoot;
+    readonly     Dictionary<DateTime, Dictionary<string, List<Coverage>>> _dtAssemblyClasses           = new ();
+    public const string                                                   TOTAL_CHART_OUTPUT_PATH      = "Coverage";
+    public const string                                                   ASSEMBLY_CHART_OUTPUT_PATH  = "CoveragePerAssembly";
+    public const string                                                   COVERABLE_CHART_OUTPUT_PATH = "Coverable";
 
     public CoverageHistoryPlotter( string coverageHistoryDir ) {
         _directoryRoot = coverageHistoryDir;
@@ -127,7 +127,7 @@ public class CoverageHistoryPlotter {
             ),
             new XYPlotConfig<DateTime>(
                 Title: "Coverage per Assembly",
-                OutputFileName: CoverageHistoryPlotter._assembly_chart_output_path,
+                OutputFileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH,
                 PlotType.Scatter,
                 Width: 1200,
                 Height: 1200,
@@ -143,7 +143,7 @@ public class CoverageHistoryPlotter {
             ),
             new XYPlotConfig<DateTime>(
                 Title: "Coverable",
-                OutputFileName: CoverageHistoryPlotter._coverable_chart_output_path,
+                OutputFileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH,
                 PlotType.Scatter,
                 Width: 1200,
                 Height: 1200,
