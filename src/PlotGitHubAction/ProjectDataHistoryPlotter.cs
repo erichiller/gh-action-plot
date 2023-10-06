@@ -68,20 +68,24 @@ public class JsonHistoryPlotter {
                    .SelectMany( kv => Enumerable.Repeat( kv.Key, kv.Value.Count )
                                                 .Zip( kv.Value, ( a, b ) => ( time: a, proj: b.Key, lineCount: b.Value ) ) )
                    .GroupBy( t => t.proj )
-                   .Select( g =>
-                                new XYData<DateTime>(
-                                    Title: g.Key,
-                                    X: g.Select( v => DateTime.Parse( v.time ) ).ToArray(),
-                                    Y: g.Select( v => ( double )v.lineCount ).ToArray()
-                                ) {
-                                    LinePattern = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? LinePattern.Dot
-                                        : LinePattern.Solid,
-                                    LineColor = getColorForProjectName( g.Key ),
-                                    MarkerShape = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase )
-                                        ? MarkerShape.OpenCircle // MarkerShape.FilledCircle
-                                        : MarkerShape.FilledSquare
-                                }
+                   .Select( g => {
+                           bool isTest = g.Key.Contains( "Tests", StringComparison.InvariantCultureIgnoreCase );
+                           return new XYData<DateTime>(
+                               Title: g.Key,
+                               X: g.Select( v => DateTime.Parse( v.time ) ).ToArray(),
+                               Y: g.Select( v => ( double )v.lineCount ).ToArray()
+                           ) {
+                               LinePattern = isTest
+                                   ? LinePattern.Dot
+                                   : LinePattern.Solid,
+                               LineColor = getColorForProjectName( g.Key ),
+                               LineWidth = isTest ? 1 : 2,
+                               MarkerShape = isTest
+                                   ? MarkerShape.OpenCircle
+                                   : MarkerShape.FilledSquare,
+                               MarkerSize = isTest ? 4 : 7
+                           };
+                       }
                    ).ToList();
         }
         if ( plotDataSelection.HasFlag( PlotDataSelection.Total ) ) {

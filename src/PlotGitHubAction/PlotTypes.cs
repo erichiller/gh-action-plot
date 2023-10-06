@@ -12,8 +12,10 @@ public interface IXYData {
     public double[]     GetChartXData( );
     public double[]     GetChartYData( );
     public LinePattern? LinePattern { get; }
-    public Color? LineColor { get; }
-    public MarkerShape? MarkerShape { get; init; }
+    public Color?       LineColor   { get; }
+    public float?       LineWidth   { get; }
+    public MarkerShape? MarkerShape { get; }
+    public float?       MarkerSize  { get; }
 }
 
 public interface IXYPlotConfig {
@@ -85,9 +87,11 @@ public record XYData<TXData>(
                                         };
 
     public double[]     GetChartYData( ) => Y;
-    public LinePattern? LinePattern      { get; init; }
-    public Color?       LineColor        { get; init; }
-    public MarkerShape? MarkerShape      { get; init; }
+    public LinePattern? LinePattern      { get; init; } = null;
+    public Color?       LineColor        { get; init; } = null;
+    public float?       LineWidth        { get; init; } = null;
+    public MarkerShape? MarkerShape      { get; init; } = null;
+    public float?       MarkerSize       { get; init; } = null;
 }
 
 

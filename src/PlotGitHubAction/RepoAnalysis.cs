@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -29,7 +30,7 @@ public static class RepoAnalysis {
                 links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummary )})" );
             }
             readme.AppendLine( "\n## Coverage\n\n" );
-            readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.CHART_OUTPUT_PATH ) );
+            readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) );
         }
 
         if ( config.IsTodoScanEnabled ) {
@@ -46,7 +47,7 @@ public static class RepoAnalysis {
         if ( config.SourceScanDir is { } ) {
             var lineCounter = new FileLineCounter( config );
             lineCounter.Analyze();
-            var lineCountPlottable = lineCounter.GetPlottable();
+            XYPlotConfig<DateTime>[] lineCountPlottable = lineCounter.GetPlottable();
             PlotGen.CreatePlot(
                 JsonSerializer.Serialize( lineCountPlottable, Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );

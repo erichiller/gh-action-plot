@@ -10,10 +10,9 @@ using ScottPlot.Plottables;
 namespace PlotGitHubAction;
 
 public static class PlotGen {
-
     private static readonly JsonSerializerOptions SERIALIZER_OPTIONS = Utils.SERIALIZER_OPTIONS;
-    
-    public static           string                GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
+
+    public static string GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
 
     public static void CreatePlot( string jsonString, string plotDefinitionsDir ) {
         Log.Info( $"==== {nameof(CreatePlot)} ====" );
@@ -76,19 +75,24 @@ public static class PlotGen {
             var     sorted = xData.Zip( data.GetChartYData() ).OrderBy( t => t.First ).ToArray();
             Scatter series = plt.Add.Scatter( sorted.Select( t => t.First ).ToArray(), sorted.Select( t => t.Second ).ToArray() );
             if ( data.LinePattern is { } linePattern ) {
-                Log.Info( $"Setting LinePattern for {data.Title} to {linePattern}" ); // TODO: decrease logging level
+                Log.Info( $"Setting {nameof(IXYData.LinePattern)} for {data.Title} to {linePattern}" ); // TODO: decrease logging level
                 series.LineStyle.Pattern = linePattern;
             }
             if ( data.LineColor is { } lineColor ) {
-                Log.Info( $"Setting LineColor for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue} ; {lineColor.ToStringRGB()})" ); // TODO: decrease logging level
+                Log.Info( $"Setting {nameof(IXYData.LineColor)} for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue} ; {lineColor.ToStringRGB()})" ); // TODO: decrease logging level
                 series.LineStyle.Color = lineColor;
             }
-            if ( data.MarkerShape is { } markerShape ) {
-                Log.Info( $"Setting MarkerShape for {data.Title} to {markerShape}" ); // TODO: decrease logging level
+            if ( data.LineWidth is { } lineWidth ) {
+                Log.Info( $"Setting {nameof(IXYData.LineWidth)} for {data.Title} to {lineWidth}" ); // TODO: decrease logging level
+                series.LineStyle.Width = lineWidth;
+            }
+            if ( data is { MarkerShape: { } markerShape, MarkerSize: var markerSize } ) {
+                markerSize ??= 7;
+                Log.Info( $"Setting Marker for {data.Title} to (Shape={markerShape} Size={markerSize})" ); // TODO: decrease logging level
                 series.MarkerStyle = new MarkerStyle(
-                  shape: markerShape,
-                  size: 7,
-                  color: series.LineStyle.Color );
+                    shape: markerShape,
+                    size: markerSize.Value,
+                    color: series.LineStyle.Color );
             }
             series.Label = data.Title;
             // diag

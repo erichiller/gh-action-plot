@@ -224,7 +224,7 @@ public class TestResultAnalyzer {
                     getTestResultOutputFilePath( failure )
                 );
                 Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
-                Sb.Append( ( $"`{markdownEscape( methodName )}` in "
+                Sb.Append( ( $"{markdownInlineCodeSafe( methodName )} in "
                              + ( linkText is not null && url is not null
                                  ? sourceUrls.Add(
                                      id: linkText,
@@ -251,7 +251,10 @@ public class TestResultAnalyzer {
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
     }
 
-    private string markdownEscape( string inputString ) {
+    private string markdownInlineCodeSafe( string inputString ) {
+        inputString = inputString.TrimStart( '`' )
+                                 .TrimEnd( '`' );
+        inputString = inputString.Contains( '`' ) ? $"``{inputString}``" : $"`{inputString}`";
         return inputString.Replace( @"|", @"\|" );
     }
 

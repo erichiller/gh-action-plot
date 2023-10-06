@@ -8,16 +8,18 @@ using System.Xml.Serialization;
 namespace PlotGitHubAction;
 
 public class CoverageHistoryPlotter {
-    readonly     string                                                   _filePattern = @"*_CoverageHistory.xml";
-    readonly     string                                                   _directoryRoot;
-    readonly     Dictionary<DateTime, Dictionary<string, List<Coverage>>> _dtAssemblyClasses = new ();
-    public const string                                                   CHART_OUTPUT_PATH  = "Coverage";
+    readonly      string                                                   _filePattern = @"*_CoverageHistory.xml";
+    readonly      string                                                   _directoryRoot;
+    readonly      Dictionary<DateTime, Dictionary<string, List<Coverage>>> _dtAssemblyClasses           = new ();
+    public const  string                                                   TOTAL_CHART_OUTPUT_PATH      = "Coverage";
+    private const string                                                   _assembly_chart_output_path  = "CoveragePerAssembly";
+    private const string                                                   _coverable_chart_output_path = "Coverable";
 
     public CoverageHistoryPlotter( string coverageHistoryDir ) {
         _directoryRoot = coverageHistoryDir;
     }
 
-    public XYPlotConfig<DateTime> ScanAndPlot( ) {
+    public XYPlotConfig<DateTime>[] ScanAndPlot( ) {
         this.scan();
         return this.plot();
     }
@@ -49,19 +51,52 @@ public class CoverageHistoryPlotter {
         }
     }
 
-    private XYPlotConfig<DateTime> plot( ) {
+    private record TotalCoverage( double Covered, double Total, double Percent );
+
+    private XYPlotConfig<DateTime>[] plot( ) {
         Log.Debug( $"==== {nameof(CoverageHistoryPlotter)}.{nameof(plot)} ====" );
-        var asmKeyedData = _dtAssemblyClasses
-                           .SelectMany( kv => Enumerable.Repeat( kv.Key, kv.Value.Count )
-                                                        .Zip( kv.Value, ( a, b ) => ( time: a, asm: b.Key, coverages: b.Value, b.Value.Count ) ) )
-                           .GroupBy( tasm => tasm.asm )
-                           .ToDictionary(
-                               g => g.Key,
-                               g => g.ToDictionary(
-                                   tp => tp.time,
-                                   tp => new CoverageDate( tp.coverages )
-                               )
-                           );
+        // assembly => { Date => Coverage }
+        Dictionary<string, Dictionary<DateTime, CoverageDate>> asmKeyedData = _dtAssemblyClasses
+                                                                              .SelectMany( kv => Enumerable.Repeat( kv.Key, kv.Value.Count )
+                                                                                                           .Zip( kv.Value, ( a, b ) => ( time: a, asm: b.Key, coverages: b.Value, b.Value.Count ) ) )
+                                                                              .GroupBy( tasm => tasm.asm )
+                                                                              .ToDictionary(
+                                                                                  g => g.Key,
+                                                                                  g => g.ToDictionary(
+                                                                                      tp => tp.time,
+                                                                                      tp => new CoverageDate( tp.coverages )
+                                                                                  )
+                                                                              );
+        Dictionary<DateTime, TotalCoverage> totalCoverageByLines = _dtAssemblyClasses.ToDictionary(
+            keySelector: kv => kv.Key,
+            elementSelector: kv => {
+                double    covered = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.CoveredLines ) ).Sum();
+                double    total   = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.CoverableLines ) ).Sum();
+                double percent = covered / total;
+                return new TotalCoverage( Covered: covered,
+                                          Total: total,
+                                          Percent: percent );
+            } );
+        Dictionary<DateTime, TotalCoverage> totalCoverageByBranches = _dtAssemblyClasses.ToDictionary(
+            keySelector: kv => kv.Key,
+            elementSelector: kv => {
+                double covered = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.CoveredBranches ) ).Sum();
+                double total   = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.TotalBranches ) ).Sum();
+                double percent = ( double )covered / total;
+                return new TotalCoverage( Covered: covered,
+                                          Total: total,
+                                          Percent: percent );
+            } );
+        Dictionary<DateTime, TotalCoverage> totalCoverageByCodeElements = _dtAssemblyClasses.ToDictionary(
+            keySelector: kv => kv.Key,
+            elementSelector: kv => {
+                double covered = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.CoveredCodeElements ) ).Sum();
+                double total   = kv.Value.Values.SelectMany( asm => asm.Select( cv => cv.TotalCodeElements ) ).Sum();
+                double percent = ( double )covered / total;
+                return new TotalCoverage( Covered: covered,
+                                          Total: total,
+                                          Percent: percent );
+            } );
 
         foreach ( var asmData in asmKeyedData ) {
             foreach ( var dtA in asmData.Value ) {
@@ -69,24 +104,64 @@ public class CoverageHistoryPlotter {
             }
         }
         // TODO: FUTURE: Output coverable lines as alternative measure to FileLineCounter
-        var plt = new XYPlotConfig<DateTime>(
-            Title: "Coverage",
-            OutputFileName: CoverageHistoryPlotter.CHART_OUTPUT_PATH,
-            PlotType.Scatter,
-            Width: 1200,
-            Height: 1200,
-            XAxisType: AxisType.DateTime,
-            YAxisType: AxisType.Percent,
-            Data: asmKeyedData.Select(
-                ad => new XYData<DateTime>(
-                    Title: ad.Key,
-                    X: ad.Value.Select( cd => cd.Key ).ToArray(),
-                    Y: ad.Value.Select( cd => Math.Round( ( double )cd.Value.Total.CoveredLines / cd.Value.Total.CoverableLines, digits: 2 ) ).ToArray()
-                )
-            ).ToArray()
-        );
-        Log.Debug( "== Plot ==\n" + plt );
-        return plt;
+        return new[] {
+            new XYPlotConfig<DateTime>(
+                Title: "Coverage Total",
+                OutputFileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH,
+                PlotType.Scatter,
+                Width: 1200,
+                Height: 1200,
+                XAxisType: AxisType.DateTime,
+                YAxisType: AxisType.Percent,
+                Data: ( new Dictionary<string, Dictionary<DateTime, TotalCoverage>>() {
+                    [ "Lines" ]         = totalCoverageByLines,
+                    [ "Branches" ]      = totalCoverageByBranches,
+                    [ "Code Elements" ] = totalCoverageByCodeElements
+                } ).Select(
+                    ad => new XYData<DateTime>(
+                        Title: ad.Key,
+                        X: ad.Value.Select( cd => cd.Key ).ToArray(),
+                        Y: ad.Value.Select( cd => cd.Value.Percent ).ToArray()
+                    )
+                ).ToArray()
+            ),
+            new XYPlotConfig<DateTime>(
+                Title: "Coverage per Assembly",
+                OutputFileName: CoverageHistoryPlotter._assembly_chart_output_path,
+                PlotType.Scatter,
+                Width: 1200,
+                Height: 1200,
+                XAxisType: AxisType.DateTime,
+                YAxisType: AxisType.Percent,
+                Data: asmKeyedData.Select(
+                    ad => new XYData<DateTime>(
+                        Title: ad.Key,
+                        X: ad.Value.Select( cd => cd.Key ).ToArray(),
+                        Y: ad.Value.Select( cd => Math.Round( ( double )cd.Value.Total.CoveredLines / cd.Value.Total.CoverableLines, digits: 2 ) ).ToArray()
+                    )
+                ).ToArray()
+            ),
+            new XYPlotConfig<DateTime>(
+                Title: "Coverable",
+                OutputFileName: CoverageHistoryPlotter._coverable_chart_output_path,
+                PlotType.Scatter,
+                Width: 1200,
+                Height: 1200,
+                XAxisType: AxisType.DateTime,
+                YAxisType: AxisType.Numeric,
+                Data: ( new Dictionary<string, Dictionary<DateTime, TotalCoverage>>() {
+                    [ "Lines" ]         = totalCoverageByLines,
+                    [ "Branches" ]      = totalCoverageByBranches,
+                    [ "Code Elements" ] = totalCoverageByCodeElements
+                } ).Select(
+                    ad => new XYData<DateTime>(
+                        Title: ad.Key,
+                        X: ad.Value.Select( cd => cd.Key ).ToArray(),
+                        Y: ad.Value.Select( cd => cd.Value.Total ).ToArray()
+                    )
+                ).ToArray()
+            )
+        };
     }
 }
 
