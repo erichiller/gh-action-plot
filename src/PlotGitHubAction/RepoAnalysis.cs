@@ -28,13 +28,16 @@ public static class RepoAnalysis {
             if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummaryPath
                  && File.Exists( coverageGitHubSummary ) ) {
                 string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
-                Regex.Replace( coverageSummaryMdTxt, "## Coverage", $"""
+                coverageSummaryMdTxt = Regex.Replace(
+                    coverageSummaryMdTxt,
+                    "## Coverage",
+                    $"""
                     
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) )}
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
                     
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH ) )}
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
                     
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH ) )}
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
                     
                     
                     ## Coverage
