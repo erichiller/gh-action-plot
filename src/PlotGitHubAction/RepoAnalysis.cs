@@ -32,16 +32,16 @@ public static class RepoAnalysis {
                     coverageSummaryMdTxt,
                     "## Coverage",
                     $"""
-                    
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
-                    
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
-                    
-                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
-                    
-                    
-                    ## Coverage
-                    """ );
+
+                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
+
+                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
+
+                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
+
+
+                     ## Coverage
+                     """ );
                 File.WriteAllText( coverageGitHubSummaryPath, coverageSummaryMdTxt );
                 links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummaryPath )})" );
             }

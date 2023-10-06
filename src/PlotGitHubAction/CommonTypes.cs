@@ -183,10 +183,13 @@ public record ActionConfig(
             ;
     }
 
-    public string GetMarkdownChartLink( string fileName ) {
+    /// <summary>
+    /// If <paramref name="sourcePath"/> is <c>null</c> use the <see cref="OutputDir"/>.
+    /// </summary>
+    public string GetMarkdownChartLink( string fileName, string? sourcePath = null ) {
         //
         string relPath = System.IO.Path.GetRelativePath(
-            this.OutputDir,
+            sourcePath ?? this.OutputDir,
             PlotGen.GetChartFilePath( this.PlotOutputDir, fileName )
         );
         if ( !relPath.EndsWith( ".png" ) ) {
