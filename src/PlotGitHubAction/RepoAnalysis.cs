@@ -26,7 +26,7 @@ public static class RepoAnalysis {
                 JsonSerializer.Serialize( coveragePlot, Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
             if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummaryPath
-                 && File.Exists( coverageGitHubSummary ) ) {
+                 && File.Exists( coverageGitHubSummaryPath ) ) {
                 string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
                 coverageSummaryMdTxt = Regex.Replace(
                     coverageSummaryMdTxt,
@@ -42,7 +42,7 @@ public static class RepoAnalysis {
                     
                     ## Coverage
                     """ );
-                File.WriteAllText( coverageSummaryMdTxt );
+                File.WriteAllText( coverageGitHubSummaryPath, coverageSummaryMdTxt );
                 links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummaryPath )})" );
             }
             readme.AppendLine( "\n## Coverage\n\n" );
