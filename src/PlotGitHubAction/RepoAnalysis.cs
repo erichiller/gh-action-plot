@@ -25,9 +25,22 @@ public static class RepoAnalysis {
             PlotGen.CreatePlot(
                 JsonSerializer.Serialize( coveragePlot, Utils.SERIALIZER_OPTIONS ),
                 config.PlotOutputDir );
-            if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummary
+            if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummaryPath
                  && File.Exists( coverageGitHubSummary ) ) {
-                links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummary )})" );
+                string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
+                Regex.Replace( coverageSummaryMdTxt, "## Coverage", $"""
+                    
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) )}
+                    
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH ) )}
+                    
+                    {config.GetMarkdownChartLink( CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH ) )}
+                    
+                    
+                    ## Coverage
+                    """ );
+                File.WriteAllText( coverageSummaryMdTxt );
+                links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummaryPath )})" );
             }
             readme.AppendLine( "\n## Coverage\n\n" );
             readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) );
