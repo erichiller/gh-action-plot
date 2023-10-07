@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 using ScottPlot;
 using ScottPlot.Plottables;
@@ -10,7 +9,7 @@ using ScottPlot.Plottables;
 namespace PlotGitHubAction;
 
 public static class PlotGen {
-    private static readonly JsonSerializerOptions SERIALIZER_OPTIONS = Utils.SERIALIZER_OPTIONS;
+    private static readonly JsonSerializerOptions _serializer_options = Utils.SERIALIZER_OPTIONS;
 
     public static string GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
 
@@ -45,13 +44,13 @@ public static class PlotGen {
 
         Log.Debug( "---" );
         IXYPlotConfig config;
-        AxisType      xAxisType = ( JsonSerializer.Deserialize<XYPlotConfigAxisTypePartial>( jsonString, SERIALIZER_OPTIONS ) ?? throw new JsonException( "Unable to parse JSON" ) ).XAxisType;
+        AxisType      xAxisType = ( JsonSerializer.Deserialize<XYPlotConfigAxisTypePartial>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" ) ).XAxisType;
         if ( xAxisType == AxisType.DateTime ) {
             Log.Debug( "XAxis is DateTime" );
             plt.AxisStyler.DateTimeTicks( Edge.Bottom );
-            config = JsonSerializer.Deserialize<XYPlotConfig<string>>( jsonString, SERIALIZER_OPTIONS ) ?? throw new JsonException( "Unable to parse JSON" );
+            config = JsonSerializer.Deserialize<XYPlotConfig<string>>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" );
         } else {
-            config = JsonSerializer.Deserialize<XYPlotConfig<double>>( jsonString, SERIALIZER_OPTIONS ) ?? throw new JsonException( "Unable to parse JSON" );
+            config = JsonSerializer.Deserialize<XYPlotConfig<double>>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" );
         }
         if ( config is not { OutputFileName: { } outputFileName } ) {
             Log.Error( "Unable to parse." );
@@ -75,20 +74,20 @@ public static class PlotGen {
             var     sorted = xData.Zip( data.GetChartYData() ).OrderBy( t => t.First ).ToArray();
             Scatter series = plt.Add.Scatter( sorted.Select( t => t.First ).ToArray(), sorted.Select( t => t.Second ).ToArray() );
             if ( data.LinePattern is { } linePattern ) {
-                Log.Info( $"Setting {nameof(IXYData.LinePattern)} for {data.Title} to {linePattern}" ); // TODO: decrease logging level
+                Log.Debug( $"Setting {nameof(IXYData.LinePattern)} for {data.Title} to {linePattern}" );
                 series.LineStyle.Pattern = linePattern;
             }
             if ( data.LineColor is { } lineColor ) {
-                Log.Info( $"Setting {nameof(IXYData.LineColor)} for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue} ; {lineColor.ToStringRGB()})" ); // TODO: decrease logging level
+                Log.Debug( $"Setting {nameof(IXYData.LineColor)} for {data.Title} to {lineColor} ({lineColor.Red},{lineColor.Green},{lineColor.Blue} ; {lineColor.ToStringRGB()})" );
                 series.LineStyle.Color = lineColor;
             }
             if ( data.LineWidth is { } lineWidth ) {
-                Log.Info( $"Setting {nameof(IXYData.LineWidth)} for {data.Title} to {lineWidth}" ); // TODO: decrease logging level
+                Log.Debug( $"Setting {nameof(IXYData.LineWidth)} for {data.Title} to {lineWidth}" );
                 series.LineStyle.Width = lineWidth;
             }
             if ( data is { MarkerShape: { } markerShape, MarkerSize: var markerSize } ) {
                 markerSize ??= 7;
-                Log.Info( $"Setting Marker for {data.Title} to (Shape={markerShape} Size={markerSize})" ); // TODO: decrease logging level
+                Log.Debug( $"Setting Marker for {data.Title} to (Shape={markerShape} Size={markerSize})" );
                 series.MarkerStyle = new MarkerStyle(
                     shape: markerShape,
                     size: markerSize.Value,

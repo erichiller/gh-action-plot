@@ -27,23 +27,27 @@ public static class RepoAnalysis {
                 config.PlotOutputDir );
             if ( Path.Combine( config.CoverageSummaryDir, "SummaryGithub.md" ) is { } coverageGitHubSummaryPath
                  && File.Exists( coverageGitHubSummaryPath ) ) {
-                string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
-                coverageSummaryMdTxt = Regex.Replace(
-                    coverageSummaryMdTxt,
-                    "## Coverage",
-                    $"""
-
-                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
-
-                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
-
-                     {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
-
-
-                     ## Coverage
-                     """ );
-                File.WriteAllText( coverageGitHubSummaryPath, coverageSummaryMdTxt );
                 links.AppendLine( $"- [Coverage Summary]({relPath( coverageGitHubSummaryPath )})" );
+                /* Add charts to SummaryGithub.md */
+                string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
+                string newText = $"""
+
+                                  {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
+
+                                  {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
+
+                                  {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
+
+
+                                  ## Coverage
+                                  """;
+                if ( !coverageSummaryMdTxt.Contains( newText ) ) {
+                    coverageSummaryMdTxt = Regex.Replace(
+                        coverageSummaryMdTxt,
+                        "## Coverage",
+                        newText );
+                    File.WriteAllText( coverageGitHubSummaryPath, coverageSummaryMdTxt );
+                }
             }
             readme.AppendLine( "\n## Coverage\n\n" );
             readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) );

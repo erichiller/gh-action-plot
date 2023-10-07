@@ -28,7 +28,7 @@ public record UnitTestResult {
 
     [ XmlAttribute( AttributeName = "testName" ) ]
     public required string TestName { get; set; }
-    // testName="mkmrk.DataSource.Tests.Ibkr.DbStorageAgentTests.TickLast_MultiContract_SaveToDb_Should_ForceSave_OnDisposal" 
+    // testName="namespace.type.method" 
 
     [ XmlAttribute( AttributeName = "computerName" ) ]
     public required string ComputerName { get; set; }
@@ -117,6 +117,7 @@ public record MethodPosition(
     int    Line
 );
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global",Justification = "Used for JSON Serialization")]
 public record Output {
     public required string StdOut { get; set; }
 
