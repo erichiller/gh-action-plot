@@ -117,7 +117,7 @@ public record MethodPosition(
     int    Line
 );
 
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global",Justification = "Used for JSON Serialization")]
+[ SuppressMessage( "ReSharper", "ClassNeverInstantiated.Global", Justification = "Used for JSON Serialization" ) ]
 public record Output {
     public required string StdOut { get; set; }
 
@@ -205,7 +205,7 @@ public class TestResultAnalyzer {
         const int    firstColumnWidth = 50;
         if ( _failedTests.Count > 0 ) {
             Sb.AppendLine(
-                "Test Name".PadRight( firstColumnWidth )
+                "Test & Exception Location".PadRight( firstColumnWidth )
                 + colDiv
                 + "Output".PadRight( 15 )
                 + colDiv
@@ -225,6 +225,7 @@ public class TestResultAnalyzer {
                     getTestResultOutputFilePath( failure )
                 );
                 Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
+                Sb.Append( "Test " + markdownInlineCodeSafe( failure.ShortTestName ) + " had exception at <br/>" );
                 Sb.Append( ( $"{markdownInlineCodeSafe( methodName )} in "
                              + ( linkText is not null && url is not null
                                  ? sourceUrls.Add(
