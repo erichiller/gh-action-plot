@@ -91,6 +91,13 @@ public class TodoCsharpRegexTests {
             Start: new CharPosition( Line: 19, Column: 15 ),
             End: new CharPosition( Line: 19, Column: 20 )
         ),
+        new ( // [9] 1p
+            Text: "without a semicolon",
+            Level: @"TODO",
+            FilePath: filePath,
+            Start: new CharPosition( Line: 21, Column: 6 ),
+            End: new CharPosition( Line: 21, Column: 19 )
+        ),
     };
     
     
