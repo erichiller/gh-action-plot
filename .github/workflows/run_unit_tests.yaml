@@ -30,7 +30,9 @@ jobs:
         working-directory: ./test/PlotGitHubAction.Tests/
         run: |
           dotnet test --no-restore \
-                      --logger "console"
+                      --logger "console" \
+                      --collect:"XPlat Code Coverage" \
+                      --settings coverlet.runsettings
 # \
 #                      --filter "TodoCsharpRegexTests"
 #                      --filter "TodoShellRegexTests"
