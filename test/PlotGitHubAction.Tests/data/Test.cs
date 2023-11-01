@@ -17,4 +17,6 @@ class Foo { // This is a class
   /* TODO */ /* TODO */
 
   // TODO  // URGENT
+  
+  // TODO without a semicolon
 }
