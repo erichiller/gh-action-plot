@@ -96,7 +96,7 @@ public class TodoCsharpRegexTests {
             Level: @"TODO",
             FilePath: filePath,
             Start: new CharPosition( Line: 21, Column: 6 ),
-            End: new CharPosition( Line: 21, Column: 19 )
+            End: new CharPosition( Line: 21, Column: 29 )
         ),
     };
     
