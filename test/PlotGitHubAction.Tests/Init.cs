@@ -1,3 +1,7 @@
+using System.Runtime.CompilerServices;
+
+using FluentAssertions;
+
 internal static class Initializer
 {
     [ModuleInitializer]
