@@ -2,13 +2,11 @@ using System.Runtime.CompilerServices;
 
 using FluentAssertions;
 
-internal static class Initializer
-{
+namespace PlotGitHubAction.Tests;
+
+internal static class Initializer {
     [ModuleInitializer]
-    public static void SetDefaults()
-    {
-        // AssertionOptions.AssertEquivalencyUsing(
-        //    options => { <configure here> });
+    public static void SetDefaults() {
         AssertionOptions.FormattingOptions.MaxLines = 250;
     }
 }
