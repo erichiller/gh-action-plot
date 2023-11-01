@@ -48,13 +48,14 @@ jobs:
         run: |
           Get-ChildItem -Recurse -Path ./ | Select-Object -Property Name,CreationTime,Size
 
-#      - name: Upload results
-#        uses: actions/upload-artifact@v3
+      - name: Upload results
+        uses: actions/upload-artifact@v3
 #        if: ${{ always() }}
-#        with:
-#          name: test-results
-#          retention-days: 1
-#          path: |
+        with:
+          name: test-results
+          retention-days: 1
+          path: |
+            ./test/PlotGitHubAction.Tests/TestResults/coverage.cobertura.xml
 #            ./test-dir/
 #            ./**/*-build.log
 #            ./test-src/mkmrk-channels/.git
