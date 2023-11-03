@@ -56,6 +56,7 @@ jobs:
           retention-days: 1
           path: |
             ./test/PlotGitHubAction.Tests/TestResults/coverage.cobertura.xml
+            *cobertura.xml
 #            ./test-dir/
 #            ./**/*-build.log
 #            ./test-src/mkmrk-channels/.git
