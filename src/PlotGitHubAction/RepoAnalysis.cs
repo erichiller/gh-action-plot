@@ -31,11 +31,15 @@ public static class RepoAnalysis {
                 /* Add charts to SummaryGithub.md */
                 string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
                 string newText = $"""
-
+                                  
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
+                                  
+                                  {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_RECENT_CHART_OUTPUT_PATH )}
+                                  
+                                  {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.LINE_TOTAL_RECENT_CHART_OUTPUT_PATH )}
 
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
-
+                                  
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
 
 
@@ -50,7 +54,7 @@ public static class RepoAnalysis {
                 }
             }
             readme.AppendLine( "\n## Coverage\n\n" );
-            readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH ) );
+            readme.AppendLine( config.GetMarkdownChartLink( CoverageHistoryPlotter.TOTAL_RECENT_CHART_OUTPUT_PATH ) );
         }
 
         if ( config.IsTodoScanEnabled ) {
