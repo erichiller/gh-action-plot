@@ -178,7 +178,7 @@ public class CoverageHistoryPlotter {
                 Width: 1200,
                 Height: 1200,
                 XAxisType: AxisType.DateTime,
-                YAxisType: AxisType.Percent,
+                YAxisType: AxisType.Numeric,
                 Data: new Dictionary<string, Dictionary<DateTime, double>>() {
                           [ "Total Lines" ] = totalCoverageByLinesRecent
                                               .Where( kv => kv.Value.totalLines != 0 )
