@@ -394,6 +394,7 @@ public class CsProjInfo : INamedObject, IEquatable<CsProjInfo> {
     public string RepoRelativePath { get; }
     public string RepoRelativeDirectoryPath { get; }
     public string FilePath                  { get; }
+    public string MarkdownId => ProjectName.Replace('.', '-');
 
     public bool ContainsFile( string filePath ) =>
         filePath.StartsWith( this.DirectoryPath.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar );
