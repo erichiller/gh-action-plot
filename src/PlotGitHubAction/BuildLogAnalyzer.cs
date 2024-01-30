@@ -162,7 +162,7 @@ public class BuildLogAnalyzer {
             }
         }
         // per-project table
-        Dictionary<string, int> buildLogStats = _projWarningsHs.ToDictionary( p => p.Key.ProjectName, p => ( id: p.Key.MarkdownId, count: p.Value.Count ) );
+        Dictionary<string, (string projectId, int warningCount)> buildLogStats = _projWarningsHs.ToDictionary( p => p.Key.ProjectName, p => ( projectId: p.Key.MarkdownId, warningCount: p.Value.Count ) );
         summary.AppendLine();
         summary.AppendLine( "Project".PadRight( 50 )         + colDiv + "Warnings" );
         summary.AppendLine( String.Empty.PadRight( 50, '-' ) + colDiv + String.Empty.PadRight( 20, '-' ) );
@@ -198,7 +198,7 @@ public class BuildLogAnalyzer {
         warnings.AppendLine();
         helpUrls.AddReferencedUrls( warnings );
 
-        _historyPlotter.AddToHistory( buildLogStats.ToDictionary( kv => kv.Key, kv => kv.Value.count ) );
+        _historyPlotter.AddToHistory( buildLogStats.ToDictionary( kv => kv.Key, kv => kv.Value.warningCount ) );
 
         System.IO.File.WriteAllText( MarkdownPath, $"{summary}\n{warnings}" );
     }
