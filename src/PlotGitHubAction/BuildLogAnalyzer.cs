@@ -149,7 +149,7 @@ public class BuildLogAnalyzer {
         }
 
         foreach ( var (proj, warnLogEntries) in _projWarningsHs.OrderBy( kv => kv.Key.ProjectName )  ) {
-            warnings.AppendLine( $"**{proj.ProjectName}**".PadRight( 50 ) + " |||" );
+            warnings.AppendLine( $"**{proj.ProjectName}** <a id=\"{proj.MarkdownId}\"\>".PadRight( 50 ) + " |||" );
             foreach ( var entry in warnLogEntries.OrderBy( t => t.SortableLocationString ) ) {
                 warnings.AppendLine(
                     sourceUrls.AddSourceLink(
@@ -160,14 +160,14 @@ public class BuildLogAnalyzer {
             }
         }
         // per-project table
-        Dictionary<string, int> buildLogStats = _projWarningsHs.ToDictionary( p => p.Key.ProjectName, p => p.Value.Count );
+        Dictionary<string, int> buildLogStats = _projWarningsHs.ToDictionary( p => p.Key.ProjectName, p => ( id: p.Key.MarkdownId, count: p.Value.Count ) );
         summary.AppendLine();
-        summary.AppendLine( "Project".PadRight( 25 )         + colDiv + "Warnings" );
-        summary.AppendLine( String.Empty.PadRight( 25, '-' ) + colDiv + String.Empty.PadRight( 20, '-' ) );
-        foreach ( var (projectName, warningCount) in buildLogStats.OrderBy( kv => kv.Key ) ) {
-            summary.AppendLine( projectName.PadRight( 25 ) + colDiv + warningCount );
+        summary.AppendLine( "Project".PadRight( 50 )         + colDiv + "Warnings" );
+        summary.AppendLine( String.Empty.PadRight( 50, '-' ) + colDiv + String.Empty.PadRight( 20, '-' ) );
+        foreach ( var (projectName, ( projectId, warningCount ) ) in buildLogStats.OrderBy( kv => kv.Key ) ) {
+            summary.AppendLine( $"[{projectName}](#{projectId})".PadRight( 50 ) + colDiv + warningCount );
         }
-        summary.AppendLine( "**TOTAL**".PadRight( 25 ) + colDiv + $"**{_projWarningsHs.SelectMany( p => p.Value ).Count()}**" );
+        summary.AppendLine( "**TOTAL**".PadRight( 50 ) + colDiv + $"**{_projWarningsHs.SelectMany( p => p.Value ).Count()}**" );
         summary.AppendLine();
 
         // per Analyzer ID table
@@ -196,7 +196,7 @@ public class BuildLogAnalyzer {
         warnings.AppendLine();
         helpUrls.AddReferencedUrls( warnings );
 
-        _historyPlotter.AddToHistory( buildLogStats );
+        _historyPlotter.AddToHistory( buildLogStats.ToDictionary( kv => kv.Key, kv => kv.Value.count ) );
 
         System.IO.File.WriteAllText( MarkdownPath, $"{summary}\n{warnings}" );
     }
