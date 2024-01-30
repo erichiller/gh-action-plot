@@ -149,7 +149,9 @@ public class BuildLogAnalyzer {
         }
 
         foreach ( var (proj, warnLogEntries) in _projWarningsHs.OrderBy( kv => kv.Key.ProjectName )  ) {
-            warnings.AppendLine( $"**{proj.ProjectName}** <a id=\"{proj.MarkdownId}\"\>".PadRight( 50 ) + " |||" );
+            warnings.AppendLine( $"""
+                **{proj.ProjectName}** <a id="{proj.MarkdownId}"\>
+                """.PadRight( 50 ) + " |||" );
             foreach ( var entry in warnLogEntries.OrderBy( t => t.SortableLocationString ) ) {
                 warnings.AppendLine(
                     sourceUrls.AddSourceLink(
