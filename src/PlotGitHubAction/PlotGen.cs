@@ -105,7 +105,7 @@ public static class PlotGen {
          */
 
         Func<double, string>? tickGen = config.YAxisType switch {
-                                            AxisType.Percent => static v => $"{v:p0}",
+                                            AxisType.Percent => static v => $"{v:p1}",
                                             AxisType.Numeric => static v => $"{v:n0}",
                                             _                => null
                                         };
@@ -124,8 +124,8 @@ public static class PlotGen {
         plt.SetAxisLimits( bottom: 0 );
         Log.Debug( $"YAxis min={plt.YAxis.Min}" );
         Log.Debug( $"LeftAxis min={plt.LeftAxis.Min}" );
-        // plt.Margins( horizontal: 0.05D, vertical: 0.0, apply: true ); // URGENT: restore?
-        plt.Margins( 0, 0 );
+        plt.Margins( horizontal: 0.05D, vertical: 0.0, apply: true ); // URGENT: restore?
+        // plt.Margins( 0, 0 ); // URGENT: restore?
         foreach ( var axis in plt.XAxes ){
             axis.FrameLineStyle.Color = new Color(0, 0, 0, 0);
         }
