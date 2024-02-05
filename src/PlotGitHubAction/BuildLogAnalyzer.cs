@@ -89,6 +89,7 @@ public class BuildLogAnalyzer {
             + String.Empty.PadRight( 40, '-' ) );
 
         // filePath has the FullName (fully rooted/resolved path)
+        Log.Info( $"Searching '{_directoryRoot}' for build log files matching pattern '{_filePattern}'" );
         foreach ( string filePath in System.IO.Directory.EnumerateFiles( _directoryRoot, _filePattern, System.IO.SearchOption.AllDirectories ).Order() ) {
             Log.Info( $"build log: {filePath}" );
             string logString = System.IO.File.ReadAllText( filePath );
@@ -122,7 +123,7 @@ public class BuildLogAnalyzer {
                 try {
                     proj = _config.GetProject( projPath );
                 } catch ( Exception ) {
-                    Log.Error( $"Failed to find project for project path '{projPath}' in {_config.GetCsProjectsCopy().Select( x => $"{x.ProjectName} = {x.FilePath}" )}" );
+                    Log.Error( $"Failed to find project for project path '{projPath}' in [{String.Join( ", ", _config.GetCsProjectsCopy().Select( x => $"{x.ProjectName} = {x.FilePath}" ) )}" );
                     throw;
                 }
                 lastCsProj ??= proj;
