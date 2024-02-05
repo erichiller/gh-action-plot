@@ -27,9 +27,9 @@
     </Target>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot" Version="5.0.9-beta" />
+    <PackageReference Include="ScottPlot" Version="5.0.21" />
     
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.6" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.7" />
     
     <!--
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.4-preview.89" />

@@ -356,7 +356,7 @@ public class TodoScanner {
                                                        Title: g.Key,
                                                        X: g.Select( v => DateTime.Parse( v.time ) ).ToArray(),
                                                        Y: g.Select( v => ( double )v.total ).ToArray()
-                                                   ) { LinePattern = ( g.Key.Contains( "Tests" ) ? LinePattern.Dot : null ) }
+                                                   ) { LinePattern = ( g.Key.Contains( "Tests" ) ? LinePattern.Dotted : null ) }
                                       ).ToList();
         var totalSeries = history
                           .Select( h =>

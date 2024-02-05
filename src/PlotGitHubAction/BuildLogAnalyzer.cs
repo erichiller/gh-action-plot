@@ -22,13 +22,12 @@ record WarnLogEntry(
         get => _idMarkdown ?? Id;
         init => _idMarkdown = value;
     }
-    
+
     public string SortableLocationString =>
         System.IO.Path.GetFileName( File )
-        + "_" + (Position?.Line.ToString() ?? String.Empty ).PadLeft( 6, '0')
-        + ":" + (Position?.Column.ToString() ?? String.Empty ).PadLeft( 6, '0')
-        + "-" + ( Id ?? String.Empty )
-        ;
+        + "_" + ( Position?.Line.ToString()   ?? String.Empty ).PadLeft( 6, '0' )
+        + ":" + ( Position?.Column.ToString() ?? String.Empty ).PadLeft( 6, '0' )
+        + "-" + ( Id ?? String.Empty );
 }
 
 public class BuildLogAnalyzer {
@@ -119,7 +118,13 @@ public class BuildLogAnalyzer {
                 message = Regex.Replace( message, @"( |^)['""]", " `" );
                 message = Regex.Replace( message, @"['""]( |$)", "` " );
 
-                CsProjInfo proj = _config.GetProject( projPath );
+                CsProjInfo proj;
+                try {
+                    proj = _config.GetProject( projPath );
+                } catch ( Exception ) {
+                    Log.Error( $"Failed to find project for project path '{projPath}' in {_config.GetCsProjectsCopy().Select( x => $"{x.ProjectName} = {x.FilePath}" )}" );
+                    throw;
+                }
                 lastCsProj ??= proj;
 
                 if ( ( helpId?.Equals( id, System.StringComparison.OrdinalIgnoreCase ) ?? false ) && helpUrl is { } ) {
@@ -148,15 +153,15 @@ public class BuildLogAnalyzer {
             }
         }
 
-        foreach ( var (proj, warnLogEntries) in _projWarningsHs.OrderBy( kv => kv.Key.ProjectName )  ) {
+        foreach ( var (proj, warnLogEntries) in _projWarningsHs.OrderBy( kv => kv.Key.ProjectName ) ) {
             warnings.AppendLine( $"""
-                **{proj.ProjectName}** <a id="{proj.MarkdownId}"></a>
-                """.PadRight( 50 ) + " |||" );
+                                  **{proj.ProjectName}** <a id="{proj.MarkdownId}"></a>
+                                  """.PadRight( 50 ) + " |||" );
             foreach ( var entry in warnLogEntries.OrderBy( t => t.SortableLocationString ) ) {
                 warnings.AppendLine(
                     sourceUrls.AddSourceLink(
                         filePath: entry.File,
-                        start: entry.Position, 
+                        start: entry.Position,
                         linkToBranch: true ).PadRight( 50 )
                     + $" | {entry.IdMarkdown,-9} | {entry.Level,-10} | {entry.Message}" );
             }
@@ -166,7 +171,7 @@ public class BuildLogAnalyzer {
         summary.AppendLine();
         summary.AppendLine( "Project".PadRight( 50 )         + colDiv + "Warnings" );
         summary.AppendLine( String.Empty.PadRight( 50, '-' ) + colDiv + String.Empty.PadRight( 20, '-' ) );
-        foreach ( var (projectName, ( projectId, warningCount ) ) in buildLogStats.OrderBy( kv => kv.Key ) ) {
+        foreach ( var (projectName, (projectId, warningCount)) in buildLogStats.OrderBy( kv => kv.Key ) ) {
             summary.AppendLine( $"[{projectName}](#{projectId})".PadRight( 50 ) + colDiv + warningCount );
         }
         summary.AppendLine( "**TOTAL**".PadRight( 50 ) + colDiv + $"**{_projWarningsHs.SelectMany( p => p.Value ).Count()}**" );

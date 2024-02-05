@@ -32,6 +32,8 @@ public static class PlotGen {
         Log.Debug( $"Source JSON:\n{jsonString}" );
 
         var plt = new ScottPlot.Plot();
+        plt.Style.SetBestFonts();
+        // plt.Style.AxisFrame(  );
 
         foreach ( var font in SkiaSharp.SKFontManager.Default.FontFamilies ) {
             Log.Debug( font );
@@ -47,7 +49,7 @@ public static class PlotGen {
         AxisType      xAxisType = ( JsonSerializer.Deserialize<XYPlotConfigAxisTypePartial>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" ) ).XAxisType;
         if ( xAxisType == AxisType.DateTime ) {
             Log.Debug( "XAxis is DateTime" );
-            plt.AxisStyler.DateTimeTicks( Edge.Bottom );
+            plt.Axes.DateTimeTicksBottom();
             config = JsonSerializer.Deserialize<XYPlotConfig<string>>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" );
         } else {
             config = JsonSerializer.Deserialize<XYPlotConfig<double>>( jsonString, _serializer_options ) ?? throw new JsonException( "Unable to parse JSON" );
@@ -110,27 +112,26 @@ public static class PlotGen {
                                             _                => null
                                         };
         if ( tickGen is { } ) {
-            plt.YAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic { LabelFormatter = tickGen };
+            // plt.Axes.
+            plt.Axes.Left.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic { LabelFormatter = tickGen };
         }
 
         // If the Y-Axis is a Percentage, constrain bounds to 0-100
         // https://scottplot.net/cookbook/5.0/axis-and-ticks/#manually-set-axis-limits
         if ( config.YAxisType == AxisType.Percent ) {
-            plt.YAxis.Max = 1;
-            Log.Debug( $"YAxis max={plt.YAxis.Max}" );
-            Log.Debug( $"LeftAxis max={plt.LeftAxis.Max}" );
+            plt.Axes.Left.Max = 1;
+            Log.Debug( $"Left  Axis max={plt.Axes.Left.Max}" );
+            Log.Debug( $"Right Axis max={plt.Axes.Right.Max}" );
         }
         // plt.YAxis.Min = 0;
-        plt.SetAxisLimits( bottom: 0 );
-        Log.Debug( $"YAxis min={plt.YAxis.Min}" );
-        Log.Debug( $"LeftAxis min={plt.LeftAxis.Min}" );
+        plt.Axes.SetLimits( bottom: 0 );
+        Log.Debug( $"Axes.Left min={plt.Axes.Left.Min}" );
+        Log.Debug( $"Axes.Right min={plt.Axes.Right.Min}" );
         // plt.Margins( horizontal: 0.05D, vertical: 0.0, apply: true ); // URGENT: restore?
-        plt.Margins( 0, 0 ); // URGENT: restore?
-        foreach ( var axis in plt.XAxes ){
-            axis.FrameLineStyle.Color = new Color(0, 0, 0, 0);
-        }
-        foreach ( var axis in plt.YAxes ){
-            axis.FrameLineStyle.Color = new Color(0, 0, 0, 0);
+        plt.Axes.Margins( left: 0, right: 0.01, bottom: 0.01, top: 0 );
+        // plt.Margins( 0, 0 ); // URGENT: restore?
+        foreach ( var axis in plt.Axes.GetAxes() ) {
+            axis.FrameLineStyle.Color = new Color( 0, 0, 0, 0 );
         }
         // plt.XAxis.FrameLineStyle.Color = new Color(0, 0, 0, 0);
         // plt.YAxis.FrameLineStyle.Color = new Color(0, 0, 0, 0);
@@ -141,12 +142,11 @@ public static class PlotGen {
          * Legend
          * https://scottplot.net/cookbook/5.0/configuring-legends/#legend-customization
          */
-        plt.Legend();
-        var legend = plt.GetLegend();
-        legend.Alignment = Alignment.LowerLeft;
+        plt.Legend.IsVisible = true;
+        plt.Legend.Location  = Alignment.LowerLeft;
 
-        Log.Info( $"Writing to path: {outputPath}\n"      +
-                  $"YAxis:           {plt.YAxis.Range}\n" +
+        Log.Info( $"Writing to path: {outputPath}\n"          +
+                  $"YAxis:           {plt.Axes.Left.Range}\n" +
                   $"Size:            {config.Width} × {config.Height}\n" );
 
 

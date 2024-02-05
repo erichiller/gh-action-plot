@@ -76,7 +76,7 @@ public class JsonHistoryPlotter {
                                Y: g.Select( v => ( double )v.lineCount ).ToArray()
                            ) {
                                LinePattern = isTest
-                                   ? LinePattern.Dot
+                                   ? LinePattern.Dotted
                                    : LinePattern.Solid,
                                LineColor = getColorForProjectName( g.Key ),
                                LineWidth = isTest ? 1 : 2,
