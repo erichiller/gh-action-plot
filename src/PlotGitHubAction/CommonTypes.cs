@@ -57,7 +57,9 @@ public record ActionConfig(
             SourceScanDir: System.Environment.GetEnvironmentVariable( "INPUT_SOURCE_SCAN_DIR" ) is { Length: > 0 } sourceScanDir
                 ? sourceScanDir
                 : System.Environment.CurrentDirectory,
-            BuildLogFilePattern: "*-build.log",
+            BuildLogFilePattern: System.Environment.GetEnvironmentVariable( "INPUT_BUILD_LOG_FILE_PATTERN" ) is { Length: > 0 } buildLogFilePattern
+                ? buildLogFilePattern
+                : "*-build.log",
             LineCountFilePattern: System.Environment.GetEnvironmentVariable( "INPUT_LINE_COUNT_FILE_PATTERN" ) is { Length: > 0 } lineCountFilePattern
                 ? lineCountFilePattern
                 : @"(?<!\.(verified|generated))\.(axaml|cs|ps1)$",
@@ -394,7 +396,7 @@ public class CsProjInfo : INamedObject, IEquatable<CsProjInfo> {
     public string RepoRelativePath { get; }
     public string RepoRelativeDirectoryPath { get; }
     public string FilePath                  { get; }
-    public string MarkdownId => ProjectName.Replace('.', '-');
+    public string MarkdownId                => ProjectName.Replace( '.', '-' );
 
     public bool ContainsFile( string filePath ) =>
         filePath.StartsWith( this.DirectoryPath.TrimEnd( Path.DirectorySeparatorChar ) + Path.DirectorySeparatorChar );
@@ -436,8 +438,8 @@ public class UrlMdShortUtils {
     private readonly ActionConfig?              _config;
 
     public UrlMdShortUtils( ActionConfig? config = null, bool generateIds = false ) {
-        _generateIds       = generateIds;
-        _config            = config;
+        _generateIds = generateIds;
+        _config      = config;
     }
 
     public string Add( string id, string url, bool isCode = false ) {
@@ -524,9 +526,10 @@ public static class Log {
     // only log if I'm testing in the action's repo
     // Note: Could also use Runner debug logging ; https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
     public static bool ShouldLog { get; } =
-        System.Environment.GetEnvironmentVariable( "GITHUB_ACTION_REPOSITORY" ) is not { Length: > 0 } actionRepo
-        || ( System.Environment.GetEnvironmentVariable( "GITHUB_REPOSITORY" ) is { Length: > 0 } repo
-             && repo == actionRepo ); // if no GITHUB_ACTION_REPOSITORY, then assume Debug mode
+        System.Environment.GetEnvironmentVariable( "GITHUB_ACTION_REPOSITORY" ) is not { Length: > 0 } actionRepo // if no GITHUB_ACTION_REPOSITORY, then assume Debug mode
+        || ( System.Environment.GetEnvironmentVariable( "GITHUB_REPOSITORY" ) is { Length: > 0 } repo             // or if the current repo is the action repo (eg. for tests)
+             && repo == actionRepo )
+        || ( System.Environment.GetEnvironmentVariable( "INPUT_DEBUG" )?.Equals( "true", StringComparison.OrdinalIgnoreCase ) ?? false ); // or the user explicitly sets 
 
     public static void Debug( object msg ) {
         if ( ShouldLog ) {
@@ -554,12 +557,14 @@ public static class Log {
 }
 
 public static class Utils {
-    
     public static readonly JsonSerializerOptions SERIALIZER_OPTIONS = new JsonSerializerOptions {
-        Converters    = { new JsonStringEnumConverter(), new ScottPlotColorConverter() },
+        Converters = {
+            new JsonStringEnumConverter(),
+            new ScottPlotColorConverter()
+        },
         WriteIndented = true
     };
-    
+
     /// <summary>
     /// Create a predictable Hash code for input <paramref name="str"/>.
     /// This is a Hash code that remains the same across Hardware, OS, and program runs.
