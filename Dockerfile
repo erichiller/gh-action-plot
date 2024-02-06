@@ -5,6 +5,7 @@ ENV TZ="America/Chicago"
 
 # Copy everything
 COPY src/PlotGitHubAction/*.cs .
+COPY src/PlotGitHubAction/Utils/*.cs .
 COPY src/PlotGitHubAction/PlotGitHubAction.csproj .
 
 # Restore as distinct layers

@@ -28,9 +28,23 @@ inputs:
     description: 'Enable debug logging for the action'
     required: false
     default: 'false'
+  log_level:
+    description: 'Log Level: (verbose|debug|notice|warn|error|none)'
+    required: false
+    default: 'notice'
 
-# TODO: Add output for Failed tests
-  
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-docker-container-and-javascript-actions
+outputs:
+  test_result: # number of outputs
+    description: '{ "success": (true|false) }'
+#  tests_success_count:
+#    description: 'The number of tests that were successful'
+#  tests_failed_count:
+#    description: 'The number of tests that failed'
+#  tests_skipped_count:
+#    description: 'The number of tests that were skipped'
+    
+
 #outputs:
 #  random-number:
 #    description: "Random number"

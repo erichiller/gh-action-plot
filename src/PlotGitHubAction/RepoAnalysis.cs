@@ -17,6 +17,8 @@ public static class RepoAnalysis {
             testResultAnalyzer.ScanForTrx();
             links.AppendLine( $"- [Test Results]({relPath( testResultAnalyzer.MarkdownSummaryFilePath )})" );
             readme.Append( Regex.Replace( testResultAnalyzer.Sb.ToString(), "^#", "##" ) );
+            // Write SVG test result badge
+            File.WriteAllText( Path.Combine( config.OutputDir, "test_result_badge.svg" ), testResultAnalyzer.GenerateSvgBadge() );
         }
 
         if ( config is { IsCoverageHistoryEnabled: true, CoverageHistoryDir: { }, CoverageSummaryDir: { } } ) {
@@ -31,15 +33,15 @@ public static class RepoAnalysis {
                 /* Add charts to SummaryGithub.md */
                 string coverageSummaryMdTxt = File.ReadAllText( coverageGitHubSummaryPath );
                 string newText = $"""
-                                  
+
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_CHART_OUTPUT_PATH )}
-                                  
+
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.TOTAL_RECENT_CHART_OUTPUT_PATH )}
-                                  
+
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.LINE_TOTAL_RECENT_CHART_OUTPUT_PATH )}
 
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.COVERABLE_CHART_OUTPUT_PATH )}
-                                  
+
                                   {config.GetMarkdownChartLink( sourcePath: config.CoverageSummaryDir, fileName: CoverageHistoryPlotter.ASSEMBLY_CHART_OUTPUT_PATH )}
 
 

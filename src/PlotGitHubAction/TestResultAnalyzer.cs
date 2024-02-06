@@ -204,6 +204,10 @@ public class TestResultAnalyzer {
         const string colDiv           = " | ";
         const int    firstColumnWidth = 50;
         if ( _failedTests.Count > 0 ) {
+            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS, 
+                                          $$"""
+                                          { "success": false }                                      
+                                          """);
             Sb.AppendLine(
                 "Test & Exception Location".PadRight( firstColumnWidth )
                 + colDiv
@@ -248,6 +252,11 @@ public class TestResultAnalyzer {
             Sb.AppendLine();
             sourceUrls.AddReferencedUrls( Sb );
             Sb.AppendLine();
+        } else {
+            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS, 
+                                          $$"""
+                                            { "success": true }
+                                            """);
         }
 
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
@@ -374,5 +383,49 @@ public class TestResultAnalyzer {
         }
         Log.Warn( $"[{nameof(getUnitTestPath)}] No {nameof(CsProjInfo)} matched {unitTestPathFromTrx}" );
         return null;
+    }
+
+    public string GenerateSvgBadge( ) {
+        const string successColorHex = "31c653";
+        const string failureColorHex = "800000";
+        const string neutralColorHex = "696969";
+
+        string hexColor;
+        string successString;
+        if ( _testResults.Count == 0 ) {
+            successString = "Unknown";
+            hexColor      = neutralColorHex;
+        } else if ( _failedTests.Count == 0 ) {
+            successString = "Success";
+            hexColor      = successColorHex;
+        } else {
+            successString = "Fail";
+            hexColor      = failureColorHex;
+        }
+        string statusString = $"{_testResults.Count - _failedTests.Count} passed of {_testResults.Count} tests: {successString}";
+        string badgeTitle   = "Tests";
+        //language=svg
+        string svg = $$"""
+                       <svg width="247.3" height="20" viewBox="0 0 2473 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{badgeTitle}}: {{statusString}}">
+                         <title>{{badgeTitle}}: {{statusString}}</title>
+                         <linearGradient id="a" x2="0" y2="100%">
+                           <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+                           <stop offset="1" stop-opacity=".1"/>
+                         </linearGradient>
+                         <mask id="m"><rect width="2473" height="200" rx="30" fill="#FFF"/></mask>
+                         <g mask="url(#m)">
+                           <rect width="391" height="200" fill="#555"/>
+                           <rect width="2082" height="200" fill="#{{hexColor}}" x="391"/>
+                           <rect width="2473" height="200" fill="url(#a)"/>
+                         </g>
+                         <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+                           <text x="60" y="148" textLength="291" fill="#000" opacity="0.25">Tests</text>
+                           <text x="50" y="138" textLength="291">{{badgeTitle}}</text>
+                           <text x="446" y="148" textLength="1982" fill="#000" opacity="0.25">{{statusString}}</text>
+                           <text x="436" y="138" textLength="1982">{{statusString}}</text >
+                         </g>
+                       </svg>
+                       """; // TODO: is the `textLength` property going to cause issues?
+        return svg;
     }
 }
