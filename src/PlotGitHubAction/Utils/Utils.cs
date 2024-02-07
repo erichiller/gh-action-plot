@@ -114,11 +114,15 @@ public static class Utils {
         if ( !String.IsNullOrWhiteSpace( githubOutputFile ) ) {
             Log.Debug( $"Writing output '{name}' with value '{value}' to: {githubOutputFile}" );
             using var textWriter = new StreamWriter( githubOutputFile, true, Encoding.UTF8 );
-            textWriter.WriteLine( $"{name}={value}" );
-            // for multiline content:
-            // textWriter.WriteLine( "summary-details<<EOF" );
-            // textWriter.WriteLine( summary );
-            // textWriter.WriteLine( "EOF" );
+            if( value.Contains(System.Environment.NewLine) {
+                // for multiline content:
+                textWriter.WriteLine( $"{name}<<EOF" );
+                textWriter.WriteLine( value );
+                textWriter.WriteLine( "EOF" );
+            } else {
+                // singleline
+                textWriter.WriteLine( $"{name}={value}" );
+            }
         } else {
             Log.Warn( "GITHUB_OUTPUT environment variable not set" );
         }
@@ -128,4 +132,5 @@ public static class Utils {
 
 internal static class GitHubActionOutputIds {
     public const GitHubActionOutputId TEST_RESULTS = "test_result";
+    public const GitHubActionOutputId TEST_SUMMARY = "test_summary";
 }
