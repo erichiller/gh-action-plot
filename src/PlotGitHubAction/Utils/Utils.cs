@@ -114,7 +114,7 @@ public static class Utils {
         if ( !String.IsNullOrWhiteSpace( githubOutputFile ) ) {
             Log.Debug( $"Writing output '{name}' with value '{value}' to: {githubOutputFile}" );
             using var textWriter = new StreamWriter( githubOutputFile, true, Encoding.UTF8 );
-            if( value.Contains(System.Environment.NewLine) {
+            if( value.Contains(System.Environment.NewLine)) {
                 // for multiline content:
                 textWriter.WriteLine( $"{name}<<EOF" );
                 textWriter.WriteLine( value );
