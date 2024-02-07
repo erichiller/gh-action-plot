@@ -191,6 +191,10 @@ public class TestResultAnalyzer {
                                       $"\n{ActionConfig.NOW_STRING},{commitSha},{_testResults.Count},{_failedTests.Count},{String.Join( ';', _failedTests.Select( f => f.ShortTestName ) )}" );
         writeMarkdownSummary();
     }
+    
+    private int TestSuccessCount => _testResults.Count( t => t.Outcome == "Passed" );
+    private int TestFailCount    => _failedTests.Count;
+    private int TestSkipCount    => _testResults.Count( t => t.Outcome == "NotExecuted" );
 
     private void writeMarkdownSummary( ) {
         UrlMdShortUtils sourceUrls = new (config: _config, generateIds: true);
@@ -258,6 +262,14 @@ public class TestResultAnalyzer {
                                             { "success": true }
                                             """);
         }
+        // Write Test Summary as an output
+        Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_SUMMARY, 
+                                      $$"""
+                                        ✅ Success : {{this.TestSuccessCount}}
+                                        💤 Skip    : {{this.TestSkipCount}}
+                                        ❌ Failed  : {{this.TestFailCount}}
+                                           Total : {{_testResults.Count}}
+                                        """);
 
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
     }
