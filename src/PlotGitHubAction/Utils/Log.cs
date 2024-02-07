@@ -13,7 +13,7 @@ public static class Log {
         || ( System.Environment.GetEnvironmentVariable( "INPUT_DEBUG" )?.Equals( "true", StringComparison.OrdinalIgnoreCase ) ?? false ); // or the user explicitly sets 
 
 
-    private static readonly bool _is_git_hub_action = System.Environment.GetEnvironmentVariable( "GITHUB_ACTION" ) == "true";
+    private static readonly bool _is_git_hub_action = System.Environment.GetEnvironmentVariable( "GITHUB_ACTIONS" ) == "true";
 
     private static readonly LogLevel _git_hub_actions_log_level =
         System.Environment.GetEnvironmentVariable( "INPUT_LOG_LEVEL" )?.ToLowerInvariant() switch {
