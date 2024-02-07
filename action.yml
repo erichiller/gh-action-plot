@@ -35,8 +35,10 @@ inputs:
 
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-docker-container-and-javascript-actions
 outputs:
-  test_result: # number of outputs
+  test_result:
     description: '{ "success": (true|false) }'
+  test_summary:
+    description: 'Markdown summary of tests success/skip/fail'
 #  tests_success_count:
 #    description: 'The number of tests that were successful'
 #  tests_failed_count:
