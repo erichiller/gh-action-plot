@@ -265,10 +265,10 @@ public class TestResultAnalyzer {
         // Write Test Summary as an output
         Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_SUMMARY, 
                                       $$"""
-                                        ✅ Success : {{this.TestSuccessCount}}
-                                        💤 Skip    : {{this.TestSkipCount}}
-                                        ❌ Failed  : {{this.TestFailCount}}
-                                           Total : {{_testResults.Count}}
+                                        ✅ Success : {{this.TestSuccessCount:N0}}
+                                        💤 Skip    : {{this.TestSkipCount:N0}}
+                                        ❌ Failed  : {{this.TestFailCount:N0}}
+                                        #️⃣ Total   : {{_testResults.Count:N0}}
                                         """);
 
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
