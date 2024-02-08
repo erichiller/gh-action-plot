@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace PlotGitHubAction;
 
@@ -37,6 +37,7 @@ public class BuildLogAnalyzer {
     public readonly  string             MarkdownPath;
     private const    string             _build_warnings_per_project_chart_file_name = "build_warnings";
     public const     string             BUILD_WARNINGS_TOTAL_CHART_FILE_NAME        = "build_warnings_total";
+    public const     string             BUILD_WARNINGS_TOTAL_RECENT_CHART_FILE_NAME = "build_warnings_total_recent";
     private          string             _filePattern => _config.BuildLogFilePattern;
 
     private readonly Dictionary<CsProjInfo, HashSet<WarnLogEntry>> _projWarningsHs = new ();
@@ -65,6 +66,8 @@ public class BuildLogAnalyzer {
 
         // Charts
         summary.AppendLine();
+        summary.AppendLine();
+        summary.AppendLine( _config.GetMarkdownChartLink( BUILD_WARNINGS_TOTAL_RECENT_CHART_FILE_NAME ) );
         summary.AppendLine();
         summary.AppendLine( _config.GetMarkdownChartLink( BUILD_WARNINGS_TOTAL_CHART_FILE_NAME ) );
         summary.AppendLine();
@@ -231,6 +234,17 @@ public class BuildLogAnalyzer {
                 XAxisType: AxisType.DateTime,
                 YAxisType: AxisType.Numeric,
                 Data: Array.Empty<XYData<DateTime>>()
-            ), PlotDataSelection.Total )
+            ), PlotDataSelection.Total ),
+        _historyPlotter.AddDataToPlottable(
+            new XYPlotConfig<DateTime>(
+                Title: "Build Warnings Total - Recent",
+                OutputFileName: BUILD_WARNINGS_TOTAL_RECENT_CHART_FILE_NAME,
+                PlotType: PlotType.Scatter,
+                Width: 1024,
+                Height: 800,
+                XAxisType: AxisType.DateTime,
+                YAxisType: AxisType.Numeric,
+                Data: Array.Empty<XYData<DateTime>>()
+            ), PlotDataSelection.Total | PlotDataSelection.Recent )
     };
 }

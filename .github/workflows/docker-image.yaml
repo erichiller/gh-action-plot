@@ -2,10 +2,21 @@
 name: 'Build Docker image'
 
 on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '**.cs'
+      - '**.csproj'
   workflow_dispatch:
 
 env:
   TZ: America/Chicago
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# Cancel in-progress runs.
+concurrency:
+  group: "docker-build"
+  cancel-in-progress: true
 
 jobs:
   docker_build:
@@ -15,9 +26,9 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.0.x
       - name: Restore dependencies
@@ -30,7 +41,6 @@ jobs:
            --configuration Release \
            -r linux-x64 \
            -o built
-           
       #
       #
       - name: docker login

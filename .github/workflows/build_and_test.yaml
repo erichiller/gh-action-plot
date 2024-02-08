@@ -3,12 +3,18 @@
 name: 'Build & Test'
 
 on:
-  #push:
-  #  branches: [ "master" ]
+  push:
+    branches: [ "master" ]
   workflow_dispatch:
 
 env:
   TZ: America/Chicago
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# Cancel in-progress runs.
+concurrency:
+  group: "build-and-test"
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -16,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.0.x
       #
@@ -59,7 +65,7 @@ jobs:
             -fl1 "/flp1:logFile=gh-action-plot-build.log;warningsonly" \
             -p:"WarnLevel=5"
       #
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: 'erichiller/mkmrk.Channels'
           path: 'test-src/mkmrk-channels'
@@ -125,7 +131,7 @@ jobs:
           Get-ChildItem -Recurse -Path ./ | Select-Object -Property Name,CreationTime,Size
 
       - name: Upload results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: plot-results
           retention-days: 1

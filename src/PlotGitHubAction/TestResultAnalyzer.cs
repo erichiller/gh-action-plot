@@ -1,15 +1,15 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace PlotGitHubAction;
 
@@ -191,10 +191,10 @@ public class TestResultAnalyzer {
                                       $"\n{ActionConfig.NOW_STRING},{commitSha},{_testResults.Count},{_failedTests.Count},{String.Join( ';', _failedTests.Select( f => f.ShortTestName ) )}" );
         writeMarkdownSummary();
     }
-    
-    private int TestSuccessCount => _testResults.Count( t => t.Outcome == "Passed" );
-    private int TestFailCount    => _failedTests.Count;
-    private int TestSkipCount    => _testResults.Count( t => t.Outcome == "NotExecuted" );
+
+    private int _testSuccessCount => _testResults.Count( t => t.Outcome == "Passed" );
+    private int _testFailCount    => _failedTests.Count;
+    private int _testSkipCount    => _testResults.Count( t => t.Outcome == "NotExecuted" );
 
     private void writeMarkdownSummary( ) {
         UrlMdShortUtils sourceUrls = new (config: _config, generateIds: true);
@@ -208,10 +208,10 @@ public class TestResultAnalyzer {
         const string colDiv           = " | ";
         const int    firstColumnWidth = 50;
         if ( _failedTests.Count > 0 ) {
-            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS, 
+            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS,
                                           $$"""
-                                          { "success": false }                                      
-                                          """);
+                                            { "success": false }
+                                            """ );
             Sb.AppendLine(
                 "Test & Exception Location".PadRight( firstColumnWidth )
                 + colDiv
@@ -257,19 +257,21 @@ public class TestResultAnalyzer {
             sourceUrls.AddReferencedUrls( Sb );
             Sb.AppendLine();
         } else {
-            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS, 
+            Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_RESULTS,
                                           $$"""
                                             { "success": true }
-                                            """);
+                                            """ );
         }
         // Write Test Summary as an output
-        Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_SUMMARY, 
+        Utils.SetGitHubActionsOutput( GitHubActionOutputIds.TEST_SUMMARY,
                                       $$"""
-                                        ✅ Success : {{this.TestSuccessCount:N0}}
-                                        💤 Skip    : {{this.TestSkipCount:N0}}
-                                        ❌ Failed  : {{this.TestFailCount:N0}}
+                                        ```
+                                        ✅ Success : {{this._testSuccessCount:N0}}
+                                        💤 Skip    : {{this._testSkipCount:N0}}
+                                        ❌ Failed  : {{this._testFailCount:N0}}
                                         #️⃣ Total   : {{_testResults.Count:N0}}
-                                        """);
+                                        ```
+                                        """ );
 
         System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
     }

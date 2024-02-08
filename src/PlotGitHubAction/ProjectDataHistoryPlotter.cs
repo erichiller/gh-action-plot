@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 using ScottPlot;
@@ -94,6 +94,10 @@ public class JsonHistoryPlotter {
                                            ( date: DateTime.Parse( h.Key ),
                                              total: h.Value.Sum( p => p.Value )
                                            ) ).ToArray();
+            if ( plotDataSelection.HasFlag( PlotDataSelection.Recent ) ) {
+                var recentCutoff = DateTime.Now - TimeSpan.FromDays( 30 );
+                totalSeries = totalSeries.Where( x => x.date > recentCutoff ).ToArray();
+            }
             data.Add(
                 new XYData<DateTime>(
                     Title: "Total",
@@ -107,6 +111,7 @@ public class JsonHistoryPlotter {
 
 [ Flags ]
 public enum PlotDataSelection {
-    Projects = 0b01,
-    Total    = 0b10
+    Projects = 0b001,
+    Total    = 0b010,
+    Recent   = 0b100,
 }

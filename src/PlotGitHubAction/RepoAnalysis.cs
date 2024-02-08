@@ -89,7 +89,7 @@ public static class RepoAnalysis {
                 config.PlotOutputDir );
             links.AppendLine( $"- [Build Warnings]({relPath( buildLogAnalyzer.MarkdownPath )})" );
             readme.AppendLine( "\n## Build Warnings\n\n" );
-            readme.AppendLine( config.GetMarkdownChartLink( BuildLogAnalyzer.BUILD_WARNINGS_TOTAL_CHART_FILE_NAME ) );
+            readme.AppendLine( config.GetMarkdownChartLink( BuildLogAnalyzer.BUILD_WARNINGS_TOTAL_RECENT_CHART_FILE_NAME ) );
         }
 
         links.Insert( 0, "# README\n\n" );
