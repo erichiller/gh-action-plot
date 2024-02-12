@@ -106,14 +106,14 @@ public static class PlotGen {
          * Y-Axis Tick Generator
          */
 
-        Func<double, string>? tickGen = config.YAxisType switch {
-                                            AxisType.Percent => static v => $"{v:p1}",
-                                            AxisType.Numeric => static v => $"{v:n0}",
-                                            _                => null
-                                        };
-        if ( tickGen is { } ) {
-            // plt.Axes.
-            plt.Axes.Left.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic { LabelFormatter = tickGen };
+        if ( config.YAxisType switch {
+                 AxisType.Percent => new ScottPlot.TickGenerators.NumericAutomatic { LabelFormatter = static v => $"{v:p1}" },
+                 // AxisType.Numeric => new ScottPlot.TickGenerators.NumericFixedInterval { Interval = 1 },
+                 // https://github.com/ScottPlot/ScottPlot/blob/main/src/ScottPlot5/ScottPlot5/TickGenerators/NumericAutomatic.cs
+                 AxisType.Numeric => new ScottPlot.TickGenerators.NumericAutomatic { IntegerTicksOnly = true },
+                 _ => ( ITickGenerator? )null
+             } is { } tickGenerator ) {
+            plt.Axes.Left.TickGenerator = tickGenerator;
         }
 
         // If the Y-Axis is a Percentage, constrain bounds to 0-100
