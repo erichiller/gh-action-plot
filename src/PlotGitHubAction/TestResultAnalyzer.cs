@@ -234,9 +234,9 @@ public class TestResultAnalyzer {
                 );
                 Log.Debug( $"methodName={methodName}, linkText={linkText}, url={url}" );
                 Sb.Append( "Test " + markdownInlineCodeSafe( failure.ShortTestName ) + " had exception at <br/>" );
-                Sb.Append( ( $"{markdownInlineCodeSafe( methodName )} in "
+                Sb.Append( ( $"{markdownInlineCodeSafe( methodName )}"
                              + ( linkText is not null && url is not null
-                                 ? sourceUrls.Add(
+                                 ? " in " + sourceUrls.Add(
                                      id: linkText,
                                      url: url,
                                      isCode: false
