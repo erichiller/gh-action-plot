@@ -15,36 +15,28 @@ namespace PlotGitHubAction;
 
 [ XmlRoot( "UnitTestResult", Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010", IsNullable = false ) ]
 public record UnitTestResult {
-    [ XmlIgnore ]
-    public string ShortTestName =>
+    [ XmlIgnore ] public string ShortTestName =>
         Regex.Match( TestName, @"(?<ClassAndMethod>\w+\.\w+)($|\()" ).Groups[ "ClassAndMethod" ].Value;
 
-    [ XmlAttribute( AttributeName = "executionId" ) ]
-    public required string ExecutionId { get; set; } //="fda94305-b507-4079-9196-78b331b1f041" 
+    [ XmlAttribute( AttributeName = "executionId" ) ] public required string ExecutionId { get; set; } //="fda94305-b507-4079-9196-78b331b1f041" 
 
-    [ XmlAttribute( AttributeName = "testId" ) ]
-    public required string TestId { get; set; }
+    [ XmlAttribute( AttributeName = "testId" ) ] public required string TestId { get; set; }
     //testId="98e23071-3a96-b37b-c807-6afac95180b5" 
 
-    [ XmlAttribute( AttributeName = "testName" ) ]
-    public required string TestName { get; set; }
+    [ XmlAttribute( AttributeName = "testName" ) ] public required string TestName { get; set; }
     // testName="namespace.type.method" 
 
-    [ XmlAttribute( AttributeName = "computerName" ) ]
-    public required string ComputerName { get; set; }
+    [ XmlAttribute( AttributeName = "computerName" ) ] public required string ComputerName { get; set; }
     // computerName="fv-az471-492" 
 
     private System.TimeSpan _duration;
 
-    [ XmlIgnore ]
-    public TimeSpan Duration {
+    [ XmlIgnore ] public TimeSpan Duration {
         get => _duration;
         set => _duration = value;
     }
 
-    [ Browsable( false ) ]
-    [ XmlAttribute( DataType = "duration", AttributeName = "duration" ) ]
-    public required string DurationString {
+    [ Browsable( false ) ] [ XmlAttribute( DataType = "duration", AttributeName = "duration" ) ] public required string DurationString {
         get => XmlConvert.ToString( _duration );
         set => _duration = String.IsNullOrEmpty( value )
             ? TimeSpan.Zero
@@ -52,28 +44,22 @@ public record UnitTestResult {
     }
 
 
-    [ XmlAttribute( AttributeName = "startTime" ) ]
-    public required DateTimeOffset StartTime { get; set; }
+    [ XmlAttribute( AttributeName = "startTime" ) ] public required DateTimeOffset StartTime { get; set; }
     // startTime="2023-07-23T08:13:40.6752240-05:00" 
 
-    [ XmlAttribute( AttributeName = "endTime" ) ]
-    public required DateTimeOffset EndTime { get; set; }
+    [ XmlAttribute( AttributeName = "endTime" ) ] public required DateTimeOffset EndTime { get; set; }
     // endTime="2023-07-23T08:13:40.6752242-05:00" 
 
-    [ XmlAttribute( AttributeName = "testType" ) ]
-    public required string TestType { get; set; }
+    [ XmlAttribute( AttributeName = "testType" ) ] public required string TestType { get; set; }
     // testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" 
 
-    [ XmlAttribute( AttributeName = "outcome" ) ]
-    public required string Outcome { get; set; }
+    [ XmlAttribute( AttributeName = "outcome" ) ] public required string Outcome { get; set; }
     // outcome="Passed" 
 
-    [ XmlAttribute( AttributeName = "testListId" ) ]
-    public required string TestListId { get; set; }
+    [ XmlAttribute( AttributeName = "testListId" ) ] public required string TestListId { get; set; }
     // testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" l
 
-    [ XmlAttribute( AttributeName = "relativeResultsDirectory" ) ]
-    public required string RelativeResultsDirectory { get; set; }
+    [ XmlAttribute( AttributeName = "relativeResultsDirectory" ) ] public required string RelativeResultsDirectory { get; set; }
     // relativeResultsDirectory="fda94305-b507-4079-9196-78b331b1f041"
 
     public required Output Output { get; set; }
@@ -167,13 +153,18 @@ public class TestResultAnalyzer {
     public void ScanForTrx( ) {
         //
         int trxFileCount = 0;
-        Log.Debug( $"Scanning '{_directoryRoot}' and all subdirectories for trx files." );
+        Log.Info( $"  Scanning '{_directoryRoot}' and all subdirectories for trx files." );
         foreach ( var filePath in System.IO.Directory.EnumerateFiles( _directoryRoot, "*.trx", System.IO.SearchOption.AllDirectories ) ) {
             trxFileCount++;
-            Log.Debug( $"trx: {filePath}" );
-            this.extractTrx( filePath );
+            try {
+                Log.Info( $"  trx: {filePath}" );
+                this.extractTrx( filePath );
+            } catch ( Exception e ) {
+                Log.Error( $"Exception will processing TRX file '{filePath}'\n\t{e}\n\t{e.StackTrace}" );
+                throw;
+            }
         }
-        Log.Debug( $"Found {trxFileCount} trx files in {_directoryRoot}" );
+        Log.Info( $"  Found {trxFileCount} trx files in {_directoryRoot}" );
 
         // CSV
         string commitSha = _config.CommitHash;
