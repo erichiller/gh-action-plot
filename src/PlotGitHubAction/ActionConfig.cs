@@ -53,7 +53,7 @@ public record ActionConfig(
                 : "*-build.log",
             LineCountFilePattern: System.Environment.GetEnvironmentVariable( "INPUT_LINE_COUNT_FILE_PATTERN" ) is { Length: > 0 } lineCountFilePattern
                 ? lineCountFilePattern
-                : @"(?<!\.(verified|generated))\.(axaml|cs|ps1)$",
+                : @"(?<!\.(verified|generated))\.(axaml|cs|dib|ps1)$",
             CoverageHistoryDir: System.Environment.GetEnvironmentVariable( "INPUT_COVERAGE_HISTORY_DIR" ) is { Length: > 0 } coverageHistoryDir
                 ? coverageHistoryDir
                 : null,
