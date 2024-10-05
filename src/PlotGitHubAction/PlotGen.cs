@@ -5,13 +5,16 @@ using System.Text.Json;
 
 using ScottPlot;
 using ScottPlot.Plottables;
+using ScottPlot.TickGenerators;
+
+using SkiaSharp;
 
 namespace PlotGitHubAction;
 
 public static class PlotGen {
     private static readonly JsonSerializerOptions _serializer_options = Utils.SERIALIZER_OPTIONS;
 
-    public static string GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => System.IO.Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
+    public static string GetChartFilePath( string plotDefinitionsDir, string outputFileName ) => Path.Join( plotDefinitionsDir, outputFileName ) is var path && path.EndsWith( ".png" ) ? path : $"{path}.png";
 
     public static void CreatePlot( string jsonString, string plotDefinitionsDir ) {
         Log.Info( $"==== {nameof(CreatePlot)} ====" );
@@ -31,11 +34,10 @@ public static class PlotGen {
         Log.Info( $"==== {nameof(CreatePlot)} ====" );
         Log.Debug( $"Source JSON:\n{jsonString}" );
 
-        var plt = new ScottPlot.Plot();
-        plt.Style.SetBestFonts();
-        // plt.Style.AxisFrame(  );
+        var plt = new Plot();
+        plt.Font.Automatic();
 
-        foreach ( var font in SkiaSharp.SKFontManager.Default.FontFamilies ) {
+        foreach ( var font in SKFontManager.Default.FontFamilies ) {
             Log.Debug( font );
         }
         Log.Debug( $"Default   = {Fonts.Default}" );
@@ -95,7 +97,7 @@ public static class PlotGen {
                     size: markerSize.Value,
                     color: series.LineStyle.Color );
             }
-            series.Label = data.Title;
+            series.LegendText = data.Title;
             // diag
             for ( int i = 0 ; i < xData.Length ; i++ ) {
                 Log.Verbose( $"#{i}\t{sorted[ i ].First} x {sorted[ i ].Second}" );
@@ -107,11 +109,11 @@ public static class PlotGen {
          */
 
         if ( config.YAxisType switch {
-                 AxisType.Percent => new ScottPlot.TickGenerators.NumericAutomatic { LabelFormatter = static v => $"{v:p1}" },
+                 AxisType.Percent => new NumericAutomatic { LabelFormatter = static v => $"{v:p1}" },
                  // AxisType.Numeric => new ScottPlot.TickGenerators.NumericFixedInterval { Interval = 1 },
                  // https://github.com/ScottPlot/ScottPlot/blob/main/src/ScottPlot5/ScottPlot5/TickGenerators/NumericAutomatic.cs
-                 AxisType.Numeric => new ScottPlot.TickGenerators.NumericAutomatic { IntegerTicksOnly = true },
-                 _ => ( ITickGenerator? )null
+                 AxisType.Numeric => new NumericAutomatic { IntegerTicksOnly = true },
+                 _                => ( ITickGenerator? )null
              } is { } tickGenerator ) {
             plt.Axes.Left.TickGenerator = tickGenerator;
         }
@@ -143,7 +145,7 @@ public static class PlotGen {
          * https://scottplot.net/cookbook/5.0/configuring-legends/#legend-customization
          */
         plt.Legend.IsVisible = true;
-        plt.Legend.Location  = Alignment.LowerLeft;
+        plt.Legend.Alignment = Alignment.LowerLeft;
 
         Log.Info( $"Writing to path: {outputPath}\n"          +
                   $"YAxis:           {plt.Axes.Left.Range}\n" +

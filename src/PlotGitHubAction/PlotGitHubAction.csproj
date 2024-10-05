@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+      <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>PlotGitHubAction</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -27,9 +27,9 @@
     </Target>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot" Version="5.0.21" />
-    
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.7" />
+      <PackageReference Include="ScottPlot" Version="5.0.39"/>
+
+      <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8"/>
     
     <!--
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.4-preview.89" />

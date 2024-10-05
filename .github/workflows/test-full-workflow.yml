@@ -47,7 +47,7 @@ jobs:
           New-Item -Type Directory -Path './test-dir'
           Set-Content -Path "./test-dir/test_json_file_plot_config_1.json" -Value '{ "Title": "Test plot from File", "OutputFileName": "test_json_file_plot.png", "PlotType": "Scatter", "Width": 800, "Height": 600, "Data": [ { "Title": "Series A", "X": [ 11, 52, 19 ], "Y": [ 57, 54, 31 ] } ]}'
       - name: 'Run gh-action-plot'
-        uses: erichiller/gh-action-plot@v0.0.11-alpha
+        uses: erichiller/gh-action-plot@v1.0.3
         with:
           source_scan_dir: './mkmrk-channels/src'
           plot_definitions_dir: './test-dir'

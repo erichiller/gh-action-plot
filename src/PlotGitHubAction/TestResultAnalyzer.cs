@@ -29,7 +29,7 @@ public record UnitTestResult {
     [ XmlAttribute( AttributeName = "computerName" ) ] public required string ComputerName { get; set; }
     // computerName="fv-az471-492" 
 
-    private System.TimeSpan _duration;
+    private TimeSpan _duration;
 
     [ XmlIgnore ] public TimeSpan Duration {
         get => _duration;
@@ -142,8 +142,8 @@ public class TestResultAnalyzer {
         _config                 = config;
         _directoryRoot          = config.TestResultsDir;
         _outputDir              = config.TestFailureOutputDir;
-        _csvFilePath            = System.IO.Path.Combine( _config.MetaDataOutputDir, "test_results.csv" );
-        MarkdownSummaryFilePath = System.IO.Path.Combine( _config.OutputDir, "Test_Results.md" );
+        _csvFilePath            = Path.Combine( _config.MetaDataOutputDir, "test_results.csv" );
+        MarkdownSummaryFilePath = Path.Combine( _config.OutputDir, "Test_Results.md" );
         Log.Info(
             $"==== {nameof(TestResultAnalyzer)} ====\n" +
             $"  DirectoryRoot: {_directoryRoot}\n"      +
@@ -154,13 +154,13 @@ public class TestResultAnalyzer {
         //
         int trxFileCount = 0;
         Log.Info( $"  Scanning '{_directoryRoot}' and all subdirectories for trx files." );
-        foreach ( var filePath in System.IO.Directory.EnumerateFiles( _directoryRoot, "*.trx", System.IO.SearchOption.AllDirectories ) ) {
+        foreach ( var filePath in Directory.EnumerateFiles( _directoryRoot, "*.trx", SearchOption.AllDirectories ) ) {
             trxFileCount++;
             try {
                 Log.Info( $"  trx: {filePath}" );
                 this.extractTrx( filePath );
             } catch ( Exception e ) {
-                Log.Error( $"Exception will processing TRX file '{filePath}'\n\t{e}\n\t{e.StackTrace}" );
+                Log.Error( $"Exception when processing TRX file '{filePath}'\n\t{e}\n\t{e.StackTrace}" );
                 throw;
             }
         }
@@ -168,18 +168,18 @@ public class TestResultAnalyzer {
 
         // CSV
         string commitSha = _config.CommitHash;
-        if ( !System.IO.File.Exists( _csvFilePath ) ) {
-            System.IO.File.WriteAllText( _csvFilePath,
-                                         String.Join( ",", new string[] {
-                                                          "Date",
-                                                          "Commit SHA",
-                                                          "Total Test Count",
-                                                          "Failed Test Count",
-                                                          "Failed Test Names"
-                                                      } ) );
+        if ( !File.Exists( _csvFilePath ) ) {
+            File.WriteAllText( _csvFilePath,
+                               String.Join( ",", new string[] {
+                                                "Date",
+                                                "Commit SHA",
+                                                "Total Test Count",
+                                                "Failed Test Count",
+                                                "Failed Test Names"
+                                            } ) );
         }
-        System.IO.File.AppendAllText( _csvFilePath,
-                                      $"\n{ActionConfig.NOW_STRING},{commitSha},{_testResults.Count},{_failedTests.Count},{String.Join( ';', _failedTests.Select( f => f.ShortTestName ) )}" );
+        File.AppendAllText( _csvFilePath,
+                            $"\n{ActionConfig.NOW_STRING},{commitSha},{_testResults.Count},{_failedTests.Count},{String.Join( ';', _failedTests.Select( f => f.ShortTestName ) )}" );
         writeMarkdownSummary();
     }
 
@@ -264,7 +264,7 @@ public class TestResultAnalyzer {
                                         ```
                                         """ );
 
-        System.IO.File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
+        File.WriteAllText( MarkdownSummaryFilePath, Sb.ToString() );
     }
 
     private string markdownInlineCodeSafe( string inputString ) {
@@ -278,9 +278,13 @@ public class TestResultAnalyzer {
         XDocument     xd = XDocument.Load( filePath );
         XmlSerializer sx = new XmlSerializer( typeof(UnitTestResult) );
 
-        var results = xd.Elements().First().Elements()
-                        .Single( static el => el.Name.LocalName == "Results" )
-                        .Elements().ToArray();
+        var results = xd.Elements().FirstOrDefault()?.Elements()
+                        .SingleOrDefault( static el => el.Name.LocalName == "Results" )?
+                        .Elements().ToArray() ?? Array.Empty<XElement>();
+        if ( results.Length == 0 ) {
+            Log.Warn( $"Trx file '{filePath}' had no results." );
+            return;
+        }
         string[] nonFailedResultOutcomes = { "Passed", "NotExecuted" /* = Skipped */ };
         var failedResults = results.Where( el => !nonFailedResultOutcomes.Contains(
                                                el.Attributes()
@@ -339,12 +343,12 @@ public class TestResultAnalyzer {
             Log.Debug( str + "\n" );
             string outFilePath = getTestResultOutputFilePath( failure );
             Log.Debug( $"Writing to file: {outFilePath}" );
-            System.IO.File.WriteAllText( outFilePath, str );
+            File.WriteAllText( outFilePath, str );
         }
     }
 
     private string getTestResultOutputFilePath( UnitTestResult failure ) {
-        return System.IO.Path.Combine( _outputDir, failure.ShortTestName + ".log" );
+        return Path.Combine( _outputDir, failure.ShortTestName + ".log" );
     }
 
     private string? getErrorSourceLink( UnitTestResult failure ) {
@@ -381,8 +385,8 @@ public class TestResultAnalyzer {
                              $"Split is {String.Join( ", ", unitTestPathFromTrx.Split( csProj.DirectoryPath ) )}\n\t" +
                              $"CsProject: {csProj}\n\t\twith DirectoryPath: {csProj.DirectoryPath}\n\t"               +
                              $"relativePath: {relativePath}\n\t"                                                      +
-                             $"Combined Path: {Path.Combine( csProj.DirectoryPath, relativePath.TrimStart( System.IO.Path.DirectorySeparatorChar ) )}" );
-                return Path.Combine( csProj.DirectoryPath, relativePath.TrimStart( System.IO.Path.DirectorySeparatorChar ) );
+                             $"Combined Path: {Path.Combine( csProj.DirectoryPath, relativePath.TrimStart( Path.DirectorySeparatorChar ) )}" );
+                return Path.Combine( csProj.DirectoryPath, relativePath.TrimStart( Path.DirectorySeparatorChar ) );
             }
             Log.Warn( $"[{nameof(getUnitTestPath)}] Found csProj: {csProj}, but was unable to determine the relative path." );
         }
